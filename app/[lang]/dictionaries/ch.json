@@ -1,0 +1,244 @@
+{
+  "landingPage": {
+    "hero": {
+       "img":"/landing/ch/hero.png",
+      "brand": "Talentz",
+      "button": {
+        "badge": "新",
+        "label": "询问 AI"
+      },
+      "title1": "让顶尖人才",
+      "title2": "为你完成工作",
+      "subtitle": "一个创意与机会相遇的在线自由职业平台",
+      "customers": "我们的满意用户"
+    },
+    "how": {
+      "title":"How does this works ?",
+      "img":"/landing/ch/how.png"
+    },
+    "about": {
+      "title": "我们不仅仅是一个自由职业平台",
+      "subtitle": "我们的团队打造的解决方案不仅外观精美，更能带来真正的影响。",
+      "pick": {
+        "title": "挑选最佳服务",
+        "subtitle": "根据作品、经验和价格寻找自由职业者。您可以浏览详细的个人资料，包括作品集、过去的项目和客户评价。",
+        "img":"/landing/ch/labout.png"
+      },
+      "collaboration": {
+        "title": "实时任务协作",
+        "subtitle": "智能日历会在您设置任务时自动填充截止日期、会议和里程碑。轻松可视化项目时间线，安排会议，并在一个地方跟踪关键里程碑，确保您保持井然有序。",
+        "img":"/landing/ch/labout1.png"
+      },
+      "seamlessClient": {
+        "title": "无缝的客户沟通",
+        "subtitle": "轻松实时连接，分享想法和反馈，确保您的项目保持在正确轨道上，并始终与您的愿景保持一致。",
+       "img":"/landing/ch/labout2.png"
+      },
+      "revisions": {
+        "title": "无缝的项目修改",
+        "subtitle": "我们简化的修改流程确保每个细节都能完美契合您的愿景，以取得卓越成果。",
+         "img":"/landing/ch/labout3.png"
+      },
+      "protecting": {
+        "title": "保护您的数字资产",
+        "subtitle": "您的数据安全是我们的首要任务。通过先进的加密和隐私功能，我们的数字保险柜确保您的信息在需要时安全可用。",
+        "img":"/landing/ch/labout4.png"
+      },
+      "dashboard": {
+        "title": "一体化仪表盘体验",
+        "img":"/landing/ch/labout5.png",
+        "tabs": {
+          "Analytics": "我們直觀的儀表板是您管理自由職業專案與財務的一站式中心。透過即時分析和全面洞察，您可以輕鬆追蹤支出、監控專案進度，並在同一處管理所有自由職業者。您還可以直接透過平台安排會議，並使用整合行事曆掌握重要截止日期。我們內建的發票生成工具簡化了財務流程，確保即時且準確的付款，同時幫助自由職業者如期完成任務與里程碑。",
+          "Loyalty Program": "自由職業者與使用者可透過在平台上的消費來獲得獎勵。隨著您在專案或服務上的投資增加，您將累積可用於未來交易折扣的點數。此方案不僅提升您的購買力，也鼓勵您對平台的忠誠度。善用這個機會，在節省支出的同時獲取頂尖的自由職業人才與服務！",
+          "AI Integration": "我們的儀表板運用先進的人工智慧演算法,將使用者與最合適的自由職業者及服務進行匹配。透過分析您的專案需求、偏好和過往互動，AI 提供量身定制的建議，確保您能快速且高效地找到合適人選。這套智慧匹配系統簡化了您的搜尋流程，為您節省時間並提升整體使用體驗。"
+        }
+      }
+    },
+    "partner": "我们的可信赖合作伙伴",
+    "tools": {
+      "title": "一体化自由职业服务工具",
+      "subtitle": "我们让您的工作流程更简单",
+      "button": "立即试用"
+    },
+    "testimonial": {
+      "title": "我们的满意客户怎么说",
+      "testimonials": [
+        {
+          "id": 1,
+          "avatar": "https://pbs.twimg.com/profile_images/1794450494686932992/wqRqF4dt_400x400.jpg",
+          "text": "坐下来，保持纯粹，像名字一样，自然与身体结合。即使在困难的时候，也要保持坚强。抓住机会，你将达到新的高度。",
+          "name": "莱斯利·亚历山大"
+        },
+        {
+          "id": 2,
+          "avatar": "https://pbs.twimg.com/profile_images/1918646280223608832/nqBF4zh__400x400.jpg",
+          "text": "我在这里雇佣自由职业者的体验非常棒。可用的技能种类令人印象深刻，而项目管理工具让一切都保持在正轨上。",
+          "name": "李明伟"
+        },
+        {
+          "id": 3,
+          "avatar": "https://pbs.twimg.com/profile_images/1593304942210478080/TUYae5z7_400x400.jpg",
+          "text": "我在几小时内就找到了适合我项目的自由职业者！工作质量非常出色，沟通也非常顺畅。一定会再次使用！",
+          "name": "肖恩"
+        },
+        {
+          "id": 4,
+          "avatar": "https://pbs.twimg.com/profile_images/1722358890807861248/75S7CB3G_400x400.jpg",
+          "text": "这个网站彻底改变了我的自由职业生涯。项目多样化，我的收入也显著提高了。太喜欢了！",
+          "name": "莱斯利·亚历山大"
+        },
+        {
+          "id": 5,
+          "avatar": "https://pbs.twimg.com/profile_images/1554006663853592576/Gxtolzbo_400x400.jpg",
+          "text": "在这个平台上工作的体验非常棒。我很快就找到了客户，支付过程也非常顺畅。强烈推荐给自由职业者！",
+          "name": "约翰·德·马利"
+        },
+        {
+          "id": 6,
+          "avatar": "https://pbs.twimg.com/profile_images/1880284612062056448/4Y2C8Xnv_400x400.jpg",
+          "text": "我很欣赏这个平台的用户友好界面和丰富的工作选择。我通过这个平台结识了优秀的客户，并建立了长期合作关系。",
+          "name": "大卫·李"
+        },
+        {
+          "id": 7,
+          "avatar": "https://pbs.twimg.com/profile_images/1724192049002340352/-tood-4D_400x400.jpg",
+          "text": "我在这里雇佣自由职业者的体验非常棒。可用的技能种类令人印象深刻，而项目管理工具让一切都保持在正轨上。",
+          "name": "莱斯利·亚历山大"
+        },
+        {
+          "id": 8,
+          "avatar": "https://pbs.twimg.com/profile_images/1920165535351742464/CJU2uWMU_400x400.jpg",
+          "text": "坐下来，保持纯粹，像名字一样，自然与身体结合。即使在困难的时候，也要保持坚强。抓住机会，你将达到新的高度。",
+          "name": "李明伟"
+        },
+        {
+          "id": 9,
+          "avatar": "https://pbs.twimg.com/profile_images/1915754015381483520/07SpEJWa_400x400.jpg",
+          "text": "我在几小时内就找到了适合我项目的自由职业者！工作质量非常出色，沟通也非常顺畅。一定会再次使用！",
+          "name": "大卫·李"
+        }
+      ]
+    },
+    "blog": {
+      "title": "博客与新闻",
+      "subtitle": "了解并掌握行业动态",
+      "button": "更多博客",
+      "readMore": "阅读更多"
+    }
+  },
+  "footer": {
+    "title": "让我们用 AI 助手帮助您招聘",
+    "button": "立即尝试",
+    "submit": "提交",
+    "img":"/landing/ch/ai_intro.png",
+    "Services": "服务",
+    "Subscribe": "订阅",
+    "ContactUs": "联系我们",
+    "Copyright": "© 2025 Talentz Limited. 保留所有权利。",
+    "servicesLinke": [
+      { "id": 1, "label": "登录", "link": "/log-in" },
+      { "id": 2, "label": "职位", "link": "/jobs" },
+      { "id": 3, "label": "雇佣", "link": "/hire" },
+      { "id": 4, "label": "博客与新闻", "link": "/blog" }
+    ],
+    "Talentz": [
+      { "id": "1", "label": "关于我们", "link": "/about" },
+      { "id": "2", "label": "联系我们", "link": "/contact" },
+      { "id": "3", "label": "条款与隐私", "link": "/terms" }
+    ],
+    "legal": [
+      { "id": 1, "label": "条款", "link": "/terms" },
+      { "id": 2, "label": "隐私", "link": "/privacy" },
+      { "id": 3, "label": "Cookie 政策", "link": "/cookies" }
+    ]
+  },
+  "topNavItems": [
+    { "id": "1", "label": "关于我们", "path": "/about" },
+    { "id": "2", "label": "职位", "path": "/jobs" },
+    { "id": "3", "label": "雇佣", "path": "/hire" },
+    { "id": "4", "label": "博客", "path": "/blog" },
+    { "id": "5", "label": "联系我们", "path": "/contact" }
+  ],
+  "aboutPage": {
+    "hero": {
+      "title": "我们是 Talentz",
+      "subtitle": "Talentz 是一个创新的在线自由职业平台，旨在改变自由职业工作的格局。我们的重点是打造量身定制的体验，以满足充满活力的自由职业生态系统的独特需求。我们致力于培育一个充满活力的社区，鼓励协作与成长。"
+    },
+    "mission": {
+      "title": "我们的使命",
+      "subtitle": "我们的使命是通过提供一个安全、高效、用户友好的在线协作环境来赋能自由职业者和企业。我们努力提升生产力，促进有意义的联系，确保每一位用户都能在自己的领域中茁壮成长。"
+    },
+    "goals": {
+      "title": "我们的目标",
+      "subtitle": "我们的目标是通过提供卓越的服务和优质的用户体验，成为自由职业市场的引领者。我们承诺打造一个能够适应用户不断变化需求的平台，构建一个本地化且支持性的社区，推动创新与成功。"
+    },
+    "info": {
+      "title": "我们在成长",
+      "subtitle": "我们与创新一同成长"
+    },
+    "join": {
+      "label": "加入我们？",
+      "info": "想成为我们充满活力团队的一员吗？",
+      "label2": "不仅仅是一份工作",
+      "button": "联系我们"
+    },
+    "solution": {
+      "title": "您的工作一站式解决方案",
+      "subtitle": "您的自由职业项目与财务管理一体化中心。通过实时分析和全面洞察，您可以轻松追踪支出、监控项目进度，并在一个平台上管理所有自由职业者。",
+      "button": "立即体验"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "subtitle": "我们很高兴能帮助您解答疑问",
+    "items": [
+      {
+        "id": "1",
+        "question": "我可以在 Talentz 上找到什么服务？",
+        "answer": "您可以找到广泛的服务，包括平面设计、写作、网页开发、数字营销等。"
+      },
+      {
+        "id": "2",
+        "question": "如何在 Talentz 上雇佣自由职业者？",
+        "answer": "您可以通过浏览自由职业者的个人资料、查看他们的作品集和客户评价来找到合适的自由职业者。"
+      },
+      {
+        "id": "3",
+        "question": "使用 Talentz 是否需要支付费用？",
+        "answer": "您可以找到广泛的服务，包括平面设计、写作、网页开发、数字营销等。"
+      },
+      {
+        "id": "4",
+        "question": "Talentz 如何确保自由职业者的质量？",
+        "answer": "我们有严格的审查流程，包括审查作品集、进行面试和检查推荐信，以确保只有合格的自由职业者才能进入我们的平台。"
+      },
+      {
+        "id": "5",
+        "question": "Talentz 支持哪些支付方式？",
+        "answer": "我们接受多种支付方式，包括信用卡/借记卡、PayPal 和银行转账。"
+      },
+      {
+        "id": "6",
+        "question": "Talentz 如何保护我的数据？",
+        "answer": "我们使用先进的加密和隐私功能来确保您的数据安全，仅您可以访问。"
+      }
+    ]
+  },
+  "contact": {
+    "title": "我们很乐意听到您的声音",
+    "subtitle": "分享您的想法、建议或任何问题。您的反馈帮助我们改进和增强我们的服务，以更好地满足您的需求。"
+  },
+  "blogPage": {
+    "title": "博客与新闻",
+    "subtitle": "探索我们的博客，了解最新趋势、专家提示和创新想法，帮助您在行业中保持领先。",
+    "button": "加载所有博客",
+    "readMore": "阅读更多",
+    "trending": "热门"
+  },
+  "hirePage": {
+    "title": "准备好开启你的旅程了吗？",
+    "subtitle": "无论您是想雇佣最优秀的人才，还是向世界展示您的技能，我们都在这里为您服务。立即注册，迈出实现目标的第一步！",
+    "joinButton": "加入成为自由职业者",
+    "hireButton": "雇佣自由职业者"
+  }
+}

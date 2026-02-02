@@ -1,0 +1,244 @@
+{
+  "landingPage": {
+    "hero": {
+      "img":"/landing/en/hero.png",
+      "brand": "Talentz",
+      "button": {
+        "badge": "New",
+        "label": "Ask AI"
+      },
+      "title1": "Let the top",
+      "title2": "do the work for you",
+      "subtitle": "An Online Freelance Platform Where Creativity Meets Opportunity",
+      "customers": "Our Happy Users"
+    },
+    "how": {
+      "title":"How does this works ?",
+      "img":"/landing/en/how.png"
+    },
+    "about": {
+      "title": "We Are More than A freelance platform",
+      "subtitle": "Our team crafts solutions that don't just look good, they deliver real impact.",
+      "pick": {
+        "title": "Pick the best services",
+        "subtitle": "find freelancers based on their work, experience, and pricing. You can browse through detailed profiles showcasing portfolios, past projects, and client reviews.",
+        "img":"/landing/en/labout.png"
+      },
+      "collaboration": {
+        "title": "Collaboration with Real-Time Assignments",
+        "subtitle": "smart calendar that automatically fills in deadlines, meetings, and milestones as you set tasks. Easily visualize your project timeline, schedule meetings, and track key milestones in one place, ensuring you stay organized and on top of your projects.",
+        "img":"/landing/en/labout1.png"
+      },
+      "seamlessClient": {
+        "title": "Seamless Client Communication",
+        "subtitle": "Effortlessly connect to share ideas and feedback in real time, ensuring your project stays on track and aligns with your vision every step of the way.",
+        "img":"/landing/en/labout2.png"
+      },
+      "revisions": {
+        "title": "Seamless Project Revisions",
+        "subtitle": "Our streamlined revision process ensures that every detail is perfected to align with your vision for outstanding results.",
+        "img":"/landing/en/labout3.png"
+      },
+      "protecting": {
+        "title": "Protecting Your Digital Assets",
+        "subtitle": "Your data's security is our priority. With advanced encryption and privacy features, our digital safe keeps your information safe and accessible when you need it.",
+        "img":"/landing/en/labout4.png"
+      },
+      "dashboard": {
+        "title": "All in one Dashboard Experience",
+        "img":"/landing/en/labout5.png",
+        "tabs": {
+          "Analytics": "Our intuitive Dashboard serves as your all-in-one hub for managing freelance projects and finances. With real-time analytics and comprehensive insights, you can effortlessly track spending, monitor project progress, and oversee all your freelancers in one place. Schedule meetings directly through the platform and keep track of important deadlines with our integrated calendar. Simplify your financial processes with our built-in invoice generation tool, ensuring timely and accurate payments while helping freelancers meet their deadlines and milestones.",
+          "Loyalty Program": "freelancers and users to earn rewards for their spending on the platform. As you invest more in projects or services, you accumulate credits that can be redeemed for discounts on future transactions. This program not only enhances your purchasing power but also encourages loyalty to our platform. Take advantage of this opportunity to save while accessing top-tier freelance talent and services!",
+          "AI Integrat ion": "Our Dashboard utilizes advanced AI algorithms to match users with the most suitable freelancers and services. By analyzing your project requirements, preferences, and past interactions, the AI provides tailored recommendations, ensuring you find the right fit quickly and efficiently. This intelligent matching system streamlines your search process, saving you time and enhancing your overall experience on the platform."
+        }
+      }
+    },
+    "partner": "Our Trusted Partner",
+    "tools": {
+      "title": "The all in one tool for your freelance service",
+      "subtitle": "We simplify your workflow",
+      "button": "Try Now"
+    },
+    "testimonial": {
+      "title": "What our happy clients say",
+      "testimonials": [
+        {
+          "id": 1,
+          "avatar": "https://pbs.twimg.com/profile_images/1794450494686932992/wqRqF4dt_400x400.jpg",
+          "text": "Sit purus, ac nam morbi consectetur quam eget iaculis. Sed tortor, nisl nec nam quam enim tempor, potenti sed. Pharetra cras eget lacus.",
+          "name": "Leslie Alexander"
+        },
+        {
+          "id": 2,
+          "avatar": "https://pbs.twimg.com/profile_images/1918646280223608832/nqBF4zh__400x400.jpg",
+          "text": "I had a great experience hiring freelancers here. The variety of skills available is impressive, and the project management tools kept everything on track.",
+          "name": "Lee Ming Wai"
+        },
+        {
+          "id": 3,
+          "avatar": "https://pbs.twimg.com/profile_images/1593304942210478080/TUYae5z7_400x400.jpg",
+          "text": "I found the perfect freelancer for my project within hours! The quality of work was outstanding, and the communication was excellent. Will definitely use again!",
+          "name": "Shawn"
+        },
+        {
+          "id": 4,
+          "avatar": "https://pbs.twimg.com/profile_images/1722358890807861248/75S7CB3G_400x400.jpg",
+          "text": "This site has been a game-changer for my freelance career. The projects are diverse, and I've been able to increase my income significantly. Love it",
+          "name": "Leslie Alexander"
+        },
+        {
+          "id": 5,
+          "avatar": "https://pbs.twimg.com/profile_images/1554006663853592576/Gxtolzbo_400x400.jpg",
+          "text": "I had a fantastic experience working with this platform. I found clients quickly and the payment process was seamless. Highly recommend it for freelancers!",
+          "name": "John De marli"
+        },
+        {
+          "id": 6,
+          "avatar": "https://pbs.twimg.com/profile_images/1880284612062056448/4Y2C8Xnv_400x400.jpg",
+          "text": "I appreciate the user-friendly interface and the variety of work available. I've connected with amazing clients and built long-term relationships through this platform.",
+          "name": "David Lee"
+        },
+        {
+          "id": 7,
+          "avatar": "https://pbs.twimg.com/profile_images/1724192049002340352/-tood-4D_400x400.jpg",
+          "text": "I had a great experience hiring freelancers here. The variety of skills available is impressive, and the project management tools kept everything on track.",
+          "name": "Leslie Alexander"
+        },
+        {
+          "id": 8,
+          "avatar": "https://pbs.twimg.com/profile_images/1920165535351742464/CJU2uWMU_400x400.jpg",
+          "text": "Sit purus, ac nam morbi consectetur quam eget iaculis. Sed tortor, nisl nec nam quam enim tempor, potenti sed. Pharetra cras eget lacus.",
+          "name": "Lee Ming Wai"
+        },
+        {
+          "id": 9,
+          "avatar": "https://pbs.twimg.com/profile_images/1915754015381483520/07SpEJWa_400x400.jpg",
+          "text": "I found the perfect freelancer for my project within hours! The quality of work was outstanding, and the communication was excellent. Will definitely use again!",
+          "name": "David Lee"
+        }
+      ]
+    },
+    "blog": {
+      "title": "Blog And News",
+      "subtitle": "Learn and know about the industry",
+      "button": "More Blogs",
+      "readMore": "Read More"
+    }
+  },
+  "footer": {
+    "title": "Lets us help you to hire with wour AI assistance",
+    "button": "Try Now",
+    "submit": "Submit",
+     "img":"/landing/en/ai_intro.png",
+    "Subscribe": "Subscribe",
+    "Services": "Services",
+    "ContactUs": "Contact Us",
+    "Copyright": "© 2025 Talentz Limited. All rights reserved.",
+    "servicesLinke": [
+      { "id": 1, "label": "Login", "link": "/log-in" },
+      { "id": 2, "label": "Jobs", "link": "/jobs" },
+      { "id": 3, "label": "Hire", "link": "/hire" },
+      { "id": 4, "label": "Blog and News", "link": "/blog" }
+    ],
+    "Talentz": [
+      { "id": "1", "label": "About Us", "link": "/about" },
+      { "id": "2", "label": "Contact Us", "link": "/contact" },
+      { "id": "3", "label": "Terms and Privacy", "link": "/terms" }
+    ],
+    "legal": [
+      { "id": 1, "label": "Terms", "link": "/terms" },
+      { "id": 2, "label": "Privacy", "link": "/privacy" },
+      { "id": 3, "label": "Cookie", "link": "/cookies" }
+    ]
+  },
+  "topNavItems": [
+    { "id": "1", "label": "About Us", "path": "/about" },
+    { "id": "2", "label": "Jobs", "path": "/jobs" },
+    { "id": "3", "label": "Hire", "path": "/hire" },
+    { "id": "4", "label": "Blog", "path": "/blog" },
+    { "id": "5", "label": "Contact Us", "path": "/contact" }
+  ],
+  "aboutPage": {
+    "hero": {
+      "title": "We Are Talentz",
+      "subtitle": "Talentz is an innovative online freelance platform designed to transform the landscape of freelance work. Our focus is on creating a tailored experience that meets the unique demands of the dynamic freelance ecosystem. We are dedicated to fostering a vibrant community that encourages collaboration and growth."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "subtitle": "Our mission is to empower freelancers and businesses by providing a secure, efficient, and user-friendly environment for online collaboration. We strive to enhance productivity and facilitate meaningful connections, ensuring that every user can thrive in their respective fields."
+    },
+    "goals": {
+      "title": "Our Goals",
+      "subtitle": "We aim to lead the freelance market by delivering exceptional service and a superior user experience. Our commitment is to build a platform that adapts to the evolving needs of our users, creating a localized and supportive community that drives innovation and success."
+    },
+    "info": {
+      "title": "We Are Growing",
+      "subtitle": "We are growing alongside our innovations"
+    },
+    "join": {
+      "label": "Join Us?",
+      "info": "Want to become a part of our dynamic team?",
+      "label2": "Not Just A Job",
+      "button": "Contact Us"
+    },
+    "solution": {
+      "title": "Your One Stop Solution for your work",
+      "subtitle": "Your all-in-one hub for managing freelance projects and finances. With real-time analytics and comprehensive insights, you can effortlessly track spending, monitor project progress, and oversee all your freelancers in one place.",
+      "button": "Try Now"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "We are happy to help with your questions",
+    "items": [
+      {
+        "id": "1",
+        "question": "What services can I find on Talentz?",
+        "answer": "You can find a wide range of services, including graphic design, writing, web development, digital marketing, and more."
+      },
+      {
+        "id": "2",
+        "question": "How do I hire a freelancer on Talentz?",
+        "answer": "You can find a wide range of services, including graphic design, writing, web development, digital marketing, and more."
+      },
+      {
+        "id": "3",
+        "question": "Is there any fee to use Talentz?",
+        "answer": "You can find a wide range of services, including graphic design, writing, web development, digital marketing, and more."
+      },
+      {
+        "id": "4",
+        "question": "How does Talentz ensure the quality of freelancers?",
+        "answer": "We have a rigorous vetting process that includes reviewing portfolios, conducting interviews, and checking references to ensure that only qualified freelancers are allowed on our platform."
+      },
+      {
+        "id": "5",
+        "question": "What payment methods are accepted on Talentz?",
+        "answer": "We accept various payment methods, including credit/debit cards, PayPal, and bank transfers."
+      },
+      {
+        "id": "6",
+        "question": "How does Talentz protect my data?",
+        "answer": "We use advanced encryption and privacy features to ensure that your data is secure and accessible only to you."
+      }
+    ]
+  },
+  "contact": {
+    "title": "We'd Love to Hear From You",
+    "subtitle": "Share your thoughts, suggestions, or any questions you may have with us. Your input helps us improve and enhance our services to better meet your needs."
+  },
+  "blogPage": {
+    "title": "Blog And News",
+    "subtitle": "Explore our blog for the latest trends, expert tips, and innovative ideas that will help you stay ahead in your industry.",
+    "button": "Load All Blogs",
+    "readMore": "Read More",
+    "trending": "Trending"
+  },
+  "hirePage": {
+    "title": "Ready to Start Your Journey?",
+    "subtitle": "Whether you're looking to hire the best talent or showcase your skills to the world, we're here for you. Sign up today and take the first step towards achieving your goals!",
+    "joinButton": "Join as a freelancer",
+    "hireButton": "Hire a freelancer"
+  }
+}
