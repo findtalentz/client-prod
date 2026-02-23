@@ -9,8 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type Calendar from "@/schemas/Calendar";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { AxiosError } from "axios";
 import { Calendar as CalendarIcon, Clock, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -125,11 +125,7 @@ export function CalendarPreviewDialog({
                 router.refresh();
                 onOpenChange(false);
               } catch (error) {
-                if (error instanceof AxiosError && error.response) {
-                  toast.error(error.response.data.message);
-                } else {
-                  toast.error("Something went wrong!");
-                }
+                handleApiError(error, "Something went wrong!");
               }
             }}
           >

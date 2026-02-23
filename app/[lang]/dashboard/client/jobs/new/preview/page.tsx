@@ -11,10 +11,10 @@ import {
   useJobSkillsStore,
   useStepStore,
 } from "@/store";
-import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { handleApiError } from "@/lib/handle-api-error";
 import toast from "react-hot-toast";
 
 const JobPreview = () => {
@@ -52,9 +52,7 @@ const JobPreview = () => {
       router.refresh();
       router.push("/dashboard/client/jobs/open");
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     }
   };
 

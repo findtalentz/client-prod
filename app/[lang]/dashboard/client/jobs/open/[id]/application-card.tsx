@@ -1,5 +1,6 @@
 "use client";
 import AddTalentWishlist from "@/components/add-talent-wishlist";
+import FileAttachmentGrid from "@/components/file-attachment-grid";
 import MessageSentButton from "@/components/message-sent-button";
 import { Badge } from "@/components/ui/badge";
 import IconBadge from "@/components/ui/icon-badge";
@@ -7,14 +8,11 @@ import Text from "@/components/ui/text";
 import useCompletedJobCount from "@/hooks/useCompletedJobCount";
 import useSession from "@/hooks/useSession";
 import Application from "@/schemas/Application";
-import FILE_ICONS from "@/schemas/FileIcons";
 import Job from "@/schemas/Job";
 import { Avatar, Flex } from "@radix-ui/themes";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { FiDownload, FiFilePlus } from "react-icons/fi";
 import { GrLocation } from "react-icons/gr";
 import { Hire } from "../../../_components/hire";
 
@@ -27,20 +25,6 @@ const ApplicationCard = ({ application, job }: Props) => {
   const { data: user } = useSession();
   const [messageLength, setMessageLength] = useState(100);
   const { data: completedjobs } = useCompletedJobCount(application.seller._id);
-  const getFileIcon = (url: string) => {
-    const extension = url.split(".").pop()?.toLowerCase() || "";
-    return FILE_ICONS[extension] || <FiFilePlus className="text-gray-500" />;
-  };
-
-  const getFileNameFromUrl = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      const pathname = urlObj.pathname;
-      return pathname.substring(pathname.lastIndexOf("/") + 1);
-    } catch {
-      return url.substring(url.lastIndexOf("/") + 1);
-    }
-  };
   return (
     <div className="flex-1 p-3 border rounded-2xl">
       <div>
@@ -153,59 +137,7 @@ const ApplicationCard = ({ application, job }: Props) => {
           </p>
         </div>
 
-        {/* File attachments */}
-        {application.attachments && application.attachments.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-3">
-            {application.attachments.map((file) => {
-              const fileName = getFileNameFromUrl(file);
-              const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(fileName);
-
-              return (
-                <div
-                  key={file}
-                  className="relative group border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow w-40"
-                >
-                  {isImage ? (
-                    <div className="relative w-full aspect-square">
-                      <Image
-                        src={file}
-                        fill
-                        className="object-cover"
-                        alt={fileName}
-                        sizes="160px"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-full aspect-square flex flex-col items-center justify-center p-4">
-                      <div className="text-3xl mb-2">
-                        {getFileIcon(fileName)}
-                      </div>
-                      <p className="text-xs text-center text-gray-600 truncate w-full">
-                        {fileName}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Download button overlay */}
-                  <a
-                    href={file}
-                    download={fileName}
-                    className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
-                  >
-                    <div className="bg-white p-2 rounded-full shadow-lg">
-                      <FiDownload className="text-gray-700" />
-                    </div>
-                  </a>
-
-                  {/* File name at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent p-2">
-                    <p className="text-xs text-white truncate">{fileName}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        <FileAttachmentGrid files={application.attachments} />
       </div>
     </div>
   );

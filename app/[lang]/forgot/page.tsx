@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { z } from "zod";
 
@@ -16,8 +15,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
-import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -52,9 +51,7 @@ function ForgotPassword() {
       localStorage.setItem("vEmail", data.data);
       router.push("/forgot/check-email");
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }

@@ -16,8 +16,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
-import { AxiosError } from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -66,9 +66,7 @@ function NewPassword() {
       localStorage.removeItem("vEmail");
       window.location.href = "/log-in";
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }

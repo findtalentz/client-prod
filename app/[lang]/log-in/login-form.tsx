@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PasswordInput from "@/components/ui/password-input";
 import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,12 +16,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
-import { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
-import { Eye, EyeOff } from "lucide-react";
 
 const FormSchema = z.object({
   email: z
@@ -35,7 +35,6 @@ const FormSchema = z.object({
 
 export default function LoginForm() {
   const [isLoading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -62,9 +61,7 @@ export default function LoginForm() {
       window.location.href = "/dashboard";
       setLoading(false);
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }
@@ -93,24 +90,7 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Password:</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="********"
-                    type={showPassword ? "text" : "password"}
-                    {...field}
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
+                <PasswordInput placeholder="********" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

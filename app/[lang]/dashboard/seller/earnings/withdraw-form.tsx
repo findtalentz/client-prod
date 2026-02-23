@@ -15,8 +15,8 @@ import usePaymentMethods from "@/hooks/usePaymentMethods";
 import useBankAccountStatus from "@/hooks/useBankAccountStatus";
 import ApiResponse from "@/schemas/ApiRespose";
 import { PaymentMethod, isBankPaymentMethod, isPayPalPaymentMethod } from "@/schemas/PaymentMethod";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import toast from "react-hot-toast";
@@ -136,13 +136,7 @@ function WithdrawForm({ onSuccess }: Props) {
 
       router.refresh();
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(
-          error.response.data.message || "Failed to process withdrawal"
-        );
-      } else {
-        toast.error("An unexpected error occurred");
-      }
+      handleApiError(error, "An unexpected error occurred");
     } finally {
       setLoading(false);
     }

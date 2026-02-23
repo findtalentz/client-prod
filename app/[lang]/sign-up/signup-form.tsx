@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PasswordInput from "@/components/ui/password-input";
 import { Role } from "@/schemas/Role";
 import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -19,8 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
-import { Eye, EyeOff } from "lucide-react"; // Import eye icons
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -51,8 +51,6 @@ interface Props {
 
 export default function SignupForm({ role }: Props) {
   const [isLoading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -86,10 +84,7 @@ export default function SignupForm({ role }: Props) {
       setLoading(false);
       router.push("/verify");
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return toast.error(error.response.data.message);
-      }
-      toast.error("Oops! Something went wrong. Please try again.");
+      handleApiError(error, "Oops! Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -144,24 +139,7 @@ export default function SignupForm({ role }: Props) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="********"
-                    type={showPassword ? "text" : "password"}
-                    {...field}
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
+                <PasswordInput placeholder="********" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,24 +152,7 @@ export default function SignupForm({ role }: Props) {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="********"
-                    type={showConfirmPassword ? "text" : "password"}
-                    {...field}
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
+                <PasswordInput placeholder="********" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

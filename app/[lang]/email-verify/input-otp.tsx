@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/input-otp";
 import useSession from "@/hooks/useSession";
 import ApiResponse from "@/schemas/ApiRespose";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -56,9 +56,7 @@ export function InputOTPForm() {
       );
       toast.success(data.message);
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }
@@ -88,9 +86,7 @@ export function InputOTPForm() {
       router.refresh();
       window.location.href = "/refer";
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }

@@ -48,8 +48,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { AxiosError } from "axios";
 
 export function ChangePasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -71,10 +71,7 @@ export function ChangePasswordForm() {
 
       form.reset();
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return toast.error(error.response.data.message);
-      }
-      toast.error("Failed to change password. Please try again.");
+      handleApiError(error, "Failed to change password. Please try again.");
     } finally {
       setIsLoading(false);
     }

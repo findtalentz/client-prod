@@ -2,28 +2,13 @@
 import useChatSocket from "@/hooks/useChatSocket";
 import useMessages from "@/hooks/useMessages";
 import useSession from "@/hooks/useSession";
+import { getFileIcon, getFileNameFromUrl } from "@/lib/file-utils";
 import { formatDate } from "@/lib/utils";
-import FILE_ICONS from "@/schemas/FileIcons";
 import { useChatStore } from "@/store";
 import { Avatar, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { FiDownload, FiFilePlus } from "react-icons/fi";
-
-const getFileIcon = (url: string) => {
-  const extension = url.split(".").pop()?.toLowerCase() || "";
-  return FILE_ICONS[extension] || <FiFilePlus className="text-gray-500" />;
-};
-
-const getFileNameFromUrl = (url: string) => {
-  try {
-    const urlObj = new URL(url);
-    const pathname = urlObj.pathname;
-    return pathname.substring(pathname.lastIndexOf("/") + 1);
-  } catch {
-    return url.substring(url.lastIndexOf("/") + 1);
-  }
-};
+import { FiDownload } from "react-icons/fi";
 
 export default function Messages() {
   const currentChat = useChatStore((s) => s.currentChat);
@@ -112,7 +97,6 @@ export default function Messages() {
                       </div>
                     )}
 
-                    {/* Download button overlay */}
                     <a
                       href={file}
                       download={fileName}
@@ -123,7 +107,6 @@ export default function Messages() {
                       </div>
                     </a>
 
-                    {/* File name at bottom */}
                     <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent p-2">
                       <p className="text-xs text-white truncate">{fileName}</p>
                     </div>

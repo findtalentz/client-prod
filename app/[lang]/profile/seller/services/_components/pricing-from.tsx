@@ -27,8 +27,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import usePackages from "@/hooks/usePackages";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { AxiosError } from "axios";
 import { GoDotFill } from "react-icons/go";
 
 const PACKAGE_LABELS = {
@@ -103,9 +103,7 @@ export default function AddPricing({ serviceId }: Props) {
       queryClient.invalidateQueries({ queryKey: ["packages"] });
       form.reset();
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     }
   };
 

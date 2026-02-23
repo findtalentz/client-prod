@@ -1,8 +1,8 @@
 "use client";
 
 import { AppAreaChart } from "@/components/app-area-chart";
+import TimeRangeToggle from "@/components/time-range-toggle";
 import { ChartConfig } from "@/components/ui/chart";
-import { cn } from "@/lib/utils";
 import SpendReport from "@/schemas/SpendReport";
 import { Grid } from "@radix-ui/themes";
 import { useState } from "react";
@@ -21,12 +21,8 @@ interface Props {
 }
 
 const SpendChart = ({ data }: Props) => {
-  const [currentTask, setCurrentTask] = useState<"month" | "year">("month");
+  const [currentTask, setCurrentTask] = useState("month");
 
-  const tasks: Array<{ id: number; label: string; value: "month" | "year" }> = [
-    { id: 1, label: "This Month", value: "month" },
-    { id: 2, label: "This Year", value: "year" },
-  ];
   return (
     <div className="rounded-3xl border shadow py-5">
       <div>
@@ -52,20 +48,7 @@ const SpendChart = ({ data }: Props) => {
             </p>
           </div>
           <div className="flex items-center justify-end border-l">
-            <div className="flex items-center border rounded-full p-[2px] w-fit">
-              {tasks.map((task) => (
-                <button
-                  key={task.id}
-                  onClick={() => setCurrentTask(task.value)}
-                  className={cn(
-                    "text-[10px] rounded-full py-1.5 px-3 cursor-pointer",
-                    task.value === currentTask && "bg-primary text-white"
-                  )}
-                >
-                  {task.label}
-                </button>
-              ))}
-            </div>
+            <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
           </div>
         </Grid>
         <AppAreaChart

@@ -16,8 +16,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
-import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -58,9 +58,7 @@ function VerifyEmail() {
       localStorage.setItem("vCode", data.data.toString());
       router.push("/forgot/new-password");
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        return toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }
@@ -118,9 +116,7 @@ function VerifyEmail() {
                 toast.success("Resend code");
                 setResending(false);
               } catch (error) {
-                if (error instanceof AxiosError && error.response) {
-                  return toast.error(error.response.data.message);
-                }
+                handleApiError(error);
               } finally {
                 setResending(false);
               }

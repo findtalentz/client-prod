@@ -16,7 +16,6 @@ import apiClient from "@/services/api-client";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Flex, Grid } from "@radix-ui/themes";
 import MDEditor from "@uiw/react-md-editor";
-import { AxiosError } from "axios";
 import Joi from "joi";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -24,6 +23,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
+import { handleApiError } from "@/lib/handle-api-error";
 import rehypeSanitize from "rehype-sanitize";
 
 // Joi validation schema
@@ -123,9 +123,7 @@ export default function ProfileForm() {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       router.refresh();
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     }
   }
 

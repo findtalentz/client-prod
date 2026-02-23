@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { queryClient } from "../../query-client-provider";
@@ -23,9 +23,7 @@ function MarkAllAsRead({ unreadCount }: Props) {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       router.refresh();
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     } finally {
       setLoading(false);
     }

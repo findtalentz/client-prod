@@ -26,9 +26,9 @@ import { queryClient } from "@/app/[lang]/query-client-provider";
 import { storage } from "@/firebase";
 import useSession from "@/hooks/useSession";
 import Service from "@/schemas/Service";
+import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
 import MDEditor from "@uiw/react-md-editor";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import rehypeSanitize from "rehype-sanitize";
 
@@ -229,9 +229,7 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
         router.push("/profile/seller/services/");
       }
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-      }
+      handleApiError(error);
     }
   };
 
