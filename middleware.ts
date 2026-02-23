@@ -84,7 +84,7 @@ export async function middleware(req: NextRequest) {
     if (!sessionData) {
       const isProtectedPath = pathMatches(pathWithoutLocale, [
         /^\/dashboard/,
-        /^\/verify/,
+        /^\/email-verify/,
         /^\/refer/,
         /^\/deposit-success/,
         /^\/profile/,

@@ -82,7 +82,7 @@ export default function SignupForm({ role }: Props) {
       });
       form.reset();
       setLoading(false);
-      router.push("/verify");
+      router.push("/email-verify");
     } catch (error) {
       handleApiError(error, "Oops! Something went wrong. Please try again.");
     } finally {
