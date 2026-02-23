@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 export type Session = {
   _id: string;
-  role: "SELLER" | "CLIENT" | null;
+  role: "SELLER" | "CLIENT" | "ADMIN" | null;
   emailStatus: "UNVERIFIED" | "VERIFIED";
   identityStatus: "UNVERIFIED" | "VERIFIED" | "PENDING";
   exp?: number;

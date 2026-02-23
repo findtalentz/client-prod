@@ -6,7 +6,7 @@ export default interface User {
   skills: [string];
   balance: number;
   languages: [string];
-  role: "SELLER" | "CLIENT";
+  role: "SELLER" | "CLIENT" | "ADMIN";
   image: string;
   phone?: string;
   totalEarning: number;

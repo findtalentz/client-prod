@@ -29,6 +29,7 @@ export function NotificationDialog() {
   const urlMap: Record<Role, string> = {
     CLIENT: "/dashboard/client/notifications",
     SELLER: "/dashboard/seller/notifications",
+    ADMIN: "/dashboard/admin",
   };
 
   useEffect(() => {
