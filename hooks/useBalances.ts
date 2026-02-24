@@ -1,18 +1,9 @@
-import ApiResponse from "@/schemas/ApiRespose";
 import Balance from "@/schemas/Balance";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
 
-const useBalances = () => {
-  return useQuery<ApiResponse<Balance[]>, Error>({
-    queryKey: ["balances"],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<Balance[]>>("/balances")
-        .then((res) => res.data),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-};
+const useBalances = createQuery<Balance[]>({
+  queryKey: ["balances"],
+  url: "/balances",
+});
 
 export default useBalances;

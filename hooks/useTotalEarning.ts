@@ -1,14 +1,8 @@
-import ApiResponse from "@/schemas/ApiRespose";
-import { useQuery } from "@tanstack/react-query";
-import apiClient from "../services/api-client";
+import { createQuery } from "@/lib/create-query";
 
-const useTotalEarning = () =>
-  useQuery<ApiResponse<number>>({
-    queryKey: ["total_earning"],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<number>>("/withdraws/earning")
-        .then((res) => res.data),
-  });
+const useTotalEarning = createQuery<number>({
+  queryKey: ["total_earning"],
+  url: "/withdraws/earning",
+});
 
 export default useTotalEarning;

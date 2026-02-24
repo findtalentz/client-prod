@@ -1,18 +1,9 @@
-import ApiResponse from "@/schemas/ApiRespose";
 import Application from "@/schemas/Application";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
 
-const useSellerApplication = (jobId: string) => {
-  return useQuery<ApiResponse<Application>, Error>({
-    queryKey: ["seller_application", jobId],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<Application>>(`/applications/seller/${jobId}`)
-        .then((res) => res.data),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-};
+const useSellerApplication = createQuery<Application, string>({
+  queryKey: (jobId) => ["seller_application", jobId],
+  url: (jobId) => `/applications/seller/${jobId}`,
+});
 
 export default useSellerApplication;

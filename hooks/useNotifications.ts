@@ -1,18 +1,11 @@
-import ApiResponse from "@/schemas/ApiRespose";
 import Notification from "@/schemas/Notification";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
+import { CACHE } from "@/lib/constants";
 
-const useNotifications = () => {
-  return useQuery<ApiResponse<Notification[]>, Error>({
-    queryKey: ["notifications"],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<Notification[]>>("/notifications")
-        .then((res) => res.data),
-    staleTime: 30 * 1000,
-    retry: 1,
-  });
-};
+const useNotifications = createQuery<Notification[]>({
+  queryKey: ["notifications"],
+  url: "/notifications",
+  staleTime: CACHE.REALTIME,
+});
 
 export default useNotifications;

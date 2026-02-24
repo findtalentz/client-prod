@@ -1,18 +1,9 @@
-import ApiResponse from "@/schemas/ApiRespose";
 import Service from "@/schemas/Service";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
 
-const useService = (serviceId: string) => {
-  return useQuery<ApiResponse<Service>, Error>({
-    queryKey: ["service", serviceId],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<Service>>(`/services/${serviceId}`)
-        .then((res) => res.data),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-};
+const useService = createQuery<Service, string>({
+  queryKey: (serviceId) => ["service", serviceId],
+  url: (serviceId) => `/services/${serviceId}`,
+});
 
 export default useService;

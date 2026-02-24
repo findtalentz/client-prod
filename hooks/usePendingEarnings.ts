@@ -1,14 +1,8 @@
-import ApiResponse from "@/schemas/ApiRespose";
-import { useQuery } from "@tanstack/react-query";
-import apiClient from "../services/api-client";
+import { createQuery } from "@/lib/create-query";
 
-const usePendingEarning = () =>
-  useQuery<ApiResponse<number>>({
-    queryKey: ["pending_earning"],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<number>>("/withdraws/earning/pending")
-        .then((res) => res.data),
-  });
+const usePendingEarning = createQuery<number>({
+  queryKey: ["pending_earning"],
+  url: "/withdraws/earning/pending",
+});
 
 export default usePendingEarning;

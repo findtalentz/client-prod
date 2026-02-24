@@ -1,18 +1,11 @@
-import ApiResponse from "@/schemas/ApiRespose";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
+import { CACHE } from "@/lib/constants";
 
-const useCompletedJobCount = (sellerId: string) => {
-  return useQuery<ApiResponse<number>, Error>({
-    queryKey: ["completedjobs", sellerId],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<number>>("jobs/count", {
-          params: { sellerId, status: "COMPLETED" },
-        })
-        .then((res) => res.data),
-    staleTime: 60 * 1000,
-  });
-};
+const useCompletedJobCount = createQuery<number, string>({
+  queryKey: (sellerId) => ["completedjobs", sellerId],
+  url: "jobs/count",
+  params: (sellerId) => ({ sellerId, status: "COMPLETED" }),
+  staleTime: CACHE.FREQUENT,
+});
 
 export default useCompletedJobCount;

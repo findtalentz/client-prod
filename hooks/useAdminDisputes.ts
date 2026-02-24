@@ -1,18 +1,9 @@
-import ApiResponse from "@/schemas/ApiRespose";
 import Dispute from "@/schemas/Dispute";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
 
-const useAdminDisputes = () => {
-  return useQuery<ApiResponse<Dispute[]>, Error>({
-    queryKey: ["admin-disputes"],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<Dispute[]>>("/disputes")
-        .then((res) => res.data),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-};
+const useAdminDisputes = createQuery<Dispute[]>({
+  queryKey: ["admin-disputes"],
+  url: "/disputes",
+});
 
 export default useAdminDisputes;

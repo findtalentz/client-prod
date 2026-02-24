@@ -1,18 +1,9 @@
-import ApiResponse from "@/schemas/ApiRespose";
 import Comment from "@/schemas/Comment";
-import apiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { createQuery } from "@/lib/create-query";
 
-const useComments = (job: string) => {
-  return useQuery<ApiResponse<Comment[]>, Error>({
-    queryKey: ["comments", job],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<Comment[]>>(`/comments/job/${job}`)
-        .then((res) => res.data),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-};
+const useComments = createQuery<Comment[], string>({
+  queryKey: (job) => ["comments", job],
+  url: (job) => `/comments/job/${job}`,
+});
 
 export default useComments;
