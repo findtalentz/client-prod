@@ -35,19 +35,11 @@ import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 import * as z from "zod";
 import usePaymentMethods from "@/hooks/usePaymentMethods";
+import ConnectBankButton from "./connect-bank-button";
 
 // Schema definitions
 const baseSchema = z.object({
   methodType: z.enum(["bank", "paypal"]),
-});
-
-const bankAccountSchema = baseSchema.extend({
-  methodType: z.literal("bank"),
-  accountHolderName: z.string().min(2, "Name must be at least 2 characters"),
-  accountNumber: z.string().min(5, "Account number must be at least 5 digits"),
-  bankName: z.string().min(2, "Bank name must be at least 2 characters"),
-  routingNumber: z.string().min(5, "Routing number must be at least 5 digits"),
-  accountType: z.enum(["checking", "savings"]).default("checking"),
 });
 
 const paypalSchema = baseSchema.extend({
@@ -55,8 +47,12 @@ const paypalSchema = baseSchema.extend({
   email: z.string().email("Please enter a valid email address"),
 });
 
+const bankStubSchema = baseSchema.extend({
+  methodType: z.literal("bank"),
+});
+
 const formSchema = z.discriminatedUnion("methodType", [
-  bankAccountSchema,
+  bankStubSchema,
   paypalSchema,
 ]);
 
@@ -79,11 +75,6 @@ export function AddPaymentMethodDialog({
     resolver: zodResolver(formSchema),
     defaultValues: {
       methodType: "bank",
-      accountHolderName: "",
-      accountNumber: "",
-      bankName: "",
-      routingNumber: "",
-      accountType: "checking",
     },
   });
 
@@ -95,29 +86,14 @@ export function AddPaymentMethodDialog({
   }
 
   const onSubmit = async (values: FormValues) => {
+    if (values.methodType === "bank") return;
+
     setIsSubmitting(true);
     try {
-      const endpoint =
-        values.methodType === "bank"
-          ? "/payment-methods/bank-accounts"
-          : "/payment-methods/paypal-accounts";
-
-      const body =
-        values.methodType === "bank"
-          ? {
-              accountHolderName: values.accountHolderName,
-              accountNumber: values.accountNumber,
-              bankName: values.bankName,
-              routingNumber: values.routingNumber,
-              accountType: values.accountType,
-              methodType: "bank",
-            }
-          : {
-              email: values.email,
-              methodType: "paypal",
-            };
-
-      await apiClient.post(endpoint, body);
+      await apiClient.post("/payment-methods/paypal-accounts", {
+        email: values.email,
+        methodType: "paypal",
+      });
       toast.success("Payment method added successfully");
       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
 
@@ -190,105 +166,9 @@ export function AddPaymentMethodDialog({
             />
 
             {selectedMethod === "bank" ? (
-              <>
-                <FormField
-                  control={form.control}
-                  name="accountHolderName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Account Holder Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="John Doe"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="accountNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Account Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="123456789"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="bankName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bank Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Example Bank"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="routingNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Routing Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="123456789"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="accountType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Account Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        disabled={isSubmitting}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select account type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="checking">Checking</SelectItem>
-                          <SelectItem value="savings">Savings</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
+              <div className="py-4">
+                <ConnectBankButton />
+              </div>
             ) : (
               <FormField
                 control={form.control}
@@ -309,23 +189,25 @@ export function AddPaymentMethodDialog({
               />
             )}
 
-            <div className="flex justify-end gap-2 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <BeatLoader size={8} color="#ffffff" />
-                ) : (
-                  "Save"
-                )}
-              </Button>
-            </div>
+            {selectedMethod !== "bank" && (
+              <div className="flex justify-end gap-2 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <BeatLoader size={8} color="#ffffff" />
+                  ) : (
+                    "Save"
+                  )}
+                </Button>
+              </div>
+            )}
           </form>
         </Form>
       </DialogContent>
