@@ -22,7 +22,6 @@ import {
 import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -51,7 +50,6 @@ interface Props {
 
 export default function SignupForm({ role }: Props) {
   const [isLoading, setLoading] = useState(false);
-  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -82,7 +80,7 @@ export default function SignupForm({ role }: Props) {
       });
       form.reset();
       setLoading(false);
-      router.push("/email-verify");
+      window.location.href = "/email-verify";
     } catch (error) {
       handleApiError(error, "Oops! Something went wrong. Please try again.");
     } finally {
