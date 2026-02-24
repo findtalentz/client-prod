@@ -5,7 +5,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { cn } from "@/lib/utils";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 export interface ChartData {
   [key: string]: string | number;
@@ -27,26 +28,39 @@ interface Props {
 
 export function AppAreaChart({ data, config, xKey, className }: Props) {
   return (
-    <ChartContainer config={config} className={className ?? "h-[300px] w-full"}>
+    <ChartContainer
+      config={config}
+      className={cn("aspect-auto h-[200px] sm:h-[250px] lg:h-[300px] w-full", className)}
+    >
       <AreaChart
         accessibilityLayer
         data={data}
-        margin={{ left: 12, right: 12 }}
+        margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
       >
-        <CartesianGrid vertical={false} />
+        <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <XAxis
           dataKey={xKey}
           tickLine={false}
           axisLine={false}
           tickMargin={8}
           tickFormatter={(value) => String(value).slice(0, 3)}
+          fontSize={12}
+        />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={4}
+          fontSize={12}
+          width={50}
+          tickFormatter={(value) =>
+            value >= 1000 ? `${(value / 1000).toFixed(0)}k` : String(value)
+          }
         />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="dot" />}
         />
 
-        {/* Define gradients for each series */}
         <defs>
           {Object.keys(config).map((key) => (
             <linearGradient
@@ -65,18 +79,17 @@ export function AppAreaChart({ data, config, xKey, className }: Props) {
               <stop
                 offset="95%"
                 stopColor={config[key].color}
-                stopOpacity={0.1}
+                stopOpacity={0.05}
               />
             </linearGradient>
           ))}
         </defs>
 
-        {/* Render chart areas with gradients */}
         {Object.keys(config).map((key) => (
           <Area
             key={key}
             dataKey={key}
-            type="natural"
+            type="monotone"
             stroke={config[key].color}
             fill={`url(#gradient-${key})`}
             strokeWidth={2}

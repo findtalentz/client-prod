@@ -4,7 +4,6 @@ import ActiveJobReport from "@/schemas/ActiveJobReport";
 import ApiResponse from "@/schemas/ApiRespose";
 import SpendReport from "@/schemas/SpendReport";
 import apiClient from "@/services/api-client";
-import { Grid } from "@radix-ui/themes";
 import Link from "next/link";
 import ActiveJobs from "./_components/active-jobs";
 import NewApplications from "./_components/new-applications";
@@ -21,7 +20,7 @@ async function BuyerDashboard() {
   ]);
 
   return (
-    <div className="md:p-4 space-y-6">
+    <div className="p-2 sm:p-4 space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-primary">Dashboard</h2>
         <Link className={buttonVariants()} href="/dashboard/client/jobs/new">
@@ -29,20 +28,21 @@ async function BuyerDashboard() {
         </Link>
       </div>
 
-      <Grid columns={{ initial: "1", lg: "3" }} gap="6">
+      {/* Top row: Applications, Actions, Calendar */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <NewApplications />
         <NewActions />
         <Calendar />
-      </Grid>
-      <Grid columns={{ initial: "1", lg: "600px 1fr" }} gap="6">
+      </div>
+
+      {/* Bottom row: Active Jobs + Royalty | Spend Chart */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-6">
         <div className="space-y-6">
           <ActiveJobs data={activeJobsReport.data.data} />
           <RoyaltyProgress />
         </div>
-        <div>
-          <SpendChart data={totalSpend.data.data} />
-        </div>
-      </Grid>
+        <SpendChart data={totalSpend.data.data} />
+      </div>
     </div>
   );
 }

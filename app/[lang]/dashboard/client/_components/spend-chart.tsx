@@ -4,10 +4,7 @@ import { AppAreaChart } from "@/components/app-area-chart";
 import TimeRangeToggle from "@/components/time-range-toggle";
 import { ChartConfig } from "@/components/ui/chart";
 import SpendReport from "@/schemas/SpendReport";
-import { Grid } from "@radix-ui/themes";
 import { useState } from "react";
-
-export const description = "An area chart with gradient fill";
 
 const chartConfig = {
   spend: {
@@ -24,39 +21,43 @@ const SpendChart = ({ data }: Props) => {
   const [currentTask, setCurrentTask] = useState("month");
 
   return (
-    <div className="rounded-3xl border shadow py-5">
-      <div>
-        <Grid
-          columns={{ initial: "2", lg: "2fr 2fr 3fr 3fr" }}
-          gap={{ initial: "2", md: "1" }}
-          className="mb-15 px-3"
-        >
-          <div className="border-s ps-1">
-            <p className="text-primary !text-[12px]">Monthly Spending</p>
-            <p className="text-primary font-semibold">${data.monthlySpend}</p>
+    <div className="rounded-3xl border shadow p-4 sm:p-5 space-y-4">
+      {/* Header: Stats + Toggle */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="border-l-2 border-primary/30 pl-3">
+            <p className="text-xs text-muted-foreground">Monthly Spending</p>
+            <p className="text-sm font-semibold text-primary">
+              ${data.monthlySpend}
+            </p>
           </div>
 
-          <div className="border-s ps-1">
-            <p className="text-primary !text-[12px]">Total Spending</p>
-            <p className="text-primary font-semibold">${data.totalSpend}</p>
+          <div className="border-l-2 border-primary/30 pl-3">
+            <p className="text-xs text-muted-foreground">Total Spending</p>
+            <p className="text-sm font-semibold text-primary">
+              ${data.totalSpend}
+            </p>
           </div>
 
-          <div className="border-s ps-1">
-            <p className="text-primary !text-[12px]">Average Project Cost</p>
-            <p className="text-primary font-semibold">
+          <div className="border-l-2 border-primary/30 pl-3 col-span-2 sm:col-span-1">
+            <p className="text-xs text-muted-foreground">Avg. Project Cost</p>
+            <p className="text-sm font-semibold text-primary">
               ${data.averateProjectCost}
             </p>
           </div>
-          <div className="flex items-center justify-end border-l">
-            <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
-          </div>
-        </Grid>
-        <AppAreaChart
-          data={data.monthlySpendReport}
-          config={chartConfig}
-          xKey="month"
-        />
+        </div>
+
+        <div className="flex-shrink-0">
+          <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
+        </div>
       </div>
+
+      {/* Chart */}
+      <AppAreaChart
+        data={data.monthlySpendReport}
+        config={chartConfig}
+        xKey="month"
+      />
     </div>
   );
 };

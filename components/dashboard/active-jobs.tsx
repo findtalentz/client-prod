@@ -2,7 +2,6 @@
 import { AppPieChart } from "@/components/app-pie-chart";
 import TimeRangeToggle from "@/components/time-range-toggle";
 import ActiveJobReport from "@/schemas/ActiveJobReport";
-import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import CompletedJobs from "./completed-jobs";
 
@@ -64,11 +63,11 @@ function ActiveJobs({
       <div
         className={
           className ??
-          "shadow !p-6 !rounded-3xl !overflow-hidden border max-h-[500px]"
+          "shadow p-4 sm:p-6 rounded-3xl overflow-hidden border"
         }
       >
-        <div className="w-full flex items-center justify-between mb-3">
-          <span className="text-primary font-semibold text-[18px]">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-primary font-semibold text-lg">
             {title}
           </span>
           <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
@@ -79,21 +78,21 @@ function ActiveJobs({
           config={config}
           nameKey="category"
         />
-        <CompletedJobs className="mt-5" config={config} data={data} />
+        <CompletedJobs className="mt-4" config={config} data={data} />
       </div>
     );
   }
 
   return (
     <div
-      className={className ?? "shadow !rounded-3xl !overflow-hidden border"}
+      className={className ?? "shadow rounded-3xl overflow-hidden border"}
     >
-      <div className="w-full flex p-5 items-center justify-between">
-        <span className="text-primary font-semibold text-[18px]">{title}</span>
+      <div className="flex items-center justify-between p-4 sm:p-5">
+        <span className="text-primary font-semibold text-lg">{title}</span>
         <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
       </div>
-      <Flex align="center" justify="between" pr="2">
-        <div className="flex-2">
+      <div className="flex flex-col sm:flex-row items-center gap-4 px-4 pb-4 sm:pb-5">
+        <div className="w-full sm:w-2/5 flex-shrink-0">
           <AppPieChart
             config={config}
             chartData={activeJobData}
@@ -101,14 +100,10 @@ function ActiveJobs({
             nameKey="category"
           />
         </div>
-        <div className="flex-3">
-          <CompletedJobs
-            data={data}
-            config={config}
-            className="h-[300px] px-4 lg:px-0"
-          />
+        <div className="w-full sm:w-3/5">
+          <CompletedJobs data={data} config={config} />
         </div>
-      </Flex>
+      </div>
     </div>
   );
 }

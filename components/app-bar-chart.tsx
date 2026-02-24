@@ -11,8 +11,8 @@ import {
   BarChart,
   CartesianGrid,
   LabelList,
-  ResponsiveContainer,
   XAxis,
+  YAxis,
 } from "recharts";
 
 export interface BarChartData {
@@ -30,8 +30,6 @@ interface AppBarChartProps {
   data: BarChartData[];
   config: BarChartConfig;
   className?: string;
-  height?: number;
-  width?: string;
   showGrid?: boolean;
   showLabels?: boolean;
   barRadius?: number;
@@ -42,7 +40,7 @@ interface AppBarChartProps {
 export function AppBarChart({
   data,
   config,
-  className = "w-full h-full",
+  className,
   showGrid = true,
   showLabels = true,
   barRadius = 8,
@@ -50,48 +48,60 @@ export function AppBarChart({
   barKeys = ["desktop"],
 }: AppBarChartProps) {
   return (
-    <ChartContainer config={config} className={cn("max-h-[300px]", className)}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{
-            top: 30,
-            right: 20,
-            left: 20,
-            bottom: 20,
-          }}
-        >
-          {showGrid && <CartesianGrid vertical={false} />}
-          <XAxis
-            dataKey={xAxisKey}
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => String(value).slice(0, 3)}
-          />
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
-          {barKeys.map((key) => (
-            <Bar
-              key={key}
-              dataKey={key}
-              fill={config[key]?.color || "var(--color-primary)"}
-              radius={barRadius}
-            >
-              {showLabels && (
-                <LabelList
-                  position="top"
-                  offset={12}
-                  className="fill-foreground"
-                  fontSize={12}
-                />
-              )}
-            </Bar>
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
+    <ChartContainer
+      config={config}
+      className={cn(
+        "aspect-auto h-[200px] sm:h-[250px] lg:h-[300px] w-full",
+        className
+      )}
+    >
+      <BarChart
+        data={data}
+        margin={{
+          top: showLabels ? 30 : 10,
+          right: 10,
+          left: -10,
+          bottom: 0,
+        }}
+      >
+        {showGrid && <CartesianGrid vertical={false} strokeDasharray="3 3" />}
+        <XAxis
+          dataKey={xAxisKey}
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => String(value).slice(0, 3)}
+          fontSize={12}
+        />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={4}
+          fontSize={12}
+          width={50}
+        />
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent hideLabel />}
+        />
+        {barKeys.map((key) => (
+          <Bar
+            key={key}
+            dataKey={key}
+            fill={config[key]?.color || "var(--color-primary)"}
+            radius={barRadius}
+          >
+            {showLabels && (
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            )}
+          </Bar>
+        ))}
+      </BarChart>
     </ChartContainer>
   );
 }

@@ -20,54 +20,39 @@ function CompletedJobs({ className, data, config }: Props) {
     data.rankTwoByCategory,
     data.rankThreeByCategory,
     data.rankFourByCategory,
-  ];
+  ].filter(Boolean);
 
   return (
-    <div
-      className={cn(
-        "flex justify-between flex-col max-h-[220px] gap-6",
-        className
-      )}
-    >
-      {[0, 2].map((startIndex) => (
-        <div
-          key={startIndex}
-          className="flex-1 flex items-center justify-between"
-        >
-          {ranks.slice(startIndex, startIndex + 2).map((rank, i) => {
-            const category = rank?.category ?? "";
-            return (
-              <div
-                key={startIndex + i}
-                className="flex flex-1 items-center relative"
-              >
-                <div
-                  className="absolute h-full w-2 rounded-4xl"
+    <div className={cn("grid grid-cols-2 gap-4", className)}>
+      {ranks.map((rank, i) => {
+        const category = rank?.category ?? "";
+        return (
+          <div key={i} className="flex items-start gap-3">
+            <div
+              className="w-1.5 min-h-[40px] h-full rounded-full flex-shrink-0 mt-0.5"
+              style={{
+                backgroundColor: config[category]?.color,
+              }}
+            />
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <span className="font-medium text-primary text-xs sm:text-sm truncate">
+                {category}
+              </span>
+              <div className="flex items-baseline gap-1">
+                <span
+                  className="text-xl sm:text-2xl font-semibold"
                   style={{
-                    backgroundColor: config[category]?.color,
+                    color: config[category]?.color,
                   }}
-                />
-                <div className="flex-1 flex flex-col ps-4 gap-2">
-                  <span className="font-semibold text-primary text-sm">
-                    {category}
-                  </span>
-                  <div className="space-x-1">
-                    <span
-                      className="text-2xl font-semibold"
-                      style={{
-                        color: config[category]?.color,
-                      }}
-                    >
-                      {rank?.totalJobs ?? ""}
-                    </span>
-                    <span className="inline text-gray-500 text-sm">Jobs</span>
-                  </div>
-                </div>
+                >
+                  {rank?.totalJobs ?? 0}
+                </span>
+                <span className="text-muted-foreground text-xs">Jobs</span>
               </div>
-            );
-          })}
-        </div>
-      ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
