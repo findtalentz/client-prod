@@ -62,21 +62,16 @@ const getSessionFromToken = async (): Promise<SessionResult> => {
       token: token.value,
     };
   } catch (error: any) {
-    // Handle specific JWT errors
     if (error.code === "ERR_JWT_EXPIRED") {
       console.warn("JWT token expired");
+      try {
+        const cookieStore = await cookies();
+        cookieStore.delete("token");
+      } catch {}
     } else if (error.code === "ERR_JWT_INVALID") {
       console.warn("Invalid JWT token");
     } else {
       console.error("JWT verification error:", error.message);
-    }
-
-    // Clear invalid token
-    try {
-      const cookieStore = await cookies();
-      cookieStore.delete("token");
-    } catch (deleteError) {
-      console.error("Failed to clear invalid token:", deleteError);
     }
 
     return null;

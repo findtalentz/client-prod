@@ -1,16 +1,16 @@
-import getSession from "@/actions/get-session";
+import getSessionFromToken from "@/actions/get-session-from-token";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 async function Profile() {
-  const session = await getSession();
+  const sessionData = await getSessionFromToken();
 
-  if (!session) {
-    redirect("/login");
+  if (!sessionData) {
+    redirect("/log-in");
   }
 
-  switch (session.role) {
+  switch (sessionData.session.role) {
     case "CLIENT":
       redirect("/dashboard/client/settings");
     case "SELLER":

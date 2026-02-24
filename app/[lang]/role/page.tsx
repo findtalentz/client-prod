@@ -26,7 +26,12 @@ export default function SelectRole() {
                 const { data } = await apiClient.post<ApiResponse<string>>(
                   "/auth/set-seller"
                 );
-                Cookies.set("token", data.data);
+                Cookies.set("token", data.data, {
+                  expires: 7,
+                  secure: process.env.NODE_ENV === "production",
+                  sameSite: "strict",
+                  path: "/",
+                });
                 window.location.href = "/dashboard";
               } catch (error) {
                 if (error instanceof AxiosError) {
@@ -44,7 +49,12 @@ export default function SelectRole() {
                 const { data } = await apiClient.post<ApiResponse<string>>(
                   "/auth/set-client"
                 );
-                Cookies.set("token", data.data);
+                Cookies.set("token", data.data, {
+                  expires: 7,
+                  secure: process.env.NODE_ENV === "production",
+                  sameSite: "strict",
+                  path: "/",
+                });
                 window.location.href = "/dashboard";
               } catch (error) {
                 if (error instanceof AxiosError) {

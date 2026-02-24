@@ -1,8 +1,14 @@
+import getSessionFromToken from "@/actions/get-session-from-token";
 import Container from "@/components/ui/container";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
+  const sessionData = await getSessionFromToken();
+  if (sessionData) {
+    redirect("/dashboard");
+  }
   return (
     <Container className="md:min-h-[calc(100dvh-65px)] flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-4xl space-y-8 md:space-y-16">

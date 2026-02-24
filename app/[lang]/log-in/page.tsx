@@ -1,9 +1,15 @@
+import getSessionFromToken from "@/actions/get-session-from-token";
 import OauthButtons from "@/components/oauth-uttons";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import LoginForm from "./login-form";
 
-export default function Login() {
+export default async function Login() {
+  const sessionData = await getSessionFromToken();
+  if (sessionData) {
+    redirect("/dashboard");
+  }
   return (
     <div className="grid w-full !max-h-[calc(100dvh-65px)] grid-cols-1 md:grid-cols-2">
       <div className="flex items-center justify-center flex-col w-full md:px-6">

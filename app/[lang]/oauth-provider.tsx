@@ -11,7 +11,12 @@ function OauthProviders({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (token) {
-      Cookies.set("token", token, { expires: 7 });
+      Cookies.set("token", token, {
+        expires: 7,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+      });
       window.location.href = "/dashboard";
     }
   }, [token, router]);
