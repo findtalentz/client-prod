@@ -58,7 +58,7 @@ function ChatInput() {
       popAudio.current?.play();
       reset();
 
-      const { data } = await apiClient.post<APIResponse>("/chat", {
+      const { data } = await apiClient.post<APIResponse>("/chatbot", {
         prompt,
         conversationId: userId,
       });

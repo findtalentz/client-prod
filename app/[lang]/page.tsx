@@ -23,7 +23,7 @@ interface Props {
 export default async function Home({ params }: Props) {
   const { lang } = await params;
   const { data: categoryData } = await apiClient.get<ApiResponse<Category[]>>(
-    "/categorys/job"
+    "/categories/job"
   );
   return (
     <div className="bg-[#e7e7e7]">
