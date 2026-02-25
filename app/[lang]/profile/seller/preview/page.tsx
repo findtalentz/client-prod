@@ -15,19 +15,13 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export default async function PreviewPage() {
-  const user = await getSession();
-
-  const { data: educations } = await apiClient.get<ApiResponse<Education[]>>(
-    "/educations"
-  );
-
-  const { data: portfolios } = await apiClient.get<ApiResponse<Portfolio[]>>(
-    "/portfolios"
-  );
-
-  const { data: services } = await apiClient.get<ApiResponse<Service[]>>(
-    "/services"
-  );
+  const [user, { data: educations }, { data: portfolios }, { data: services }] =
+    await Promise.all([
+      getSession(),
+      apiClient.get<ApiResponse<Education[]>>("/educations"),
+      apiClient.get<ApiResponse<Portfolio[]>>("/portfolios"),
+      apiClient.get<ApiResponse<Service[]>>("/services"),
+    ]);
 
   if (!user) return null;
 

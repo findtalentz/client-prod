@@ -237,8 +237,12 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" className="w-full sm:w-auto">
-                Confirm Order
+              <Button
+                type="submit"
+                className="w-full sm:w-auto"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Processing..." : "Confirm Order"}
               </Button>
             </DialogFooter>
           </form>

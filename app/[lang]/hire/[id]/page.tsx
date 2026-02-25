@@ -37,52 +37,35 @@ export default async function PreviewPage({ params: searchParams }: Props) {
     requestHeaders.get("x-real-ip") ||
     "Unknown";
 
-  await apiClient.post("/views", {
-    type: "Profile",
-    ip: ipAddress,
-    subjectId: id,
-  });
-
-  const { data: user } = await apiClient.get<ApiResponse<User>>(
-    "/users/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-  const { data: educations } = await apiClient.get<ApiResponse<Education[]>>(
-    "/educations/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-
-  const { data: portfolios } = await apiClient.get<ApiResponse<Portfolio[]>>(
-    "/portfolios/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-
-  const { data: services } = await apiClient.get<ApiResponse<Service[]>>(
-    "/services/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-
-  const { data: reviews } = await apiClient.get<ApiResponse<Review[]>>(
-    `/reviews/seller/${id}`
-  );
-
-  const session = await getSession();
+  const [
+    ,
+    { data: user },
+    { data: educations },
+    { data: portfolios },
+    { data: services },
+    { data: reviews },
+    session,
+  ] = await Promise.all([
+    apiClient.post("/views", {
+      type: "Profile",
+      ip: ipAddress,
+      subjectId: id,
+    }),
+    apiClient.get<ApiResponse<User>>("/users/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Education[]>>("/educations/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Portfolio[]>>("/portfolios/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Service[]>>("/services/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Review[]>>(`/reviews/seller/${id}`),
+    getSession(),
+  ]);
 
   return (
     <Container className="py-10">

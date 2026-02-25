@@ -15,14 +15,12 @@ interface Props {
 
 const JobDetails = async ({ params }: Props) => {
   const { id } = await params;
-  const { data: job } = await apiClient.get<ApiResponse<Job>>(`/jobs/${id}`);
-  const { data: review } = await apiClient.get<ApiResponse<Review>>(
-    `/reviews/job/${id}`
-  );
-
-  const { data: comments } = await apiClient.get<ApiResponse<CommentType[]>>(
-    `/comments/job/${job.data._id}`
-  );
+  const [{ data: job }, { data: review }, { data: comments }] =
+    await Promise.all([
+      apiClient.get<ApiResponse<Job>>(`/jobs/${id}`),
+      apiClient.get<ApiResponse<Review>>(`/reviews/job/${id}`),
+      apiClient.get<ApiResponse<CommentType[]>>(`/comments/job/${id}`),
+    ]);
 
   return (
     <Grid columns={{ initial: "1", md: "3fr 2fr" }} gap="6">

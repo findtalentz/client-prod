@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 
 export default function SearchBox() {
@@ -9,19 +9,27 @@ export default function SearchBox() {
   const [searchText, setSearchText] = useState(
     searchParams.get("search") || ""
   );
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Update URL instantly when searchText changes
+  // Debounce URL update by 400ms
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    if (searchText) {
-      params.set("search", searchText);
-    } else {
-      params.delete("search");
-    }
+    debounceRef.current = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    const query = params.toString();
-    router.replace("?" + query);
+      if (searchText) {
+        params.set("search", searchText);
+      } else {
+        params.delete("search");
+      }
+
+      router.replace("?" + params.toString());
+    }, 400);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
   }, [searchText, router, searchParams]);
 
   return (

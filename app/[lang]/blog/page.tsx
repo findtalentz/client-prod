@@ -26,22 +26,15 @@ async function BlogsPage({ searchParams, params }: Props) {
   const paramsSearch = await searchParams;
   const langParams = await params;
   const search = paramsSearch.search ? paramsSearch.search : null;
-  const { data } = await apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
-    params: {
-      pageSize: 6,
-      search,
-    },
-  });
-  const { data: trending } = await apiClient.get<ApiResponse<BlogSchema[]>>(
-    "/blog",
-    {
-      params: {
-        pageSize: 4,
-      },
-    }
-  );
-
-  const dict = await getDictionary(langParams.lang);
+  const [{ data }, { data: trending }, dict] = await Promise.all([
+    apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
+      params: { pageSize: 6, search },
+    }),
+    apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
+      params: { pageSize: 4 },
+    }),
+    getDictionary(langParams.lang),
+  ]);
 
   return (
     <>

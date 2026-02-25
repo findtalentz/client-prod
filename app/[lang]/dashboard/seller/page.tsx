@@ -14,23 +14,13 @@ import ViewsChart from "./_components/views-chart";
 export const dynamic = "force-dynamic";
 
 async function SellerDashboard() {
-  const { data } = await apiClient.get<ApiResponse<ActiveJobReport>>(
-    "/seller/active-jobs-report"
-  );
-
-  const response = await apiClient.get<ApiResponse<SalseReport>>(
-    "/seller/monthly-earnings"
-  );
-
-  const { data: chartData } = await apiClient.get<ApiResponse<LineChartData[]>>(
-    "/views/data",
-    {
-      params: {
-        type: "Profile",
-        numberOfMonth: 6,
-      },
-    }
-  );
+  const [{ data }, response, { data: chartData }] = await Promise.all([
+    apiClient.get<ApiResponse<ActiveJobReport>>("/seller/active-jobs-report"),
+    apiClient.get<ApiResponse<SalseReport>>("/seller/monthly-earnings"),
+    apiClient.get<ApiResponse<LineChartData[]>>("/views/data", {
+      params: { type: "Profile", numberOfMonth: 6 },
+    }),
+  ]);
 
   return (
     <div>

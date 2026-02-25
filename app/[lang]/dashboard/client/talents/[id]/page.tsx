@@ -27,44 +27,30 @@ interface Props {
 
 const TalentDetails = async ({ params }: Props) => {
   const { id } = await params;
-  const { data } = await apiClient.get<ApiResponse<User>>(`/users/${id}`);
-  const user = data.data;
-  const { data: completedjobs } = await apiClient.get<ApiResponse<number>>(
-    "jobs/count",
-    {
+  const [
+    { data },
+    { data: completedjobs },
+    { data: educations },
+    { data: portfolios },
+    { data: services },
+    { data: reviews },
+  ] = await Promise.all([
+    apiClient.get<ApiResponse<User>>(`/users/${id}`),
+    apiClient.get<ApiResponse<number>>("/jobs/count", {
       params: { sellerId: id, status: "COMPLETED" },
-    }
-  );
-
-  const { data: educations } = await apiClient.get<ApiResponse<Education[]>>(
-    "/educations/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-
-  const { data: portfolios } = await apiClient.get<ApiResponse<Portfolio[]>>(
-    "/portfolios/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-
-  const { data: services } = await apiClient.get<ApiResponse<Service[]>>(
-    "/services/public",
-    {
-      params: {
-        userId: id,
-      },
-    }
-  );
-  const { data: reviews } = await apiClient.get<ApiResponse<Review[]>>(
-    `/reviews/seller/${id}`
-  );
+    }),
+    apiClient.get<ApiResponse<Education[]>>("/educations/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Portfolio[]>>("/portfolios/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Service[]>>("/services/public", {
+      params: { userId: id },
+    }),
+    apiClient.get<ApiResponse<Review[]>>(`/reviews/seller/${id}`),
+  ]);
+  const user = data.data;
 
   return (
     <Grid columns={{ initial: "1", md: "1fr 440px" }} gap="6">
