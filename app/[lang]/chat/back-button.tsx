@@ -1,14 +1,13 @@
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import React from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
 
 function BackButton() {
   return (
     <Link
       href="/"
-      className="absolute cursor-pointer top-5 left-5 w-8 h-8 rounded-full bg-white flex items-center justify-center"
+      className="absolute top-4 left-4 z-20 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center transition-all duration-200 group"
     >
-      <FaArrowLeftLong />
+      <ArrowLeft className="w-4 h-4 text-white/70 group-hover:text-white transition-colors" />
     </Link>
   );
 }

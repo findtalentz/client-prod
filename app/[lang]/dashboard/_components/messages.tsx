@@ -3,9 +3,11 @@ import useChatSocket from "@/hooks/useChatSocket";
 import useMessages from "@/hooks/useMessages";
 import useSession from "@/hooks/useSession";
 import { getFileIcon, getFileNameFromUrl } from "@/lib/file-utils";
+import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
 import { useChatStore } from "@/store";
-import { Avatar, Flex } from "@radix-ui/themes";
+import { Avatar } from "@radix-ui/themes";
+import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { FiDownload } from "react-icons/fi";
@@ -16,6 +18,7 @@ export default function Messages() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: messages } = useMessages(currentChat?._id as string);
   useChatSocket(currentChat?._id as string);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -26,98 +29,139 @@ export default function Messages() {
 
   if (!currentChat)
     return (
-      <Flex align="center" justify="center">
-        <p className="text-2xl text-center text-gray-300">
-          Please Select A Conversation.
+      <div className="flex-1 flex flex-col items-center justify-center bg-gray-50/50">
+        <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+          <MessageCircle className="w-9 h-9 text-gray-300" />
+        </div>
+        <p className="text-base font-medium text-gray-400">
+          Select a conversation
         </p>
-      </Flex>
+        <p className="text-sm text-gray-300 mt-1">
+          Choose a chat from the sidebar to start messaging
+        </p>
+      </div>
     );
 
-  if (!messages) return <Flex className="bg-gray-100 overflow-y-auto p-4" />;
+  if (!messages)
+    return <div className="flex-1 bg-gray-50/30" />;
+
+  const userId = session?.data._id;
 
   return (
-    <Flex
-      align="start"
-      direction="column"
-      className="bg-gray-100 overflow-y-auto p-4"
-      gap="8"
-    >
-      {messages.data.map((message) => (
-        <Flex
-          className={message.sender._id === session?.data._id ? "self-end" : ""}
-          gap="2"
-          key={message._id}
-        >
-          <Avatar
-            src={message.sender.image}
-            fallback={message.sender.firstName}
-            radius="full"
-            size="2"
-          />
-          <div className="flex-1">
-            <Flex align="center" gap="2">
-              <p className="text-sm font-medium text-gray-600">
-                {message.sender.firstName + " " + message.sender.lastName}
-              </p>
-              <p className="text-[14px] text-gray-500">
-                {formatDate(message.createdAt)}
-              </p>
-            </Flex>
-            {message.message && (
-              <p className="text-sm text-gray-600 mt-3">{message.message}</p>
-            )}
-            <div className="flex flex-wrap gap-4 mt-3">
-              {message.files.map((file) => {
-                const fileName = getFileNameFromUrl(file);
-                const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(fileName);
+    <div className="flex-1 overflow-y-auto bg-gray-50/30 px-5 py-4">
+      <div className="flex flex-col gap-3">
+        {messages.data.map((message, index) => {
+          const isOwn = message.sender._id === userId;
+          const prevMessage = messages.data[index - 1];
+          const isSameSender = prevMessage?.sender._id === message.sender._id;
+          const showAvatar = !isSameSender;
 
-                return (
+          return (
+            <div
+              key={message._id}
+              className={cn(
+                "flex gap-2.5 max-w-[75%]",
+                isOwn ? "ml-auto flex-row-reverse" : "",
+                showAvatar ? "mt-2" : "mt-0"
+              )}
+            >
+              {/* Avatar */}
+              {!isOwn && (
+                <div className="shrink-0 w-8 pt-1">
+                  {showAvatar ? (
+                    <Avatar
+                      src={message.sender.image}
+                      fallback={message.sender.firstName.charAt(0)}
+                      radius="full"
+                      size="2"
+                    />
+                  ) : null}
+                </div>
+              )}
+
+              {/* Message bubble */}
+              <div className={cn("flex flex-col", isOwn ? "items-end" : "items-start")}>
+                {showAvatar && !isOwn && (
+                  <span className="text-xs font-medium text-gray-500 mb-1 ml-1">
+                    {message.sender.firstName}
+                  </span>
+                )}
+                {message.message && (
                   <div
-                    key={file}
-                    className="relative group border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    {isImage ? (
-                      <div className="relative w-40 h-32">
-                        <Image
-                          src={file}
-                          fill
-                          className="object-cover"
-                          alt={fileName}
-                          sizes="160px"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-40 h-32 flex flex-col items-center justify-center p-4">
-                        <div className="text-3xl mb-2">
-                          {getFileIcon(fileName)}
-                        </div>
-                        <p className="text-xs text-center text-gray-600 truncate w-full">
-                          {fileName}
-                        </p>
-                      </div>
+                    className={cn(
+                      "px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed break-words",
+                      isOwn
+                        ? "bg-primary text-white rounded-br-md"
+                        : "bg-white text-gray-800 border border-gray-100 shadow-sm rounded-bl-md"
                     )}
-
-                    <a
-                      href={file}
-                      download={fileName}
-                      className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
-                    >
-                      <div className="bg-white p-2 rounded-full shadow-lg">
-                        <FiDownload className="text-gray-700" />
-                      </div>
-                    </a>
-
-                    <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent p-2">
-                      <p className="text-xs text-white truncate">{fileName}</p>
-                    </div>
+                  >
+                    {message.message}
                   </div>
-                );
-              })}
+                )}
+
+                {/* File attachments */}
+                {message.files.length > 0 && (
+                  <div className={cn("flex flex-wrap gap-2 mt-1", message.message && "mt-1.5")}>
+                    {message.files.map((file) => {
+                      const fileName = getFileNameFromUrl(file);
+                      const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(fileName);
+
+                      return (
+                        <div
+                          key={file}
+                          className="relative group rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                          {isImage ? (
+                            <div className="relative w-48 h-36">
+                              <Image
+                                src={file}
+                                fill
+                                className="object-cover"
+                                alt={fileName}
+                                sizes="192px"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-48 h-28 flex flex-col items-center justify-center p-4 bg-gray-50">
+                              <div className="text-2xl mb-1.5">
+                                {getFileIcon(fileName)}
+                              </div>
+                              <p className="text-xs text-center text-gray-600 truncate w-full px-2">
+                                {fileName}
+                              </p>
+                            </div>
+                          )}
+
+                          <a
+                            href={file}
+                            download={fileName}
+                            className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
+                          >
+                            <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-lg">
+                              <FiDownload className="text-gray-700 w-4 h-4" />
+                            </div>
+                          </a>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Timestamp */}
+                <span
+                  className={cn(
+                    "text-[10px] text-gray-400 mt-1 px-1",
+                    isOwn ? "text-right" : "text-left"
+                  )}
+                >
+                  {formatDate(message.createdAt)}
+                </span>
+              </div>
             </div>
-          </div>
-        </Flex>
-      ))}
-      <div ref={messagesEndRef}></div>
-    </Flex>
+          );
+        })}
+        <div ref={messagesEndRef} />
+      </div>
+    </div>
   );
 }

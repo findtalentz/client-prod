@@ -6,7 +6,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import { LuSendHorizontal } from "react-icons/lu";
+import { ArrowUp, Loader2 } from "lucide-react";
 
 import useMessageStore from "@/store";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,7 @@ const FormSchema = Joi.object({
 });
 
 function ChatInput() {
-  const { addMessage, userId, setBotTyping, setShowMessages } =
+  const { addMessage, userId, setBotTyping, setShowMessages, isBotTyping } =
     useMessageStore();
 
   const notificationAudio = useRef<HTMLAudioElement | null>(null);
@@ -87,12 +87,12 @@ function ChatInput() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       onKeyDown={onKeyDown}
-      className="flex items-center justify-between gap-4 w-full md:px-20 px-4 mt-6"
+      className="flex items-center gap-3 w-full md:px-16 px-4 mt-2"
     >
       <div
         className={cn(
-          "flex-1 border-primary-light bg-white/10 rounded-full h-[45px] flex items-center justify-center px-2",
-          errors && errors.prompt && "border-red-500"
+          "flex-1 flex items-center bg-white/[0.08] border border-white/[0.1] rounded-full h-12 px-4 transition-all duration-200 focus-within:border-primary-light/40 focus-within:bg-white/[0.12]",
+          errors?.prompt && "border-red-500/50"
         )}
       >
         <input
@@ -102,15 +102,25 @@ function ChatInput() {
           })}
           type="text"
           placeholder="Ask me anything..."
-          className="text-white flex-1 h-full border-none focus:outline-none px-2"
+          className="flex-1 h-full bg-transparent text-sm text-white placeholder:text-white/30 border-none focus:outline-none"
+          disabled={isBotTyping}
         />
       </div>
       <button
         type="submit"
-        disabled={!isValid}
-        className="bg-primary-dark text-white w-[45px] h-[45px] flex items-center justify-center rounded-full"
+        disabled={!isValid || isBotTyping}
+        className={cn(
+          "w-10 h-10 shrink-0 flex items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+          isValid && !isBotTyping
+            ? "bg-primary-light text-[#0a2e25] hover:bg-primary-light/90 shadow-lg shadow-primary-light/20"
+            : "bg-white/10 text-white/30"
+        )}
       >
-        <LuSendHorizontal className="md:text-xl" />
+        {isBotTyping ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <ArrowUp className="w-4 h-4" />
+        )}
       </button>
     </form>
   );
