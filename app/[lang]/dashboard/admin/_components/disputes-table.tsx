@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAdminDisputes from "@/hooks/useAdminDisputes";
+import TableLoadingRows from "@/components/skeletons/table-loading-rows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -109,11 +110,7 @@ export default function DisputesTable() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableLoadingRows columns={7} />
             ) : disputes.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8">

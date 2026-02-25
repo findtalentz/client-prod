@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAdminWithdrawals from "@/hooks/useAdminWithdrawals";
+import TableLoadingRows from "@/components/skeletons/table-loading-rows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -122,11 +123,7 @@ export default function WithdrawalsTable() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableLoadingRows columns={6} />
             ) : withdrawals.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8">

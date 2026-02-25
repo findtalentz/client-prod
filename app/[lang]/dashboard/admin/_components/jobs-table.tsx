@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAdminJobs from "@/hooks/useAdminJobs";
+import TableLoadingRows from "@/components/skeletons/table-loading-rows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,11 +124,7 @@ export default function JobsTable() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={8} className="text-center py-8">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableLoadingRows columns={8} />
             ) : jobs.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-8">

@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import EarningsSkeleton from "@/components/skeletons/earnings-skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -38,8 +39,7 @@ export default function EarningsPage() {
   const { data: accountStatus } = useBankAccountStatus();
   const { data: paymentMethods } = usePaymentMethods();
 
-  if (isLoading)
-    return <div className="container mx-auto py-8">Loading...</div>;
+  if (isLoading) return <EarningsSkeleton />;
 
   if (error)
     return (

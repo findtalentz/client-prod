@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import useAdminTransactions from "@/hooks/useAdminTransactions";
+import TableLoadingRows from "@/components/skeletons/table-loading-rows";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -81,11 +82,7 @@ export default function TransactionsTable() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableLoadingRows columns={7} />
             ) : transactions.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8">

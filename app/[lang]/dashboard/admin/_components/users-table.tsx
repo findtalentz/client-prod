@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import useAdminUsers from "@/hooks/useAdminUsers";
+import TableLoadingRows from "@/components/skeletons/table-loading-rows";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -82,11 +83,7 @@ export default function UsersTable() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableLoadingRows columns={7} />
             ) : users.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8">
