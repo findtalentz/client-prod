@@ -15,8 +15,6 @@ async function Profile() {
       redirect("/dashboard/client");
     case "SELLER":
       redirect("/dashboard/seller");
-    case "ADMIN":
-      redirect("/dashboard/admin");
     default:
       return <div>Unauthorized access</div>;
   }

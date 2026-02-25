@@ -161,25 +161,6 @@ export async function middleware(req: NextRequest) {
       }
     }
 
-    // ADMIN users accessing client/seller dashboards → redirect to admin
-    if (
-      role === "ADMIN" &&
-      (pathWithoutLocale.startsWith("/dashboard/client") ||
-        pathWithoutLocale.startsWith("/dashboard/seller"))
-    ) {
-      if (shouldRedirect(req, "/dashboard/admin")) {
-        return redirectTo(req, "/dashboard/admin");
-      }
-    }
-
-    // Non-ADMIN users accessing admin dashboard → redirect to their own
-    if (role !== "ADMIN" && pathWithoutLocale.startsWith("/dashboard/admin")) {
-      const target = role === "CLIENT" ? "/dashboard/client" : "/dashboard/seller";
-      if (shouldRedirect(req, target)) {
-        return redirectTo(req, target);
-      }
-    }
-
     // Prevent authenticated users from accessing auth pages
     if (pathMatches(pathWithoutLocale, [/^\/log-in/, /^\/sign-up/])) {
       if (shouldRedirect(req, "/dashboard")) {
