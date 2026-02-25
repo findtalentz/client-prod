@@ -5,7 +5,7 @@ function RoyaltyProgress() {
   return (
     <RoyaltyProgressShared
       metricField="totalSpend"
-      detailsHref="/dashboard/buyer/royalty-program"
+      detailsHref="/dashboard/client/royalty-program"
     />
   );
 }
