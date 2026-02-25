@@ -12,7 +12,7 @@ import Job from "@/schemas/Job";
 import { Avatar, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { useState } from "react";
-import { FaStar } from "react-icons/fa";
+
 import { GrLocation } from "react-icons/gr";
 import { Hire } from "../../../_components/hire";
 
@@ -79,20 +79,6 @@ const ApplicationCard = ({ application, job }: Props) => {
           </div>
         </Flex>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-4">
-          <div className="flex items-center gap-1 md:gap-3">
-            <Text>93%</Text>
-            <Text size="small" variant="gray">
-              Job Success
-            </Text>
-          </div>
-          <div className="flex items-center gap-1 md:gap-3">
-            <Text>4.4</Text>
-            <div className="flex items-center text-sm text-yellow-500">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <FaStar key={i} />
-              ))}
-            </div>
-          </div>
           {completedjobs && completedjobs.data > 0 && (
             <div className="flex items-center gap-1 md:gap-3">
               <Text> {completedjobs?.data} </Text>

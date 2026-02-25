@@ -15,9 +15,18 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function CompletedJob() {
-  const { data } = await apiClient<ApiResponse<Job[]>>("/jobs/seller", {
+  const { data } = await apiClient.get<ApiResponse<Job[]>>("/jobs/seller", {
     params: { status: "COMPLETED" },
   });
+
+  if (data.count <= 0)
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center text-gray-500">
+        <p className="text-lg font-medium">No completed jobs yet</p>
+        <p className="text-sm mt-1">Jobs you have completed will appear here.</p>
+      </div>
+    );
+
   return (
     <>
       <h2 className="my-5">Completed Job</h2>

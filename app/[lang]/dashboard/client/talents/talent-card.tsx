@@ -9,7 +9,7 @@ import { Talent } from "@/schemas/Talent";
 import { Avatar } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
-import { FaStar } from "react-icons/fa";
+
 import { GrLocation } from "react-icons/gr";
 
 interface Props {
@@ -66,20 +66,6 @@ export default function TalentCard({ talent }: Props) {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-          <div className="flex items-center gap-1 md:gap-3">
-            <Text>93%</Text>
-            <Text size="small" variant="gray">
-              Job Success
-            </Text>
-          </div>
-          <div className="flex items-center gap-1 md:gap-3">
-            <Text>4.4</Text>
-            <div className="flex items-center text-sm text-yellow-500">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <FaStar key={i} />
-              ))}
-            </div>
-          </div>
           {completedjobs && completedjobs.data > 0 && (
             <div className="flex items-center gap-1 md:gap-3">
               <Text> {completedjobs.data} </Text>

@@ -41,9 +41,8 @@ export default function ContactForm() {
       await apiClient.post("/contacts", data);
       form.reset();
       toast.success("Message sent successfully! 🚀");
-    } catch (error) {
+    } catch {
       toast.error("Oops! Something went wrong.");
-      console.log(error);
     }
   };
 
@@ -106,8 +105,8 @@ export default function ContactForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
-          Submit
+        <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Sending..." : "Submit"}
         </Button>
       </form>
     </Form>

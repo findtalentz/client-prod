@@ -18,6 +18,7 @@ import { useChatStore } from "@/store";
 import { Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaAngleLeft } from "react-icons/fa6";
 import Comment from "./comment";
 
@@ -71,9 +72,9 @@ export function JobDetails({ job, title }: Props) {
                   queryClient.invalidateQueries({
                     queryKey: ["chats"],
                   });
-                  router.push("/seller/messages");
-                } catch (error) {
-                  console.log(error);
+                  router.push("/dashboard/seller/messages");
+                } catch {
+                  toast.error("Failed to start chat");
                 }
               }}
             >
@@ -86,13 +87,8 @@ export function JobDetails({ job, title }: Props) {
           {/* Job Header */}
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-4">{job.title}</h2>
-            <div className="w-full max-w-md flex items-center justify-between h-10 rounded-full overflow-hidden border border-gray-200 shadow-sm">
-              <div className="flex-1 flex items-center justify-center h-full bg-primary rounded-full text-white font-medium">
-                Activity
-              </div>
-              <div className="flex-1 flex items-center justify-center h-full rounded-full font-medium text-gray-600 hover:bg-gray-50">
-                Dispute
-              </div>
+            <div className="inline-flex items-center h-10 rounded-full overflow-hidden border border-gray-200 shadow-sm px-6">
+              <span className="font-medium text-primary">Activity</span>
             </div>
           </div>
 

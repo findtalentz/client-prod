@@ -24,7 +24,7 @@ async function NewActions() {
           </span>
           {data.count > 5 && (
             <Link
-              href="/dashboard/client"
+              href="/dashboard/client/jobs"
               className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
               View All <ArrowRight className="h-4 w-4" />

@@ -22,7 +22,13 @@ export default async function JobManagemnet() {
     },
   });
 
-  if (data.count <= 0) return null;
+  if (data.count <= 0)
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center text-gray-500">
+        <p className="text-lg font-medium">No in-progress tasks</p>
+        <p className="text-sm mt-1">Jobs you are working on will appear here.</p>
+      </div>
+    );
 
   return (
     <>

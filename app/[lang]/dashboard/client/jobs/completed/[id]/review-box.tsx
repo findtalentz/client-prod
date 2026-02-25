@@ -1,5 +1,6 @@
 "use client";
 
+import { queryClient } from "@/app/[lang]/query-client-provider";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import apiClient from "@/services/api-client";
@@ -79,6 +80,7 @@ const ReviewBox = ({ jobId, sellerId, buyerId }: Props) => {
         seller: sellerId,
         ...data,
       });
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
       router.refresh();
       toast.success("Review submitted successfully!");
       reset();

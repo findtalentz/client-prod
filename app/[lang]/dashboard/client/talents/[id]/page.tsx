@@ -126,12 +126,6 @@ const TalentDetails = async ({ params }: Props) => {
           <p className="font-semibold text-xl">Work History</p>
           <div className="py-2 text-gray-500">
             <p>
-              <strong>90%</strong> Job Success
-            </p>
-            <p>
-              <strong>4.9</strong> Rating
-            </p>
-            <p>
               <strong> {completedjobs.data} </strong> Completed Job
             </p>
           </div>

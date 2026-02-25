@@ -8,6 +8,7 @@ import apiClient from "@/services/api-client";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 interface Props {
   jobId: string;
@@ -34,10 +35,7 @@ const AddJobWishlist = ({ jobId, className }: Props) => {
       });
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(
-          "Like error:",
-          error.response?.data?.message || error.message
-        );
+        toast.error(error.response?.data?.message || "Failed to update wishlist");
       }
     } finally {
       setIsLikeLoading(false);

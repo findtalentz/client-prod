@@ -34,7 +34,7 @@ async function NewApplications() {
           </span>
           {data.count > 6 && (
             <Link
-              href="/dashboard/client"
+              href="/dashboard/client/jobs/open"
               className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
               View All <ArrowRight className="h-4 w-4" />

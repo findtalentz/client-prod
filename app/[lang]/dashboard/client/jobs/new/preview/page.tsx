@@ -57,8 +57,6 @@ const JobPreview = () => {
   };
 
   const { data } = useCategory(overview?.category as string);
-  console.log(overview);
-
   return (
     <div className="space-y-6">
       <div className="bg-gray-50 p-6 rounded-lg">
@@ -131,7 +129,7 @@ const JobPreview = () => {
 
       <div className="flex items-center justify-between">
         <Link
-          href="/dashboard/buyer/jobs"
+          href="/dashboard/client/jobs"
           className={cn(buttonVariants({ variant: "outline" }))}
         >
           Save draft and exit

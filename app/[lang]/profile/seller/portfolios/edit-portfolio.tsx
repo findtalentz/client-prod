@@ -50,7 +50,7 @@ const portfolioFormSchema = z
     description: z
       .string()
       .min(30, "Description should be at least 30 characters long")
-      .max(1000, "Description should be less than 1000 characters")
+      .max(10000, "Description should be less than 10000 characters")
       .refine(
         (val) => val.trim().split(/\s+/).length >= 10,
         "Description should contain at least 10 words"
