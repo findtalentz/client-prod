@@ -17,6 +17,8 @@ function OauthProviders({ children }: PropsWithChildren) {
         sameSite: "strict",
         path: "/",
       });
+      // Remove token from URL to prevent exposure in browser history
+      window.history.replaceState({}, "", window.location.pathname);
       window.location.href = "/dashboard";
     }
   }, [token, router]);

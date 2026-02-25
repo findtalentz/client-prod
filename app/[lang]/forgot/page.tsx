@@ -48,7 +48,7 @@ function ForgotPassword() {
       );
       form.reset();
       setLoading(false);
-      localStorage.setItem("vEmail", data.data);
+      sessionStorage.setItem("vEmail", data.data);
       router.push("/forgot/check-email");
     } catch (error) {
       handleApiError(error);

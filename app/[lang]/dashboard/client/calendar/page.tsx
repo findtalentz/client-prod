@@ -10,7 +10,7 @@ const CalendarPage = async () => {
     return <CalendarView events={data.data} />;
   } catch (error) {
     if (error instanceof AxiosError) {
-      <div>{error.message}</div>;
+      return <div>{error.message}</div>;
     }
   }
 };

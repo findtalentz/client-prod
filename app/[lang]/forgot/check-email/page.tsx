@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 
 const FormSchema = z.object({
-  code: z.string().min(1, "Email is required").max(6),
+  code: z.string().min(1, "Code is required").max(6),
 });
 
 function VerifyEmail() {
@@ -40,7 +40,7 @@ function VerifyEmail() {
   });
 
   useEffect(() => {
-    setEmail(localStorage.getItem("vEmail") || "");
+    setEmail(sessionStorage.getItem("vEmail") || "");
   }, []);
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
@@ -50,12 +50,12 @@ function VerifyEmail() {
         "/auth/verify-code",
         {
           code: values.code,
-          email: localStorage.getItem("vEmail"),
+          email: sessionStorage.getItem("vEmail"),
         }
       );
       form.reset();
       setLoading(false);
-      localStorage.setItem("vCode", data.data.toString());
+      sessionStorage.setItem("vCode", data.data.toString());
       router.push("/forgot/new-password");
     } catch (error) {
       handleApiError(error);
@@ -111,7 +111,7 @@ function VerifyEmail() {
               setResending(true);
               try {
                 await apiClient.post<ApiResponse<string>>("/auth/check-email", {
-                  email: localStorage.getItem("vEmail"),
+                  email: sessionStorage.getItem("vEmail"),
                 });
                 toast.success("Resend code");
                 setResending(false);

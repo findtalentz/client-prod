@@ -54,16 +54,16 @@ function NewPassword() {
       const { data } = await apiClient.post<ApiResponse<string>>(
         "/auth/new-password",
         {
-          code: localStorage.getItem("vCode"),
-          email: localStorage.getItem("vEmail"),
+          code: sessionStorage.getItem("vCode"),
+          email: sessionStorage.getItem("vEmail"),
           newPassword: values.password,
         }
       );
       form.reset();
       toast.success(data.message);
       setLoading(false);
-      localStorage.removeItem("vCode");
-      localStorage.removeItem("vEmail");
+      sessionStorage.removeItem("vCode");
+      sessionStorage.removeItem("vEmail");
       window.location.href = "/log-in";
     } catch (error) {
       handleApiError(error);
@@ -74,7 +74,7 @@ function NewPassword() {
   return (
     <div className="flex items-start justify-between flex-col py-10 md:max-w-[500px] mx-auto h-[calc(100dvh-65px)] px-3">
       <div className="w-full text-2xl text-primary-dark">
-        <Link href="/log-in/forgot/verify-email">
+        <Link href="/forgot/check-email">
           <FaArrowLeftLong />
         </Link>
       </div>

@@ -63,7 +63,7 @@ const TalentDetails = async ({ params }: Props) => {
     }
   );
   const { data: reviews } = await apiClient.get<ApiResponse<Review[]>>(
-    `/reviews/seller/68d2cd8dcd2e02d90cd0f9a1`
+    `/reviews/seller/${id}`
   );
 
   return (
