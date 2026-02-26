@@ -6,7 +6,7 @@ export default interface Job {
   author: User;
   title: string;
   category: Category;
-  type: "fixed" | "hourly";
+  type: "fixed" | "full-time";
   jobSize: "large" | "medium" | "small";
   deliveryDate: Date;
   startDate: Date;

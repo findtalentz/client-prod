@@ -7,7 +7,6 @@ import { Checkbox } from "../ui/checkbox";
 
 const jobTypes = [
   { label: "Fixed", value: "fixed" },
-  { label: "Hourly", value: "hourly" },
   { label: "Full Time", value: "full-time" },
 ];
 

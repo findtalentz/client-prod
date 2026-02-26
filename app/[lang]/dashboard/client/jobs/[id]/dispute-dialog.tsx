@@ -233,7 +233,7 @@ export function DisputeDialog({ jobId }: Props) {
                             />
                             <span className="text-xs text-muted-foreground">
                               {isUploading
-                                ? "Uloading..."
+                                ? "Uploading..."
                                 : " PNG, JPG, PDF, DOC (max. 10MB)"}
                             </span>
                           </label>
