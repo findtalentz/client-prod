@@ -34,10 +34,10 @@ export default function JobCard({ job }: Props) {
         <IsApplyedBadge jobId={job._id} />
       </div>
       <div className="flex items-center gap-5">
-        <IconBadge text="LA, US">
+        <IconBadge text={job.location || "N/A"}>
           <GrLocation />
         </IconBadge>
-        <IconBadge text="ABC, Tech">
+        <IconBadge text={job.company || "N/A"}>
           <PiBuildingApartmentDuotone />
         </IconBadge>
         <IconBadge text={job.category.name}>

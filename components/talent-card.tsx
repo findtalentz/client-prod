@@ -2,6 +2,7 @@
 import IconBadge from "@/components/ui/icon-badge";
 import Text from "@/components/ui/text";
 import useCompletedJobCount from "@/hooks/useCompletedJobCount";
+import useSellerRating from "@/hooks/useSellerRating";
 import useSession from "@/hooks/useSession";
 import { Talent } from "@/schemas/Talent";
 import { Avatar } from "@radix-ui/themes";
@@ -19,8 +20,20 @@ interface Props {
 export default function TalentCard({ talent }: Props) {
   const { data: user } = useSession();
   const { data: completedjobs } = useCompletedJobCount(talent._id);
+  const { data: reviewsData } = useSellerRating(talent._id);
+
+  const reviews = reviewsData?.data || [];
+  const avgRating = reviews.length > 0
+    ? parseFloat((reviews.reduce((sum, r) => sum + r.averageRating, 0) / reviews.length).toFixed(1))
+    : 0;
+  const totalReviews = reviews.length;
+  const completedCount = completedjobs?.data || 0;
+  const jobSuccess = completedCount > 0 && totalReviews > 0
+    ? Math.round((totalReviews / completedCount) * 100)
+    : 0;
   return (
-    <div className="rounded-2xl overflow-hidden border border-gray-200 shadow">
+    <Link href={`/hire/${talent._id}`} className="block">
+    <div className="rounded-2xl overflow-hidden border border-gray-200 shadow hover:shadow-md transition-shadow cursor-pointer">
       <Image
         src="/card-1.png"
         width={560}
@@ -63,17 +76,19 @@ export default function TalentCard({ talent }: Props) {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+          {jobSuccess > 0 && (
+            <div className="flex items-center gap-1 md:gap-3">
+              <Text>{jobSuccess}%</Text>
+              <Text size="small" variant="gray">
+                Job Success
+              </Text>
+            </div>
+          )}
           <div className="flex items-center gap-1 md:gap-3">
-            <Text>93%</Text>
-            <Text size="small" variant="gray">
-              Job Success
-            </Text>
-          </div>
-          <div className="flex items-center gap-1 md:gap-3">
-            <Text>4.4</Text>
+            <Text>{avgRating > 0 ? avgRating : "N/A"}</Text>
             <div className="flex items-center text-sm text-yellow-500">
               {Array.from({ length: 5 }).map((_, i) => (
-                <FaStar key={i} />
+                <FaStar key={i} className={i < Math.round(avgRating) ? "text-yellow-500" : "text-gray-300"} />
               ))}
             </div>
           </div>
@@ -100,5 +115,6 @@ export default function TalentCard({ talent }: Props) {
         </Text>
       </div>
     </div>
+    </Link>
   );
 }

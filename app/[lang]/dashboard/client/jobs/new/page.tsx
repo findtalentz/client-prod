@@ -51,10 +51,8 @@ const OverviewSchema = Joi.object({
     "any.required": "Job type is required.",
   }),
 
-  company: Joi.string().required().messages({
+  company: Joi.string().optional().allow("").messages({
     "string.base": "Company name must be text.",
-    "string.empty": "Company name cannot be empty.",
-    "any.required": "Company name is required.",
   }),
 
   location: Joi.string().required().messages({
@@ -169,7 +167,6 @@ function OverView() {
                       <SelectLabel>Types</SelectLabel>
                       <SelectItem value="fixed">Fixed</SelectItem>
                       <SelectItem value="full-time">Full-time</SelectItem>
-                      <SelectItem value="hourly">Hourly</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -186,7 +183,7 @@ function OverView() {
             name="company"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Company Name*</FormLabel>
+                <FormLabel>Company Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Company name" {...field} />
                 </FormControl>

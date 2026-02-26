@@ -1,6 +1,4 @@
-import Contact from "@/components/contact";
 import Navbar from "@/components/navbar";
-import CallToAction from "@/components/call-to-action";
 import Footer from "@/components/footer";
 import { ReactNode } from "react";
 
@@ -19,8 +17,6 @@ const JobPageLayout = async ({ params, children }: Props) => {
     <>
       <Navbar />
       {children}
-      <CallToAction lang={validatedLang} />
-      <Contact />
       <Footer lang={validatedLang} />
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { queryClient } from "@/app/[lang]/query-client-provider";
+import { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -48,8 +49,8 @@ const disputeFormSchema = z.object({
   evidence: z.string().optional(),
   description: z
     .string()
-    .min(10, {
-      message: "Description must be at least 10 characters long",
+    .min(20, {
+      message: "Description must be at least 20 characters long",
     })
     .max(1000, {
       message: "Description must not exceed 1000 characters",
@@ -128,7 +129,11 @@ export function DisputeDialog({ jobId }: Props) {
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["job_disputes"] });
     } catch (error) {
-      toast.error("Failed to submit dispute");
+      const message =
+        error instanceof AxiosError
+          ? error.response?.data?.message || "Failed to submit dispute"
+          : "Failed to submit dispute";
+      toast.error(message);
       console.error("Submission error:", error);
     } finally {
       setIsSubmitting(false);

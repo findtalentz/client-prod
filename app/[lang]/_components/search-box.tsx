@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoSearchSharp } from "react-icons/io5";
@@ -26,6 +26,8 @@ const searchOptions: SearchOption[] = [
 
 export default function SearchBox() {
   const router = useRouter();
+  const params = useParams();
+  const lang = params?.lang || "en";
   const [searchText, setSearchText] = useState("");
   const [searchType, setSearchType] = useState("jobs");
 
@@ -35,7 +37,7 @@ export default function SearchBox() {
       return;
     }
 
-    router.push(`/${searchType}?search=${encodeURIComponent(searchText)}`);
+    router.push(`/${lang}/${searchType}?search=${encodeURIComponent(searchText)}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

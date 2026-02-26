@@ -103,7 +103,7 @@ export default function Navbar() {
         <Container>
           <nav className="flex items-center justify-between">
             <div className={flexClasses}>
-              <Link href="/">
+              <Link href="/" className="relative z-10">
                 <Image
                   src="/logo.svg"
                   alt="logo"

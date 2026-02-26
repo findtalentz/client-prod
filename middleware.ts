@@ -86,7 +86,6 @@ export async function middleware(req: NextRequest) {
         /^\/dashboard/,
         /^\/email-verify/,
         /^\/refer/,
-        /^\/deposit-success/,
         /^\/profile/,
         /^\/role/,
       ]);

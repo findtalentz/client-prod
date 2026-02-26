@@ -46,10 +46,18 @@ export default function NotificationItem({
 
   const router = useRouter();
 
+  const handleClick = () => {
+    if (notification.actionUrl) {
+      router.push(notification.actionUrl);
+    }
+  };
+
   return (
     <Card
+      onClick={handleClick}
       className={cn(
         "group transition-all duration-300 hover:shadow-md border-l-4 rounded-lg overflow-hidden",
+        notification.actionUrl && "cursor-pointer",
         notification.status === "Unread"
           ? "bg-linear-to-r from-muted/60 to-background border-l-primary"
           : "bg-card",

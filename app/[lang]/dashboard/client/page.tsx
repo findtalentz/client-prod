@@ -2,7 +2,6 @@ import { Calendar } from "@/components/calender";
 import { buttonVariants } from "@/components/ui/button";
 import ActiveJobReport from "@/schemas/ActiveJobReport";
 import ApiResponse from "@/schemas/ApiRespose";
-import SpendReport from "@/schemas/SpendReport";
 import apiClient from "@/services/api-client";
 import Link from "next/link";
 import ActiveJobs from "./_components/active-jobs";
@@ -14,8 +13,7 @@ import SpendChart from "./_components/spend-chart";
 export const dynamic = "force-dynamic";
 
 async function BuyerDashboard() {
-  const [totalSpend, activeJobsReport] = await Promise.all([
-    apiClient.get<ApiResponse<SpendReport>>("/buyer/spend-report"),
+  const [activeJobsReport] = await Promise.all([
     apiClient.get<ApiResponse<ActiveJobReport>>("/buyer/active-jobs-report"),
   ]);
 
@@ -41,7 +39,7 @@ async function BuyerDashboard() {
           <ActiveJobs data={activeJobsReport.data.data} />
           <RoyaltyProgress />
         </div>
-        <SpendChart data={totalSpend.data.data} />
+        <SpendChart />
       </div>
     </div>
   );

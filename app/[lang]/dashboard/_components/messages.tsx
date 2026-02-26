@@ -1,4 +1,5 @@
 "use client";
+import ImageLightbox from "@/components/image-lightbox";
 import useChatSocket from "@/hooks/useChatSocket";
 import useMessages from "@/hooks/useMessages";
 import useSession from "@/hooks/useSession";
@@ -9,7 +10,7 @@ import { useChatStore } from "@/store";
 import { Avatar } from "@radix-ui/themes";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiDownload } from "react-icons/fi";
 
 export default function Messages() {
@@ -17,6 +18,7 @@ export default function Messages() {
   const { data: session } = useSession();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: messages } = useMessages(currentChat?._id as string);
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
   useChatSocket(currentChat?._id as string);
 
   const scrollToBottom = () => {
@@ -112,7 +114,10 @@ export default function Messages() {
                           className="relative group rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
                         >
                           {isImage ? (
-                            <div className="relative w-48 h-36">
+                            <div
+                              className="relative w-48 h-36 cursor-pointer"
+                              onClick={() => setLightboxImage({ src: file, alt: fileName })}
+                            >
                               <Image
                                 src={file}
                                 fill
@@ -122,19 +127,25 @@ export default function Messages() {
                               />
                             </div>
                           ) : (
-                            <div className="w-48 h-28 flex flex-col items-center justify-center p-4 bg-gray-50">
+                            <a
+                              href={file}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-48 h-28 flex flex-col items-center justify-center p-4 bg-gray-50 cursor-pointer"
+                            >
                               <div className="text-2xl mb-1.5">
                                 {getFileIcon(fileName)}
                               </div>
                               <p className="text-xs text-center text-gray-600 truncate w-full px-2">
                                 {fileName}
                               </p>
-                            </div>
+                            </a>
                           )}
 
                           <a
                             href={file}
                             download={fileName}
+                            onClick={(e) => e.stopPropagation()}
                             className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
                           >
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-lg">
@@ -162,6 +173,15 @@ export default function Messages() {
         })}
         <div ref={messagesEndRef} />
       </div>
+
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          isOpen={!!lightboxImage}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }

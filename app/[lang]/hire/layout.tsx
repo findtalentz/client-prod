@@ -1,5 +1,3 @@
-import CallToAction from "@/components/call-to-action";
-import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { ReactNode } from "react";
@@ -19,8 +17,6 @@ const HirePageLayout = async ({ params, children }: Props) => {
     <>
       <Navbar />
       {children}
-      <CallToAction lang={validatedLang} />
-      <Contact />
       <Footer lang={validatedLang} />
     </>
   );

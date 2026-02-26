@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,14 +55,23 @@ const formSchema = z.object({
       { message: "Date must be today or in the future." }
     ),
 
-  time: z
-    .string({ required_error: "Time is required." })
-    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
-      message: "Time must be in HH:MM 24-hour format.",
-    }),
+  time: z.string().optional().default(""),
+
+  isAllDay: z.boolean().default(false),
 
   type: z.string(),
-});
+}).refine(
+  (data) => {
+    if (!data.isAllDay) {
+      return /^([01]\d|2[0-3]):([0-5]\d)$/.test(data.time || "");
+    }
+    return true;
+  },
+  {
+    message: "Time must be in HH:MM 24-hour format.",
+    path: ["time"],
+  }
+);
 
 interface CalendarFormProps {
   onSuccess?: () => void;
@@ -77,13 +87,17 @@ function CalendarForm({ onSuccess }: CalendarFormProps) {
       description: "",
       date: "",
       time: "",
+      isAllDay: false,
       type: "Event",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await apiClient.post("/calendars", values);
+      await apiClient.post("/calendars", {
+        ...values,
+        time: values.isAllDay ? "" : values.time,
+      });
       toast.success("Calendar event created successfully");
 
       form.reset({
@@ -91,6 +105,7 @@ function CalendarForm({ onSuccess }: CalendarFormProps) {
         description: "",
         date: "",
         time: "",
+        isAllDay: false,
         type: "",
       });
 
@@ -156,6 +171,27 @@ function CalendarForm({ onSuccess }: CalendarFormProps) {
             />
           </div>
 
+          <FormField
+            control={form.control}
+            name="isAllDay"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-3">
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={(checked) => {
+                      field.onChange(checked);
+                      if (checked) {
+                        form.setValue("time", "");
+                      }
+                    }}
+                  />
+                </FormControl>
+                <FormLabel className="text-sm font-medium !mt-0">All Day Event</FormLabel>
+              </FormItem>
+            )}
+          />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -175,24 +211,26 @@ function CalendarForm({ onSuccess }: CalendarFormProps) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="time"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium">Time *</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="HH:MM"
-                      {...field}
-                      className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
+            {!form.watch("isAllDay") && (
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Time *</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="HH:MM"
+                        {...field}
+                        className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
 
           <FormField

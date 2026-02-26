@@ -23,7 +23,7 @@ function Application({ application }: Porps) {
             isViewed: true,
           });
           router.refresh();
-          router.push(`/dashboard/client/jobs/open/${application.job}`);
+          router.push(`/dashboard/client/jobs/open/${application.job._id || application.job}`);
         } catch (error) {
           if (error instanceof AxiosError) {
             toast.error(error.message);

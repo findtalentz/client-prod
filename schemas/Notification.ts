@@ -6,6 +6,7 @@ export default interface Notification {
   description: string;
   status: "Read" | "Unread";
   type: NotificationType;
+  actionUrl?: string;
   user: {
     _id: string;
     firstName: string;

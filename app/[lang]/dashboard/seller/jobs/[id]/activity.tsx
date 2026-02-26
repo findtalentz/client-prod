@@ -1,5 +1,6 @@
 "use client";
 import { CommentOptions, CreateComment } from "@/components/create-activity";
+import { ExtendDeadlineDialog } from "@/components/extend-deadline-dialog";
 import useComments from "@/hooks/useComments";
 import Job from "@/schemas/Job";
 import Comment from "./comment";
@@ -10,7 +11,6 @@ interface Props {
 
 const commentTypes: CommentOptions = [
   { value: "COMMENT", label: "Comment" },
-  { value: "TIME_REQUEST", label: "Extend Delivery Date" },
   { value: "DELIVERY", label: "Submit Work" },
 ];
 
@@ -30,6 +30,7 @@ export function Activity({ job }: Props) {
           <div className="absolute w-4 h-4 bg-primary rounded-full top-3 -left-8" />
           <div className="flex items-center gap-4">
             <CreateComment jobId={job._id} options={commentTypes} />
+            <ExtendDeadlineDialog jobId={job._id} />
           </div>
         </div>
 

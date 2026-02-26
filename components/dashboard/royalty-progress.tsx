@@ -3,6 +3,7 @@ import useSession from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { Slider } from "@radix-ui/themes";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface Props {
   metricField: "totalSpend" | "totalEarning";
@@ -12,6 +13,8 @@ interface Props {
 
 function RoyaltyProgress({ metricField, detailsHref, className }: Props) {
   const { data } = useSession();
+  const params = useParams();
+  const lang = params?.lang || "en";
   if (!data) return null;
 
   const rawPercent = (data.data[metricField] / 1000) * 100;
@@ -25,7 +28,7 @@ function RoyaltyProgress({ metricField, detailsHref, className }: Props) {
       )}
     >
       <Link
-        href={detailsHref}
+        href={`/${lang}${detailsHref}`}
         className="text-primary underline absolute top-4 right-4 font-[500]"
       >
         View Details

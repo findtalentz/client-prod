@@ -26,15 +26,28 @@ async function BlogsPage({ searchParams, params }: Props) {
   const paramsSearch = await searchParams;
   const langParams = await params;
   const search = paramsSearch.search ? paramsSearch.search : null;
-  const [{ data }, { data: trending }, dict] = await Promise.all([
-    apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
-      params: { pageSize: 6, search },
-    }),
-    apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
-      params: { pageSize: 4 },
-    }),
-    getDictionary(langParams.lang),
-  ]);
+
+  let blogs: BlogSchema[] = [];
+  let trendingBlogs: BlogSchema[] = [];
+  let totalCount = 0;
+
+  const dict = await getDictionary(langParams.lang);
+
+  try {
+    const [{ data }, { data: trending }] = await Promise.all([
+      apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
+        params: { pageSize: 6, search },
+      }),
+      apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
+        params: { pageSize: 4 },
+      }),
+    ]);
+    blogs = data.data || [];
+    trendingBlogs = trending.data || [];
+    totalCount = data.count || 0;
+  } catch (error) {
+    console.error("Failed to fetch blogs:", error);
+  }
 
   return (
     <>
@@ -49,26 +62,38 @@ async function BlogsPage({ searchParams, params }: Props) {
             </div>
           </div>
         </div>
-        <Grid columns={{ initial: "1", md: "3" }} gap="6" className="pb-16">
-          {data.data.map((blog) => (
-            <BlogCard blog={blog} key={blog._id} />
-          ))}
-        </Grid>
-        <div className="flex items-center justify-center pb-20">
-          <button className="bg-gray-50 !px-6 !py-4 rounded-xl !border-gray-200 border font-[500]">
-            {dict.blogPage.button}
-          </button>
-        </div>
+        {blogs.length > 0 ? (
+          <Grid columns={{ initial: "1", md: "3" }} gap="6" className="pb-16">
+            {blogs.map((blog) => (
+              <BlogCard blog={blog} key={blog._id} />
+            ))}
+          </Grid>
+        ) : (
+          <div className="flex items-center justify-center py-16 text-gray-500">
+            No blog posts found.
+          </div>
+        )}
+        {totalCount > 6 && (
+          <div className="flex items-center justify-center pb-20">
+            <button className="bg-gray-50 !px-6 !py-4 rounded-xl !border-gray-200 border font-[500]">
+              {dict.blogPage.button}
+            </button>
+          </div>
+        )}
 
-        <div className="mb-26 flex items-center justify-center">
-          <h1>{dict.blogPage.trending}</h1>
-        </div>
+        {trendingBlogs.length > 0 && (
+          <>
+            <div className="mb-26 flex items-center justify-center">
+              <h1>{dict.blogPage.trending}</h1>
+            </div>
 
-        <Grid columns={{ initial: "1", md: "2" }} gap="6" className="mb-26">
-          {trending.data.map((blog) => (
-            <TrendingBlog key={blog._id} blog={blog} />
-          ))}
-        </Grid>
+            <Grid columns={{ initial: "1", md: "2" }} gap="6" className="mb-26">
+              {trendingBlogs.map((blog) => (
+                <TrendingBlog key={blog._id} blog={blog} />
+              ))}
+            </Grid>
+          </>
+        )}
       </Container>
       <Footer lang={langParams.lang} />
     </>

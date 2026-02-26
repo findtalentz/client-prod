@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -41,8 +42,12 @@ export default function ContactForm() {
       await apiClient.post("/contacts", data);
       form.reset();
       toast.success("Message sent successfully! 🚀");
-    } catch {
-      toast.error("Oops! Something went wrong.");
+    } catch (error) {
+      const message =
+        error instanceof AxiosError
+          ? error.response?.data?.message || "Oops! Something went wrong."
+          : "Oops! Something went wrong.";
+      toast.error(message);
     }
   };
 
@@ -55,7 +60,7 @@ export default function ContactForm() {
             name="firstName"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>First tName:</FormLabel>
+                <FormLabel>First Name:</FormLabel>
                 <FormControl>
                   <Input placeholder="First Name" {...field} />
                 </FormControl>
@@ -68,7 +73,7 @@ export default function ContactForm() {
             name="lastName"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Last tName:</FormLabel>
+                <FormLabel>Last Name:</FormLabel>
                 <FormControl>
                   <Input placeholder="Last Name" {...field} />
                 </FormControl>
