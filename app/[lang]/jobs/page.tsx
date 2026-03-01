@@ -11,7 +11,6 @@ interface Props {
     requiredExperienceLevel: string;
     duration: string;
     category: string;
-    budgetType: string;
   }>;
 }
 
@@ -22,7 +21,6 @@ export const dynamic = "force-dynamic";
 export default async function Jobs({ searchParams }: Props) {
   const filterParams = await searchParams;
   const search = filterParams.search ? filterParams.search : null;
-  const budgetType = filterParams.budgetType ? filterParams.budgetType : null;
   const jobType = filterParams.jobType ? filterParams.jobType : null;
   const duration = filterParams.duration ? filterParams.duration : null;
   const requiredExperienceLevel = filterParams.requiredExperienceLevel
@@ -35,7 +33,6 @@ export default async function Jobs({ searchParams }: Props) {
       status: "OPEN",
       search,
       orderBy,
-      budgetType,
       requiredExperienceLevel,
       duration,
       jobType,

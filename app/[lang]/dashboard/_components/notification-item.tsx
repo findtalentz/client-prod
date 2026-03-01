@@ -52,7 +52,7 @@ export default function NotificationItem({
         await apiClient.put(`/notifications/${notification._id}`);
         queryClient.invalidateQueries({ queryKey: ["notifications"] });
         router.refresh();
-      } catch (error) {
+      } catch {
         /* silent */
       }
     }

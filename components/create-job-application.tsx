@@ -76,7 +76,7 @@ export function CreateJobApplication({ job }: Props) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!job._id || isSubmitDisabled) return;
-    if (session.data.identityStatus !== "VERIFIED") {
+    if (session?.data.identityStatus !== "VERIFIED") {
       toast.error("Identity verification required before applying.");
       return;
     }

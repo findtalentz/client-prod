@@ -71,10 +71,6 @@ const JobPreview = () => {
             <p>{data?.data.name || "Not specified"}</p>
           </div>
           <div>
-            <p className="font-medium">Company</p>
-            <p>{overview?.company || "Not specified"}</p>
-          </div>
-          <div>
             <p className="font-medium">Location</p>
             <p>{overview?.location || "Not specified"}</p>
           </div>
@@ -108,15 +104,9 @@ const JobPreview = () => {
       </div>
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-xl font-bold mb-4">Budget Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p className="font-medium">Budget Type</p>
-            <p>{jobScopeAndBudget?.budgetType || "Not specified"}</p>
-          </div>
-          <div>
-            <p className="font-medium">Budget Amount</p>
-            <p>{jobScopeAndBudget?.budgetAmount || "Not specified"}</p>
-          </div>
+        <div>
+          <p className="font-medium">Budget Amount</p>
+          <p>{jobScopeAndBudget?.budgetAmount || "Not specified"}</p>
         </div>
       </div>
 

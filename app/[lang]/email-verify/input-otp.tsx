@@ -77,7 +77,7 @@ export function InputOTPForm() {
       Cookies.set("token", res.data.data, {
         expires: 7,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "lax",
         path: "/",
       });
       form.reset();

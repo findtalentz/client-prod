@@ -14,7 +14,7 @@ function OauthProviders({ children }: PropsWithChildren) {
       Cookies.set("token", token, {
         expires: 7,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "lax",
         path: "/",
       });
       // Remove token from URL to prevent exposure in browser history

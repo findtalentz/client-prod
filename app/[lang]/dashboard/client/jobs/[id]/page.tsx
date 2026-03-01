@@ -85,10 +85,6 @@ async function JobDetails({ params }: Props) {
                         <p>{job.data.category.name || "Not specified"}</p>
                       </div>
                       <div>
-                        <p className="font-medium text-black">Company</p>
-                        <p>{job.data.company || "Not specified"}</p>
-                      </div>
-                      <div>
                         <p className="font-medium text-black">Location</p>
                         <p>{job.data.location || "Not specified"}</p>
                       </div>
@@ -129,15 +125,9 @@ async function JobDetails({ params }: Props) {
                   </div>
                   <div className="bg-gray-50 p-6 rounded-lg">
                     <h3 className="text-xl font-bold mb-4">Budget Details</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="font-medium text-black">Budget Type</p>
-                        <p>{job.data.budgetType || "Not specified"}</p>
-                      </div>
-                      <div>
-                        <p className="font-medium text-black">Budget Amount</p>
-                        <p>{job.data.budgetAmount || "Not specified"}</p>
-                      </div>
+                    <div>
+                      <p className="font-medium text-black">Budget Amount</p>
+                      <p>{job.data.budgetAmount || "Not specified"}</p>
                     </div>
                   </div>
                 </div>

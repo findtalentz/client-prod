@@ -38,10 +38,6 @@ const JobScopeAndBudgetSchema = Joi.object({
     "string.empty": "Duration is required",
     "any.only": "Invalid duration value",
   }),
-  budgetType: Joi.string().valid("fixed", "custom").required().messages({
-    "string.empty": "Budget type is required",
-    "any.only": "Invalid budget type",
-  }),
   budgetAmount: Joi.number().min(5).max(10000).required().messages({
     "number.base": "Budget amount must be a number",
     "number.min": "Minimum budget is $5",
@@ -65,7 +61,6 @@ function ScopeAndBudget() {
     resolver: joiResolver(JobScopeAndBudgetSchema),
     defaultValues: {
       duration: jobScopeAndBudget?.duration ?? "",
-      budgetType: jobScopeAndBudget?.budgetType ?? "",
       budgetAmount: jobScopeAndBudget?.budgetAmount ?? 0,
       description: jobScopeAndBudget?.description ?? "",
     },
@@ -108,32 +103,6 @@ function ScopeAndBudget() {
                     <SelectItem value="large">More than 6 months</SelectItem>
                     <SelectItem value="medium">3 - 6 months</SelectItem>
                     <SelectItem value="small">1 - 3 months</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Budget Type */}
-        <FormField
-          control={form.control}
-          name="budgetType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Budget Type *</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-full border-primary">
-                    <SelectValue placeholder="Select budget type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Budget Options</SelectLabel>
-                    <SelectItem value="fixed">Fixed Package</SelectItem>
-                    <SelectItem value="custom">Custom Offer</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

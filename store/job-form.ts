@@ -5,7 +5,6 @@ export interface JobOverview {
   title: string;
   category: string;
   jobType: string;
-  company: string;
   location: string;
 }
 
@@ -54,7 +53,6 @@ export const useJobSkillsStore = create<JobSkillsStore>()(
 
 export interface JobScopeAndBudget {
   duration: string;
-  budgetType: string;
   budgetAmount: number;
   description: string;
 }

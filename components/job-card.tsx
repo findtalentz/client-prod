@@ -6,7 +6,6 @@ import JobSchema from "@/schemas/Job";
 import Link from "next/link";
 import { GrLocation } from "react-icons/gr";
 import { IoTimerOutline } from "react-icons/io5";
-import { PiBuildingApartmentDuotone } from "react-icons/pi";
 import { TbListDetails } from "react-icons/tb";
 import AddJobWishlist from "./add-job-wishlist";
 import IsApplyedBadge from "./is-applyed-badge";
@@ -36,9 +35,6 @@ export default function JobCard({ job }: Props) {
       <div className="flex items-center gap-5">
         <IconBadge text={job.location || "N/A"}>
           <GrLocation />
-        </IconBadge>
-        <IconBadge text={job.company || "N/A"}>
-          <PiBuildingApartmentDuotone />
         </IconBadge>
         <IconBadge text={job.category.name}>
           <TbListDetails />

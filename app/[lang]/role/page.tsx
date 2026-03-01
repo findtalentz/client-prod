@@ -29,7 +29,7 @@ export default function SelectRole() {
                 Cookies.set("token", data.data, {
                   expires: 7,
                   secure: process.env.NODE_ENV === "production",
-                  sameSite: "strict",
+                  sameSite: "lax",
                   path: "/",
                 });
                 window.location.href = "/dashboard";
@@ -52,7 +52,7 @@ export default function SelectRole() {
                 Cookies.set("token", data.data, {
                   expires: 7,
                   secure: process.env.NODE_ENV === "production",
-                  sameSite: "strict",
+                  sameSite: "lax",
                   path: "/",
                 });
                 window.location.href = "/dashboard";

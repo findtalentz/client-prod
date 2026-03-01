@@ -51,10 +51,6 @@ const OverviewSchema = Joi.object({
     "any.required": "Job type is required.",
   }),
 
-  company: Joi.string().optional().allow("").messages({
-    "string.base": "Company name must be text.",
-  }),
-
   location: Joi.string().required().messages({
     "string.base": "Location must be text.",
     "string.empty": "Location cannot be empty.",
@@ -74,7 +70,6 @@ function OverView() {
       title: overview?.title ?? "",
       category: overview?.category ?? "",
       jobType: overview?.jobType ?? "",
-      company: overview?.company ?? "",
       location: overview?.location ?? "",
     },
   });
@@ -177,35 +172,19 @@ function OverView() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="company"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Company name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Location*</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. Remote, New York" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location*</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g. Remote, New York" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="flex items-center justify-between">
           <Link

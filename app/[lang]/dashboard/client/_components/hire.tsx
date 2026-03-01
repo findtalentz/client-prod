@@ -76,16 +76,7 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
 
   const selectedJobId = form.watch("job");
   const selectedJob = jobs?.data.find((j) => j._id === selectedJobId);
-  const minAmount = selectedJob?.budgetAmount || 5;
-
   const onSubmit = async (data: JobFormValues) => {
-    if (selectedJob && data.amount < selectedJob.budgetAmount) {
-      form.setError("amount", {
-        message: `Amount must be at least $${selectedJob.budgetAmount} (the job budget)`,
-      });
-      return;
-    }
-
     try {
       const res = await apiClient.post("/orders", {
         ...data,
@@ -166,12 +157,12 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Agreed Amount ($)* {selectedJob && <span className="text-muted-foreground text-xs">(min: ${minAmount})</span>}</FormLabel>
+                  <FormLabel>Agreed Amount ($)* {selectedJob && <span className="text-muted-foreground text-xs">(Budget: ${selectedJob.budgetAmount})</span>}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder={String(minAmount)}
-                      min={minAmount}
+                      placeholder="5"
+                      min={5}
                       max="10000"
                       step="0.01"
                       {...field}

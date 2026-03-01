@@ -55,7 +55,7 @@ export default function LoginForm() {
       Cookies.set("token", data.data, {
         expires: 7,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "lax",
         path: "/",
       });
       window.location.href = "/dashboard";

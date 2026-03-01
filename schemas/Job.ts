@@ -19,8 +19,6 @@ export default interface Job {
   requiredExperienceLevel: string;
   duration: string;
   requiredSkills: string[];
-  budgetType: string;
   completedAt: Date;
-  company: string;
   createdAt: Date;
 }
