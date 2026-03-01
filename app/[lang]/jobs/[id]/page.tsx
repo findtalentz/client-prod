@@ -108,7 +108,7 @@ async function JobDetails({ params }: Props) {
           </div>
         </div>
       </div>
-      <div className="space-y-3 px-4">
+      <div className="space-y-3 px-4 mb-10">
         <Applications jobId={job.data._id} />
       </div>
     </Container>

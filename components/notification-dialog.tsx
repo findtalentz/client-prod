@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useNotifications from "@/hooks/useNotifications";
+import useNotificationSocket from "@/hooks/useNotificationSocket";
 import useSession from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { Role } from "@/schemas/Role";
@@ -23,6 +24,7 @@ import { useEffect, useState } from "react";
 export function NotificationDialog() {
   const [unreadCount, setUnreadCount] = useState(0);
   const { data, isLoading, error } = useNotifications();
+  useNotificationSocket();
   const router = useRouter();
   const { data: currentUser } = useSession();
 

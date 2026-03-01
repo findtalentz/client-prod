@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import { AlertCircle, CheckCircle, Clock, Info, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { queryClient } from "@/app/[lang]/query-client-provider";
 
 interface NotificationItemProps {
   notification: Notification;
@@ -45,7 +46,16 @@ export default function NotificationItem({
 
   const router = useRouter();
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (notification.status === "Unread") {
+      try {
+        await apiClient.put(`/notifications/${notification._id}`);
+        queryClient.invalidateQueries({ queryKey: ["notifications"] });
+        router.refresh();
+      } catch (error) {
+        /* silent */
+      }
+    }
     if (notification.actionUrl) {
       router.push(notification.actionUrl);
     }
@@ -56,7 +66,7 @@ export default function NotificationItem({
       onClick={handleClick}
       className={cn(
         "group transition-all duration-300 hover:shadow-md border-l-4 rounded-lg overflow-hidden",
-        notification.actionUrl && "cursor-pointer",
+        "cursor-pointer",
         notification.status === "Unread"
           ? "bg-gradient-to-r from-muted/60 to-background border-l-primary"
           : "bg-card",
@@ -110,11 +120,13 @@ export default function NotificationItem({
                     variant="outline"
                     size="sm"
                     className="h-9 px-4 rounded-full transition-all duration-200 hover:scale-105 hover:shadow-sm"
-                    onClick={async () => {
+                    onClick={async (e) => {
+                      e.stopPropagation();
                       try {
                         await apiClient.put(
                           `/notifications/${notification._id}`
                         );
+                        queryClient.invalidateQueries({ queryKey: ["notifications"] });
                         toast.success("Marked as read");
                         router.refresh();
                       } catch (error) {
@@ -182,11 +194,13 @@ export default function NotificationItem({
                       variant="outline"
                       size="sm"
                       className="h-8 px-3 text-xs rounded-full"
-                      onClick={async () => {
+                      onClick={async (e) => {
+                        e.stopPropagation();
                         try {
                           await apiClient.put(
                             `/notifications/${notification._id}`
                           );
+                          queryClient.invalidateQueries({ queryKey: ["notifications"] });
                           toast.success("Marked as read");
                           router.refresh();
                         } catch (error) {

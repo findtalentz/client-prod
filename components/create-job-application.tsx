@@ -24,6 +24,7 @@ import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -75,6 +76,10 @@ export function CreateJobApplication({ job }: Props) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!job._id || isSubmitDisabled) return;
+    if (session.data.identityStatus !== "VERIFIED") {
+      toast.error("Identity verification required before applying.");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -101,7 +106,11 @@ export function CreateJobApplication({ job }: Props) {
   if (!session) return null;
   if (session.data.role === "CLIENT") return null;
 
-  return (
+  return session.data.identityStatus !== "VERIFIED" ? (
+    <Button size="sm" className="px-8 cursor-pointer" asChild>
+      <Link href="/identity-verify">Verify Identity</Link>
+    </Button>
+  ) : (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" className="px-8 cursor-pointer">

@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 import useMyJobs from "@/hooks/useMyJobs";
 import apiClient from "@/services/api-client";
+import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
@@ -78,6 +79,13 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
   const minAmount = selectedJob?.budgetAmount || 5;
 
   const onSubmit = async (data: JobFormValues) => {
+    if (selectedJob && data.amount < selectedJob.budgetAmount) {
+      form.setError("amount", {
+        message: `Amount must be at least $${selectedJob.budgetAmount} (the job budget)`,
+      });
+      return;
+    }
+
     try {
       const res = await apiClient.post("/orders", {
         ...data,
@@ -97,7 +105,11 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
       form.reset();
     } catch (error) {
       console.error("Hire error:", error);
-      toast.error("Hire failed. Please try again.");
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "Hire failed. Please try again.");
+      } else {
+        toast.error("Hire failed. Please try again.");
+      }
     }
   };
 
