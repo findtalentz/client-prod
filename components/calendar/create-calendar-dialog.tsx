@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type CalendarType from "@/schemas/Calendar";
-import { Pencil, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import CalendarForm from "./calendar-form";
 

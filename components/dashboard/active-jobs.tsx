@@ -2,23 +2,40 @@
 import { AppPieChart } from "@/components/app-pie-chart";
 import TimeRangeToggle from "@/components/time-range-toggle";
 import ActiveJobReport from "@/schemas/ActiveJobReport";
+import ApiResponse from "@/schemas/ApiRespose";
+import apiClient from "@/services/api-client";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import CompletedJobs from "./completed-jobs";
 
 interface Props {
-  data: ActiveJobReport;
+  endpoint: string;
   title?: string;
   layout?: "horizontal" | "vertical";
   className?: string;
 }
 
 function ActiveJobs({
-  data,
+  endpoint,
   title = "Active Jobs",
   layout = "horizontal",
   className,
 }: Props) {
-  const [currentTask, setCurrentTask] = useState("month");
+  const [timeRange, setTimeRange] = useState("month");
+
+  const { data: response } = useQuery<ApiResponse<ActiveJobReport>>({
+    queryKey: ["active_jobs_report", endpoint, timeRange],
+    queryFn: () =>
+      apiClient
+        .get<ApiResponse<ActiveJobReport>>(endpoint, {
+          params: { timeRange },
+        })
+        .then((r) => r.data),
+  });
+
+  const data = response?.data;
+
+  if (!data) return null;
 
   const config = {
     [data.rankOneByCategory?.category ?? ""]: {
@@ -70,7 +87,7 @@ function ActiveJobs({
           <span className="text-primary font-semibold text-lg">
             {title}
           </span>
-          <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
+          <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
         </div>
         <AppPieChart
           dataKey="jobs"
@@ -89,7 +106,7 @@ function ActiveJobs({
     >
       <div className="flex items-center justify-between p-4 sm:p-5">
         <span className="text-primary font-semibold text-lg">{title}</span>
-        <TimeRangeToggle value={currentTask} onChange={setCurrentTask} />
+        <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-4 px-4 pb-4 sm:pb-5">
         <div className="w-full sm:w-2/5 flex-shrink-0">
