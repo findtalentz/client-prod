@@ -29,12 +29,21 @@ function WeekView({ date, events }: { date: Date; events: Calendar[] }) {
     });
   };
 
-  // Sort events by time
+  // Sort events by time (non-mutating, handles all-day events)
   const sortEventsByTime = (events: Calendar[]) => {
-    return events.sort((a, b) => {
-      const timeA = a.time.split(":").map(Number);
-      const timeB = b.time.split(":").map(Number);
-      return timeA[0] - timeB[0] || timeA[1] - timeB[1];
+    return [...events].sort((a, b) => {
+      // All-day events come first
+      if (a.isAllDay && !b.isAllDay) return -1;
+      if (!a.isAllDay && b.isAllDay) return 1;
+      if (a.isAllDay && b.isAllDay) return 0;
+
+      const timeA = (a.time || "").split(":").map(Number);
+      const timeB = (b.time || "").split(":").map(Number);
+      const hourA = isNaN(timeA[0]) ? 0 : timeA[0];
+      const hourB = isNaN(timeB[0]) ? 0 : timeB[0];
+      const minA = isNaN(timeA[1]) ? 0 : timeA[1];
+      const minB = isNaN(timeB[1]) ? 0 : timeB[1];
+      return hourA - hourB || minA - minB;
     });
   };
 

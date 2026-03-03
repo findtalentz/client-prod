@@ -146,11 +146,9 @@ export default function Messages() {
                             href={file}
                             download={fileName}
                             onClick={(e) => e.stopPropagation()}
-                            className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
+                            className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
                           >
-                            <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-lg">
-                              <FiDownload className="text-gray-700 w-4 h-4" />
-                            </div>
+                            <FiDownload className="text-gray-700 w-4 h-4" />
                           </a>
                         </div>
                       );

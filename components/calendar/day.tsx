@@ -18,15 +18,22 @@ function DayView({ date, events }: { date: Date; events: Calendar[] }) {
     );
   });
 
+  // Separate all-day events from timed events
+  const allDayEvents = dayEvents.filter(
+    (event) => event.isAllDay || !event.time
+  );
+
   // Parse time from "HH:MM" format to hour number
   const parseHour = (time: string) => {
+    if (!time) return -1;
     const [hours] = time.split(":").map(Number);
-    return hours;
+    return isNaN(hours) ? -1 : hours;
   };
 
-  // Group events by hour for better performance
+  // Group timed events by hour
   const eventsByHour: { [hour: number]: Calendar[] } = {};
   dayEvents.forEach((event) => {
+    if (event.isAllDay || !event.time) return;
     const hour = parseHour(event.time);
     if (hour >= 0 && hour < 24) {
       if (!eventsByHour[hour]) {
@@ -45,6 +52,26 @@ function DayView({ date, events }: { date: Date; events: Calendar[] }) {
     <>
       <div className="bg-white rounded-lg shadow">
         <div className="divide-y">
+          {/* All Day Section */}
+          {allDayEvents.length > 0 && (
+            <div className="flex min-h-16">
+              <div className="w-20 p-2 text-right border-r">
+                <span className="text-sm font-medium text-gray-700">
+                  All Day
+                </span>
+              </div>
+              <div className="flex-1 p-1">
+                {allDayEvents.map((event) => (
+                  <ItemView
+                    key={event._id}
+                    calendar={event}
+                    onPreview={handleEventClick}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
           {Array.from({ length: 24 }).map((_, hour) => {
             const timeLabel = `${hour % 12 === 0 ? 12 : hour % 12}${
               hour < 12 ? "AM" : "PM"

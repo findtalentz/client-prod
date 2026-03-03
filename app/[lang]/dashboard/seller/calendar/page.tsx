@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 
 const CalendarPage = async () => {
   try {
-    const { data } = await apiClient.get<ApiResponse<Calendar[]>>("/calendars");
+    const { data } = await apiClient.get<ApiResponse<Calendar[]>>("/calendars?limit=1000");
     return <CalendarView events={data.data} />;
   } catch (error) {
     if (error instanceof AxiosError) {

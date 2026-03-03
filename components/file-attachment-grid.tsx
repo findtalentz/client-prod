@@ -61,11 +61,9 @@ export default function FileAttachmentGrid({ files, size = "md" }: Props) {
                 href={file}
                 download={fileName}
                 onClick={(e) => e.stopPropagation()}
-                className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
+                className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
               >
-                <div className="bg-white p-2 rounded-full shadow-lg">
-                  <FiDownload className="text-gray-700" />
-                </div>
+                <FiDownload className="text-gray-700" />
               </a>
 
               <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent p-2">

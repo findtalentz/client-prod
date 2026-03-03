@@ -11,10 +11,18 @@ import {
 import type Calendar from "@/schemas/Calendar";
 import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
-import { Calendar as CalendarIcon, Clock, FileText } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  FileText,
+  MapPin,
+  Pencil,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "../ui/button";
+import CreateCalendarDialog from "./create-calendar-dialog";
 
 interface CalendarPreviewDialogProps {
   event: Calendar | null;
@@ -28,6 +36,7 @@ export function CalendarPreviewDialog({
   onOpenChange,
 }: CalendarPreviewDialogProps) {
   const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
 
   if (!event) return null;
 
@@ -54,6 +63,18 @@ export function CalendarPreviewDialog({
       day: "numeric",
     });
   };
+
+  if (isEditing) {
+    return (
+      <CreateCalendarDialog
+        editEvent={event}
+        onClose={() => {
+          setIsEditing(false);
+          onOpenChange(false);
+        }}
+      />
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -82,21 +103,29 @@ export function CalendarPreviewDialog({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-center gap-1 text-sm text-gray-700">
               <CalendarIcon className="h-4 w-4 text-gray-500" />
-
               <div>{formatDate(event.date)}</div>
             </div>
 
             <div className="flex gap-1 items-center text-sm text-gray-700">
               <Clock className="h-4 w-4 text-gray-500" />
-
-              <div>{event.time}</div>
+              {event.isAllDay ? (
+                <Badge variant="secondary">All Day</Badge>
+              ) : (
+                <div>{event.time}</div>
+              )}
             </div>
           </div>
+
+          {event.location && (
+            <div className="flex items-center gap-3 text-sm text-gray-700">
+              <MapPin className="h-4 w-4 text-gray-500" />
+              <span>{event.location}</span>
+            </div>
+          )}
 
           {event.description && (
             <div className="flex items-start gap-3 text-sm text-gray-700">
               <FileText className="text-xl text-gray-500 mt-0.5" />
-
               <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
                 {event.description}
               </p>
@@ -115,7 +144,14 @@ export function CalendarPreviewDialog({
             </div>
           )}
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setIsEditing(true)}
+          >
+            <Pencil className="h-4 w-4 mr-1" />
+            Edit
+          </Button>
           <Button
             variant="destructive"
             onClick={async () => {

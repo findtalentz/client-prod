@@ -46,7 +46,7 @@ const ApplicationCard = ({ application, job }: Props) => {
               />
               <div>
                 <Link
-                  href={`/dashboard/buyer/talents/${application.seller._id}`}
+                  href={`/dashboard/client/talents/${application.seller._id}`}
                   className="text-sm md:text-xl"
                 >
                   {application.seller.firstName +
