@@ -1,7 +1,7 @@
 "use client";
 import Review from "@/schemas/Reviews";
 import { Avatar } from "@radix-ui/themes";
-import { Calendar, Star, TrendingUp } from "lucide-react";
+import { Calendar, Star } from "lucide-react";
 
 interface Props {
   reviews: Review[];
