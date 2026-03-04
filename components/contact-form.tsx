@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -43,10 +43,9 @@ export default function ContactForm() {
       form.reset();
       toast.success("Message sent successfully! 🚀");
     } catch (error) {
-      const message =
-        error instanceof AxiosError
-          ? error.response?.data?.message || "Oops! Something went wrong."
-          : "Oops! Something went wrong.";
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Oops! Something went wrong."
+        : "Oops! Something went wrong.";
       toast.error(message);
     }
   };

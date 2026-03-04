@@ -60,7 +60,7 @@ const NavMenu = ({ isActive }: { isActive: boolean }) => {
   return (
     <ul
       className={cn(
-        "nav-menu transition-all bg-primary-dark! items-start w-full! px-3! gap-0! z-9999",
+        "nav-menu transition-all bg-primary-dark! items-start w-full! px-3! gap-0! z-50",
         isActive && "nav-show"
       )}
     >
@@ -99,7 +99,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed w-full z-1000000 top-0 left-0 h-[65px] flex items-center justify-center bg-primary-dark">
+      <div className="fixed w-full z-50 top-0 left-0 h-[65px] flex items-center justify-center bg-primary-dark">
         <Container>
           <nav className="flex items-center justify-between">
             <div className={flexClasses}>
