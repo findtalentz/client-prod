@@ -2,6 +2,7 @@ import ApiResponse from "@/schemas/ApiRespose";
 import CommentType from "@/schemas/Comment";
 import Job from "@/schemas/Job";
 import Review from "@/schemas/Reviews";
+import { COMMISSION_RATE } from "@/lib/constants";
 import apiClient from "@/services/api-client";
 import { Grid } from "@radix-ui/themes";
 import Comment from "./comment";
@@ -74,8 +75,8 @@ const JobDetails = async ({ params }: Props) => {
           <div className="bg-gray-50 p-6 rounded-lg">
             <h3 className="text-xl font-bold mb-4">Budget Details</h3>
             <div>
-              <p className="font-medium text-black">Budget Amount</p>
-              <p>{job.data.budgetAmount || "Not specified"}</p>
+              <p className="font-medium text-black">Your Earnings</p>
+              <p>${(job.data.budgetAmount * COMMISSION_RATE).toFixed(2)}</p>
             </div>
           </div>
 

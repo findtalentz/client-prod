@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { COMMISSION_RATE } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import ApiResponse from "@/schemas/ApiRespose";
 import Job from "@/schemas/Job";
@@ -34,7 +35,7 @@ export default async function CompletedJob() {
         <TableHeader>
           <TableRow>
             <TableHead>Job Title</TableHead>
-            <TableHead>Price</TableHead>
+            <TableHead>Earnings</TableHead>
             <TableHead>Start Date</TableHead>
             <TableHead>Completed At</TableHead>
           </TableRow>
@@ -51,7 +52,7 @@ export default async function CompletedJob() {
                 </Link>
               </TableCell>
               <TableCell className="text-xl text-primary">
-                ${job.budgetAmount}
+                ${(job.budgetAmount * COMMISSION_RATE).toFixed(2)}
               </TableCell>
               <TableCell>{formatDate(job.startDate)}</TableCell>
               <TableCell>{formatDate(job.completedAt)}</TableCell>

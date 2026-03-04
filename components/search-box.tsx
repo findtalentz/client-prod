@@ -10,9 +10,16 @@ export default function SearchBox() {
     searchParams.get("search") || ""
   );
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const isFirstRender = useRef(true);
 
   // Debounce URL update by 400ms
   useEffect(() => {
+    // Skip the initial mount so search params from navigation are preserved
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     debounceRef.current = setTimeout(() => {
