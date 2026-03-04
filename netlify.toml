@@ -1,0 +1,7 @@
+[build.environment]
+  # Firebase client API keys are intentionally public (security is enforced
+  # by Firebase Security Rules). Next.js inlines NEXT_PUBLIC_* env vars into
+  # the client bundle, which triggers Netlify's "likely secret" heuristic on
+  # the AIza* pattern in the webpack cache. Excluding the cache path prevents
+  # the false-positive from blocking deploys.
+  SECRETS_SCAN_OMIT_PATHS = ".netlify/.next/cache"
