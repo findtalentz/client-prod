@@ -3,7 +3,7 @@
 import ApiResponse from "@/schemas/ApiRespose";
 import apiClient from "@/services/api-client";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { AxiosError } from "axios";
+import axios from "axios";
 import Joi from "joi";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -34,10 +34,11 @@ function SubscribeFrom({ text }: Props) {
               data
             );
             toast.success(response.data.message);
-            reset();
           } catch (error) {
-            if (error instanceof AxiosError) {
-              toast.error(error.message);
+            if (axios.isAxiosError(error)) {
+              toast.error(error.response?.data?.message || error.message);
+            } else {
+              toast.error("Something went wrong. Please try again.");
             }
           } finally {
             reset();
@@ -52,7 +53,7 @@ function SubscribeFrom({ text }: Props) {
         />
 
         <Button type="submit" variant="light">
-          {formState.isLoading ? "Subscribing" : text}
+          {formState.isSubmitting ? "Subscribing" : text}
         </Button>
       </form>
       {formState.errors && formState.errors.email && (
