@@ -23,7 +23,7 @@ export function Activity({ job, comments }: Props) {
         <div className="p-3 relative mx-10 border rounded-xl">
           <div className="absolute w-4 h-4 bg-primary rounded-full top-3 -left-8" />
           <div className="flex items-center gap-4">
-            <CreateComment jobId={job._id} options={commentTypes} />
+            <CreateComment jobId={job._id} options={commentTypes} deliveryDate={job.deliveryDate} />
           </div>
         </div>
 

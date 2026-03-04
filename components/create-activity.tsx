@@ -36,9 +36,10 @@ export type CommentOptions = Array<{ value: Type; label: string }>;
 interface Props {
   jobId: string;
   options: CommentOptions;
+  deliveryDate?: string | Date;
 }
 
-export function CreateComment({ jobId, options }: Props) {
+export function CreateComment({ jobId, options, deliveryDate }: Props) {
   const [isOpen, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -191,7 +192,16 @@ export function CreateComment({ jobId, options }: Props) {
                 </label>
                 <Input
                   type="date"
-                  min={new Date().toISOString().split("T")[0]}
+                  min={(() => {
+                    const today = new Date().toISOString().split("T")[0];
+                    if (!deliveryDate) return today;
+                    const dayAfterDeadline = new Date(
+                      new Date(deliveryDate).getTime() + 86400000
+                    )
+                      .toISOString()
+                      .split("T")[0];
+                    return today > dayAfterDeadline ? today : dayAfterDeadline;
+                  })()}
                   value={reqTime}
                   onChange={(e) => setReqTime(e.target.value)}
                   className="rounded-lg"

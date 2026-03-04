@@ -94,7 +94,7 @@ export function JobDetails({ job, title }: Props) {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-4 mb-8">
-            <CreateComment jobId={job._id} options={commentTypes} />
+            <CreateComment jobId={job._id} options={commentTypes} deliveryDate={job.deliveryDate} />
           </div>
 
           {/* Comments Section */}

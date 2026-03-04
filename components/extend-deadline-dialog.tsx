@@ -21,9 +21,10 @@ import { BeatLoader } from "react-spinners";
 
 interface Props {
   jobId: string;
+  deliveryDate: string | Date;
 }
 
-export function ExtendDeadlineDialog({ jobId }: Props) {
+export function ExtendDeadlineDialog({ jobId, deliveryDate }: Props) {
   const [isOpen, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -31,6 +32,12 @@ export function ExtendDeadlineDialog({ jobId }: Props) {
   const [error, setError] = useState("");
   const router = useRouter();
   const { data: user } = useSession();
+
+  const today = new Date().toISOString().split("T")[0];
+  const dayAfterDeadline = new Date(new Date(deliveryDate).getTime() + 86400000)
+    .toISOString()
+    .split("T")[0];
+  const minDate = today > dayAfterDeadline ? today : dayAfterDeadline;
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,7 +91,7 @@ export function ExtendDeadlineDialog({ jobId }: Props) {
             </label>
             <Input
               type="date"
-              min={new Date().toISOString().split("T")[0]}
+              min={minDate}
               value={reqTime}
               onChange={(e) => setReqTime(e.target.value)}
               className="rounded-lg"
