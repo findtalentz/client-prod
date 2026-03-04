@@ -11,6 +11,7 @@ interface Props {
     requiredExperienceLevel: string;
     duration: string;
     category: string;
+    location: string;
   }>;
 }
 
@@ -27,6 +28,7 @@ export default async function Jobs({ searchParams }: Props) {
     ? filterParams.requiredExperienceLevel
     : null;
   const category = filterParams.category ? filterParams.category : null;
+  const location = filterParams.location ? filterParams.location : null;
   const orderBy = filterParams.orderBy ? filterParams.orderBy : null;
   const { data } = await apiClient.get<ApiResponse<JobSchema[]>>("/jobs", {
     params: {
@@ -37,6 +39,7 @@ export default async function Jobs({ searchParams }: Props) {
       duration,
       jobType,
       category,
+      location,
     },
   });
   return (

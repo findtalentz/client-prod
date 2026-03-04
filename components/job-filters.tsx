@@ -3,6 +3,7 @@ import useJobCategorys from "@/hooks/useCategorys";
 import JobCategoryFilter from "./job-filters/categoy-filter";
 import ExperinceLavel from "./job-filters/experince-level";
 import JobTypeFilter from "./job-filters/job-type";
+import LocationFilter from "./job-filters/location-filter";
 import JobSize from "./job-filters/project-size";
 
 export default function JobFilters() {
@@ -11,6 +12,7 @@ export default function JobFilters() {
     <div className="w-full px-2 space-y-6">
       {categorys && <JobCategoryFilter categorys={categorys.data} />}
       <JobTypeFilter />
+      <LocationFilter />
       <ExperinceLavel />
       <JobSize />
     </div>

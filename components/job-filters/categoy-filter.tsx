@@ -47,7 +47,7 @@ function JobCategoryFilter({ categorys }: Props) {
                   onCheckedChange={() => onFilterCategory(category._id)}
                 />
                 <label
-                  htmlFor={`budget-${category._id}`}
+                  htmlFor={category._id}
                   className="text-sm font-medium leading-none"
                 >
                   {category.name}

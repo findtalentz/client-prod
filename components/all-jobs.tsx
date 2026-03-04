@@ -15,9 +15,16 @@ export default function AllJobs({ jobs }: Props) {
         <SearchBox />
       </div>
       <div className="space-y-2 md:ps-6">
-        {jobs.map((job) => (
-          <JobCard job={job} key={job._id} />
-        ))}
+        {jobs.length === 0 ? (
+          <div className="py-12 text-center text-gray-500">
+            <p className="text-lg font-medium">No jobs found</p>
+            <p className="text-sm mt-1">Try adjusting your filters or search terms.</p>
+          </div>
+        ) : (
+          jobs.map((job) => (
+            <JobCard job={job} key={job._id} />
+          ))
+        )}
       </div>
     </div>
   );
