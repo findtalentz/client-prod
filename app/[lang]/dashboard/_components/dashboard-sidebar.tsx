@@ -32,7 +32,9 @@ export default function DashboardSidebar({ items }: Props) {
   return (
     <Sidebar>
       <SidebarHeader className="px-4 bg-primary-dark h-[65px] flex items-start justify-center">
-        <Image src="/logo.svg" alt="logo" width={120} height={50} priority />
+        <Link href="/">
+          <Image src="/logo.svg" alt="logo" width={120} height={50} priority />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
