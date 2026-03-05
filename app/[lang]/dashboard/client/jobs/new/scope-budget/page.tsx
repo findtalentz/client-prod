@@ -30,8 +30,9 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { BeatLoader } from "react-spinners";
 
 const JobScopeAndBudgetSchema = Joi.object({
   duration: Joi.string().valid("large", "medium", "small").required().messages({
@@ -56,6 +57,7 @@ function ScopeAndBudget() {
   const setStep = useStepStore((s) => s.setStep);
   const { jobScopeAndBudget, saveJobScopeAndBudget } =
     useJobScopeAndBudgetStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<JobScopeAndBudget>({
     resolver: joiResolver(JobScopeAndBudgetSchema),
@@ -68,10 +70,12 @@ function ScopeAndBudget() {
 
   const onSubmit = async (data: JobScopeAndBudget) => {
     try {
+      setIsLoading(true);
       saveJobScopeAndBudget(data);
       router.push("/dashboard/client/jobs/new/preview");
     } catch (error) {
       console.error("Error saving data:", error);
+      setIsLoading(false);
     }
   };
 
@@ -159,7 +163,9 @@ function ScopeAndBudget() {
           >
             Save draft and exit
           </Link>
-          <Button onClick={form.handleSubmit(onSubmit)}>Save & Next</Button>
+          <Button disabled={isLoading} onClick={form.handleSubmit(onSubmit)}>
+            {isLoading ? <BeatLoader size={8} color="white" /> : "Save & Next"}
+          </Button>
         </div>
       </form>
     </Form>

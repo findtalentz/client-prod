@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
+import { BeatLoader } from "react-spinners";
 
 // ✅ Joi validation schema
 const SkillSchema = Joi.object({
@@ -53,6 +54,7 @@ function Skills() {
   const { saveSkills, jobSkills } = useJobSkillsStore();
   const router = useRouter();
   const [skillInput, setSkillInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<JobSkills>({
     resolver: joiResolver(SkillSchema),
@@ -93,6 +95,7 @@ function Skills() {
   // ✅ Handle form submit
   const onSubmit = async (data: JobSkills) => {
     try {
+      setIsLoading(true);
       saveSkills({ ...data, requiredSkills: skills });
       router.push("/dashboard/client/jobs/new/scope-budget");
     } catch (error) {
@@ -100,6 +103,7 @@ function Skills() {
       form.setError("root", {
         message: "Failed to save skills. Please try again.",
       });
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -206,7 +210,9 @@ function Skills() {
           >
             Save draft and exit
           </Link>
-          <Button onClick={form.handleSubmit(onSubmit)}>Save & Next</Button>
+          <Button disabled={isLoading} onClick={form.handleSubmit(onSubmit)}>
+            {isLoading ? <BeatLoader size={8} color="white" /> : "Save & Next"}
+          </Button>
         </div>
       </form>
     </Form>

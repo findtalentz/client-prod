@@ -2,91 +2,137 @@
 
 import { useStepStore } from "@/store";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { useEffect } from "react";
+import { Check } from "lucide-react";
 
 const steps = [
-  { id: 1, name: "Overview", link: "/dashboard/client/jobs/new" },
-  { id: 2, name: "Skills", link: "/dashboard/client/jobs/new/skills" },
+  {
+    id: 1,
+    name: "Overview",
+    description: "Title, category & location",
+  },
+  {
+    id: 2,
+    name: "Skills",
+    description: "Experience & required skills",
+  },
   {
     id: 3,
     name: "Scope & Budget",
-    link: "/dashboard/client/jobs/new/scope-budget",
+    description: "Duration, budget & description",
   },
-  { id: 4, name: "Preview", link: "/dashboard/client/jobs/new/preview" },
+  {
+    id: 4,
+    name: "Preview",
+    description: "Review & submit",
+  },
 ];
 
 const JobPostSteps = () => {
-  const setStep = useStepStore((s) => s.setStep);
   const currentStep = useStepStore((s) => s.step);
 
-  useEffect(() => {
-    setStep(1);
-  }, [setStep]);
-
   return (
-    <div className="relative flex flex-col space-y-6 border-l-2 border-gray-200 pl-6">
-      {steps.map((step, index) => {
-        const isActive = currentStep === step.id;
-        const isCompleted = currentStep > step.id;
+    <div className="py-4 pr-6">
+      {/* Progress header */}
+      <div className="mb-6">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+          Step {currentStep} of {steps.length}
+        </p>
+        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-primary rounded-full"
+            initial={false}
+            animate={{ width: `${(currentStep / steps.length) * 100}%` }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          />
+        </div>
+      </div>
 
-        return (
-          <Link
-            href={step.link}
-            key={step.id}
-            className="group relative flex items-center gap-4"
-          >
-            {/* Step Indicator */}
-            <motion.div
-              initial={false}
-              animate={{
-                scale: isActive ? 1.1 : 1,
-              }}
-              className={`flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-300 
-                ${
-                  isCompleted
-                    ? "bg-primary border-primary text-white shadow-md"
-                    : isActive
-                    ? "bg-primary border-primary text-white shadow-md"
-                    : "bg-white border-gray-300 text-gray-400 group-hover:border-primary/50"
-                }`}
-            >
-              {isCompleted ? "✓" : step.id}
-            </motion.div>
+      {/* Steps list */}
+      <div className="relative flex flex-col gap-0">
+        {steps.map((step, index) => {
+          const isActive = currentStep === step.id;
+          const isCompleted = currentStep > step.id;
+          const isLast = index === steps.length - 1;
 
-            {/* Step Details */}
-            <div className="flex flex-col">
-              <p
-                className={`text-sm font-semibold transition-colors duration-300 
-                  ${
+          return (
+            <div key={step.id} className="relative flex gap-4">
+              {/* Vertical connector line */}
+              {!isLast && (
+                <div className="absolute left-[15px] top-8 w-0.5 h-full -z-0">
+                  <motion.div
+                    className="w-full bg-primary origin-top"
+                    initial={false}
+                    animate={{ scaleY: isCompleted ? 1 : 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    style={{ height: "100%" }}
+                  />
+                  <div className="absolute inset-0 bg-gray-200 -z-10" />
+                </div>
+              )}
+
+              {/* Step circle */}
+              <div className="flex-shrink-0 z-10">
+                <motion.div
+                  initial={false}
+                  animate={{
+                    scale: isActive ? 1.1 : 1,
+                    backgroundColor: isCompleted
+                      ? "var(--primary)"
+                      : isActive
+                      ? "var(--primary)"
+                      : "#ffffff",
+                    borderColor: isCompleted
+                      ? "var(--primary)"
+                      : isActive
+                      ? "var(--primary)"
+                      : "#d1d5db",
+                  }}
+                  transition={{ duration: 0.2 }}
+                  className="w-8 h-8 rounded-full border-2 flex items-center justify-center shadow-sm"
+                >
+                  {isCompleted ? (
+                    <Check className="w-4 h-4 text-white" strokeWidth={2.5} />
+                  ) : (
+                    <span
+                      className={`text-sm font-semibold ${
+                        isActive ? "text-white" : "text-gray-400"
+                      }`}
+                    >
+                      {step.id}
+                    </span>
+                  )}
+                </motion.div>
+              </div>
+
+              {/* Step text */}
+              <div className="pb-8">
+                <p
+                  className={`text-sm font-semibold leading-tight transition-colors duration-200 ${
                     isActive
                       ? "text-primary"
                       : isCompleted
                       ? "text-gray-800"
-                      : "text-gray-500"
+                      : "text-gray-400"
                   }`}
-              >
-                {step.name}
-              </p>
-              {isActive && (
-                <motion.span
-                  layoutId="active-step"
-                  className="h-0.5 w-6 bg-primary mt-1 rounded-full"
-                />
-              )}
+                >
+                  {step.name}
+                </p>
+                <p
+                  className={`text-xs mt-0.5 transition-colors duration-200 ${
+                    isActive
+                      ? "text-gray-600"
+                      : isCompleted
+                      ? "text-gray-500"
+                      : "text-gray-300"
+                  }`}
+                >
+                  {step.description}
+                </p>
+              </div>
             </div>
-
-            {/* Connecting Line (vertical) */}
-            {index < steps.length - 1 && (
-              <div
-                className={`absolute left-3 top-6 h-6 w-0.5 ${
-                  isCompleted ? "bg-primary" : "bg-gray-200"
-                }`}
-              />
-            )}
-          </Link>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
