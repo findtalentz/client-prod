@@ -76,6 +76,10 @@ export function CreateJobApplication({ job }: Props) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!job._id || isSubmitDisabled) return;
+    if (!session?.data.phone || !session?.data.title || !session?.data.about || !session?.data.location) {
+      toast.error("Please complete your profile before applying.");
+      return;
+    }
     if (session?.data.identityStatus !== "VERIFIED") {
       toast.error("Identity verification required before applying.");
       return;
@@ -106,11 +110,25 @@ export function CreateJobApplication({ job }: Props) {
   if (!session) return null;
   if (session.data.role === "CLIENT") return null;
 
-  return session.data.identityStatus !== "VERIFIED" ? (
-    <Button size="sm" className="px-8 cursor-pointer" asChild>
-      <Link href="/identity-verify">Verify Identity</Link>
-    </Button>
-  ) : (
+  const isProfileIncomplete = !session.data.phone || !session.data.title || !session.data.about || !session.data.location;
+
+  if (isProfileIncomplete) {
+    return (
+      <Button size="sm" className="px-8 cursor-pointer" asChild>
+        <Link href="/profile">Complete Profile</Link>
+      </Button>
+    );
+  }
+
+  if (session.data.identityStatus !== "VERIFIED") {
+    return (
+      <Button size="sm" className="px-8 cursor-pointer" asChild>
+        <Link href="/identity-verify">Verify Identity</Link>
+      </Button>
+    );
+  }
+
+  return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" className="px-8 cursor-pointer">

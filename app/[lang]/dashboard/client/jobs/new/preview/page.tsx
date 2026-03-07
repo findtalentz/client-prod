@@ -95,11 +95,6 @@ const JobPreview = () => {
   const handleSubmit = async (): Promise<void> => {
     if (!session) return;
     try {
-      if (session.data.identityStatus !== "VERIFIED") {
-        toast.error("Please verify your identity before posting jobs");
-        return;
-      }
-
       setIsSubmitting(true);
       const payload = { ...overview, ...jobSkills, ...jobScopeAndBudget };
       await apiClient.post("/jobs", payload);

@@ -4,6 +4,7 @@ import ApiResponse from "@/schemas/ApiRespose";
 import apiClient from "@/services/api-client";
 import { AxiosError } from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
@@ -14,6 +15,7 @@ const formSchema = z.object({
 });
 
 function Refer() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,8 +30,7 @@ function Refer() {
       });
 
       toast.success(res.data.message);
-      setEmail("");
-      setError("");
+      router.push("/profile");
     } catch (err) {
       if (err instanceof z.ZodError) {
         setError(err.errors[0].message);
@@ -53,8 +54,8 @@ function Refer() {
             <div className="text-center w-full space-y-2">
               <h2 className="text-[#E2F397]">Refer a friend Get $100.</h2>
               <p className="text-white">
-                Invite your friends to Talentz, you get $100 when they create
-                the first job adv
+                They get 10% off their first order and you can earn up to $500
+                in Talentz Credits — up to $100 from each referral.
               </p>
               <div className="flex flex-col items-start w-full">
                 <p className="text-white">Email</p>
