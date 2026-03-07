@@ -11,19 +11,21 @@ export default async function ServicesPage() {
     "/services"
   );
   return (
-    <div>
+    <div className="pb-20">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-primary mb-5">Services</h3>
+        <h2 className="text-primary font-semibold">Services</h2>
         <Link className={buttonVariants()} href="/profile/seller/services/new">
           Add New Service
         </Link>
       </div>
-      <Grid columns={{ initial: "1", md: "2" }} gap="5">
-        {services.data.map((service) => (
-          <ServiceCard key={service._id} service={service} />
-        ))}
-      </Grid>
-      <div className="flex justify-end mt-6">
+      {services.data.length > 0 && (
+        <Grid columns={{ initial: "1", md: "2" }} gap="4">
+          {services.data.map((service) => (
+            <ServiceCard key={service._id} service={service} />
+          ))}
+        </Grid>
+      )}
+      <div className="flex justify-end mt-8">
         <Link
           className={buttonVariants()}
           href="/profile/seller/preview"
@@ -34,4 +36,5 @@ export default async function ServicesPage() {
     </div>
   );
 }
+
 export const dynamic = "force-dynamic";

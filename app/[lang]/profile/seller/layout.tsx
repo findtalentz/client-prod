@@ -11,7 +11,7 @@ export default function SellerProfileLayout({ children }: PropsWithChildren) {
       <Container>
         <Grid columns={{ initial: "1", md: "200px 1fr" }}>
           <SellerProfileSidebar />
-          <div className="p-4 max-h-[calc(100vh-65px)] overflow-y-scroll">
+          <div className="p-4 md:p-6 max-h-[calc(100vh-65px)] overflow-y-auto">
             {children}
           </div>
         </Grid>

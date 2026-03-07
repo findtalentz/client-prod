@@ -9,9 +9,9 @@ import Link from "next/link";
 export default async function Projects() {
   const { data } = await apiClient.get<ApiResponse<Portfolio[]>>("/portfolios");
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h2 className="text-primary mb-5">Portfolio</h2>
+    <div className="pb-20">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-primary font-semibold">Portfolio</h2>
         <Link
           className={buttonVariants()}
           href="/profile/seller/portfolios/new"
@@ -21,15 +21,17 @@ export default async function Projects() {
       </div>
       {data && data.count > 0 && (
         <div>
-          <h5 className="font-medium text-xl mb-3">Added Proects</h5>
-          <Grid columns={{ initial: "1", md: "2" }} gap="5">
+          <h5 className="font-medium text-lg mb-3 text-gray-700">
+            Added Projects
+          </h5>
+          <Grid columns={{ initial: "1", md: "2" }} gap="4">
             {data.data.map((portfolio) => (
               <PortfolioCard key={portfolio._id} portfolio={portfolio} />
             ))}
           </Grid>
         </div>
       )}
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-8">
         <Link
           className={buttonVariants()}
           href="/profile/seller/services"

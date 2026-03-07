@@ -230,7 +230,7 @@ export default function ProfileForm({ nextUrl }: ProfileFormProps) {
                     previewOptions={{
                       rehypePlugins: [[rehypeSanitize]],
                     }}
-                    height={400}
+                    height={250}
                   />
                 </div>
               </FormControl>

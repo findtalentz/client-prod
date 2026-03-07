@@ -68,33 +68,34 @@ export default function AddLanguages() {
   };
 
   return (
-    <div>
-      <h3 className="text-primary mb-2">Languages</h3>
-      <div className="border border-primary rounded-xl overflow-hidden flex items-center justify-between">
+    <div className="space-y-4">
+      <h3 className="text-primary font-medium">Languages</h3>
+      <div className="border border-gray-300 rounded-xl overflow-hidden flex items-center focus-within:border-primary transition-colors">
         <input
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleAddLanguage()}
-          className="flex-1 border-none focus:outline-none py-2 ps-3"
-          placeholder="Search languages..."
+          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddLanguage())}
+          className="flex-1 border-none focus:outline-none py-2.5 px-4 text-sm"
+          placeholder="Type a language and press Enter or click Add"
         />
         <button
           onClick={handleAddLanguage}
-          className="w-20 py-2 bg-primary border-none outline-none text-white flex items-center justify-center gap-1"
+          className="px-5 py-2.5 bg-primary border-none outline-none text-white text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           Add
         </button>
       </div>
 
-      <div className="py-4">
-        <Text size="small">Suggested Languages</Text>
-        <div className="flex items-center gap-4 py-3 flex-wrap">
+      <div>
+        <Text size="small" className="text-gray-500">Suggested Languages</Text>
+        <div className="flex items-center gap-2 py-2 flex-wrap">
           {suggestedLanguages.map((languageItem) => (
             <Button
               onClick={() => setLanguage(languageItem.value)}
               size="sm"
               variant="light"
               key={languageItem._id}
+              className="text-xs"
             >
               {languageItem.value} <IoAdd className="text-xs" />
             </Button>
@@ -103,15 +104,16 @@ export default function AddLanguages() {
       </div>
 
       {user.data.languages && user.data.languages.length > 0 && (
-        <div className="py-4">
-          <Text size="small">Added Languages</Text>
-          <div className="flex items-center gap-4 py-3 flex-wrap">
+        <div>
+          <Text size="small" className="text-gray-500">Added Languages</Text>
+          <div className="flex items-center gap-2 py-2 flex-wrap">
             {user.data.languages.map((lang) => (
               <Button
                 onClick={() => handleRemoveLanguage(lang)}
                 size="sm"
                 variant="secondary"
                 key={lang}
+                className="text-xs"
               >
                 {lang} <IoClose className="text-xs" />
               </Button>

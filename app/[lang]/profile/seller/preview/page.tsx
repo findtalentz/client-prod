@@ -27,90 +27,110 @@ export default async function PreviewPage() {
   if (!user) return null;
 
   return (
-    <div className="space-y-10 h-[80dvh] overflow-y-auto pb-20 px-10">
-      <Flex gap="5">
-        <Avatar
-          src={user.image}
-          fallback={user.firstName}
-          size="9"
-          radius="full"
-        />
-        <div className="space-y-5">
-          <div>
-            <h2> {user.firstName + " " + user.lastName} </h2>
-            <Flex align="center" gap="6">
-              <Text className="text-gray-500"> {user.title} </Text>
-              <Text className="text-gray-500 flex items-center gap-1">
-                <SlLocationPin /> {user.location}
-              </Text>
-            </Flex>
-          </div>
-          <Flex wrap="wrap" gap="2">
-            {user.skills?.map((skill, i) => (
-              <Badge className="bg-primary/60 rounded-full" key={i}>
-                {skill}
-              </Badge>
-            ))}
-          </Flex>
-        </div>
-      </Flex>
+    <div className="space-y-8 pb-20">
+      <h2 className="text-primary font-semibold">Profile Preview</h2>
 
-      <Grid columns={{ initial: "1", md: "2" }} gap="5">
-        <div className="flex items-center justify-center gap-6 flex-col">
-          {educations &&
-            educations.count > 0 &&
-            educations.data.map((education) => (
+      {/* Header */}
+      <div className="border rounded-2xl p-6 shadow-sm">
+        <Flex gap="5" align="start">
+          <Avatar
+            src={user.image}
+            fallback={user.firstName}
+            size="8"
+            radius="full"
+          />
+          <div className="space-y-3">
+            <div>
+              <h3>{user.firstName} {user.lastName}</h3>
+              <Flex align="center" gap="4">
+                <Text className="text-gray-500">{user.title}</Text>
+                <Text className="text-gray-500 flex items-center gap-1">
+                  <SlLocationPin className="text-xs" /> {user.location}
+                </Text>
+              </Flex>
+            </div>
+            {user.skills && user.skills.length > 0 && (
+              <Flex wrap="wrap" gap="2">
+                {user.skills.map((skill, i) => (
+                  <Badge className="bg-primary/60 rounded-full text-xs" key={i}>
+                    {skill}
+                  </Badge>
+                ))}
+              </Flex>
+            )}
+          </div>
+        </Flex>
+      </div>
+
+      {/* Education & Languages */}
+      <Grid columns={{ initial: "1", md: "2" }} gap="4">
+        {educations && educations.count > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-semibold text-gray-800">Education</h4>
+            {educations.data.map((education) => (
               <div
-                className="rounded-3xl border p-5 space-y-3 flex-1 w-full"
+                className="rounded-2xl border p-4 space-y-2"
                 key={education._id}
               >
-                <h4>Education</h4>
-                <div>
-                  <p> {education.degree} </p>
-                  <p> {education.institution} </p>
-                </div>
+                <p className="font-medium">{education.degree}</p>
+                <p className="text-sm text-gray-500">{education.institution}</p>
                 <Flex align="center" justify="between">
-                  <p className="text-[12px]">
+                  <p className="text-xs text-gray-400">
                     {formatDate(education.startDate)}
                   </p>
-                  <p className="text-[12px]">{formatDate(education.endDate)}</p>
+                  {education.endDate && (
+                    <p className="text-xs text-gray-400">
+                      {formatDate(education.endDate)}
+                    </p>
+                  )}
                 </Flex>
               </div>
             ))}
-        </div>
-        <div>
-          <div className="rounded-3xl border p-5 space-y-3 w-full h-full">
-            <h4>Languages</h4>
-            <ul>
-              {user.languages?.map((language, i) => (
-                <li key={i}> {language} </li>
-              ))}
-            </ul>
           </div>
-        </div>
+        )}
+        {user.languages && user.languages.length > 0 && (
+          <div>
+            <h4 className="font-semibold text-gray-800 mb-3">Languages</h4>
+            <div className="rounded-2xl border p-4">
+              <ul className="space-y-1">
+                {user.languages.map((language, i) => (
+                  <li key={i} className="text-sm text-gray-600">
+                    {language}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </Grid>
 
-      <div>
-        <p className="font-bold mb-3">About</p>
-        <Markdown remarkPlugins={[remarkGfm]}>{user.about}</Markdown>
-      </div>
-      {services.count > 0 && (
+      {/* About */}
+      {user.about && (
         <div>
-          <h3 className="mb-4">Services</h3>
-          <Grid columns={{ initial: "1", md: "2" }} gap="5">
-            {services &&
-              services.count > 0 &&
-              services.data.map((service) => (
-                <ServiceCard key={service._id} service={service} />
-              ))}
+          <h4 className="font-semibold text-gray-800 mb-3">About</h4>
+          <div className="prose prose-sm max-w-none text-gray-600">
+            <Markdown remarkPlugins={[remarkGfm]}>{user.about}</Markdown>
+          </div>
+        </div>
+      )}
+
+      {/* Services */}
+      {services && services.count > 0 && (
+        <div>
+          <h4 className="font-semibold text-gray-800 mb-3">Services</h4>
+          <Grid columns={{ initial: "1", md: "2" }} gap="4">
+            {services.data.map((service) => (
+              <ServiceCard key={service._id} service={service} />
+            ))}
           </Grid>
         </div>
       )}
 
-      {portfolios.count > 0 && (
+      {/* Portfolios */}
+      {portfolios && portfolios.count > 0 && (
         <div>
-          <h3 className="mb-4">Portfolios</h3>
-          <Grid columns={{ initial: "1", md: "2" }} gap="5">
+          <h4 className="font-semibold text-gray-800 mb-3">Portfolios</h4>
+          <Grid columns={{ initial: "1", md: "2" }} gap="4">
             {portfolios.data.map((portfolio) => (
               <PortfolioCard key={portfolio._id} portfolio={portfolio} />
             ))}

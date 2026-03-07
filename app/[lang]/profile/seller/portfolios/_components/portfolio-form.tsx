@@ -279,7 +279,7 @@ export function PortfolioForm({ portfolio, mode = "create", onCancel }: Props) {
                           previewOptions={{
                             rehypePlugins: [[rehypeSanitize]],
                           }}
-                          height={400}
+                          height={250}
                         />
                       </div>
                     </FormControl>

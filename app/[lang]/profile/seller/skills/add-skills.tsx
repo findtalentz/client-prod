@@ -64,32 +64,33 @@ export default function AddSkills() {
   };
 
   return (
-    <div>
-      <h3 className="text-primary mb-2">Skills</h3>
-      <div className="border border-primary rounded-xl overflow-hidden flex items-center justify-between">
+    <div className="space-y-4">
+      <h3 className="text-primary font-medium">Skills</h3>
+      <div className="border border-gray-300 rounded-xl overflow-hidden flex items-center focus-within:border-primary transition-colors">
         <input
           value={skill}
           onChange={(e) => setSkill(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleAddSkill()}
-          className="flex-1 border-none focus:outline-none py-2 ps-3"
-          placeholder="Search.."
+          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddSkill())}
+          className="flex-1 border-none focus:outline-none py-2.5 px-4 text-sm"
+          placeholder="Type a skill and press Enter or click Add"
         />
         <button
           onClick={handleAddSkill}
-          className="w-20 py-2 bg-primary border-none outline-none text-white"
+          className="px-5 py-2.5 bg-primary border-none outline-none text-white text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           Add
         </button>
       </div>
-      <div className="py-4">
-        <Text size="small">Suggested Skills</Text>
-        <div className="flex items-center gap-4 py-3">
+      <div>
+        <Text size="small" className="text-gray-500">Suggested Skills</Text>
+        <div className="flex items-center gap-2 py-2 flex-wrap">
           {suggestedSkills.map((skillItem) => (
             <Button
               onClick={() => setSkill(skillItem.value)}
               size="sm"
               key={skillItem._id}
               variant="light"
+              className="text-xs"
             >
               {skillItem.value} <IoAdd />
             </Button>
@@ -97,15 +98,16 @@ export default function AddSkills() {
         </div>
       </div>
       {user.data.skills && user.data.skills.length >= 1 && (
-        <div className="py-4">
-          <Text size="small">Added Skills</Text>
-          <div className="flex items-center gap-4 py-3">
+        <div>
+          <Text size="small" className="text-gray-500">Added Skills</Text>
+          <div className="flex items-center gap-2 py-2 flex-wrap">
             {user.data.skills.map((skill, i) => (
               <Button
                 onClick={() => handleRemoveSkill(skill)}
                 size="sm"
                 key={i}
                 variant="secondary"
+                className="text-xs"
               >
                 {skill} <IoClose />
               </Button>

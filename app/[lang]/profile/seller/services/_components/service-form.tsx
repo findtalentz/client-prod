@@ -398,7 +398,7 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Project Description</FormLabel>
+              <FormLabel>Service Description</FormLabel>
               <FormControl>
                 <div
                   data-color-mode="light"
@@ -410,7 +410,7 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
                     previewOptions={{
                       rehypePlugins: [[rehypeSanitize]],
                     }}
-                    height={400}
+                    height={250}
                   />
                 </div>
               </FormControl>
@@ -428,7 +428,7 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
             <FormItem>
               <FormLabel>Service Image</FormLabel>
               <FormControl>
-                <div className="relative h-[500px] border-2 border-dashed border-primary rounded-2xl flex flex-col items-center justify-center gap-2 overflow-hidden">
+                <div className="relative h-[300px] border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center gap-2 overflow-hidden hover:border-primary transition-colors">
                   <input
                     id="service-image"
                     type="file"

@@ -2,8 +2,8 @@ import { PortfolioForm } from "../_components/portfolio-form";
 
 const AddPortfolio = () => {
   return (
-    <div>
-      <h1>Add Portfolio</h1>
+    <div className="pb-20">
+      <h2 className="text-primary font-semibold mb-6">Add Portfolio</h2>
       <PortfolioForm mode="create" />
     </div>
   );

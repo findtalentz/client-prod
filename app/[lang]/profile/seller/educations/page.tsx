@@ -11,13 +11,13 @@ export default async function EducationsPage() {
     "/educations"
   );
   return (
-    <div>
-      <h1 className="text-primary mb-5">Educations</h1>
+    <div className="pb-20">
+      <h2 className="text-primary font-semibold mb-5">Educations</h2>
       {educations && educations.count > 0 && (
         <Educations educations={educations.data} />
       )}
       <AddEducation />
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-8">
         <Link
           className={buttonVariants()}
           href="/profile/seller/portfolios"
