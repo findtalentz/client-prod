@@ -1,14 +1,17 @@
 "use client";
-import MessageSentButton from "@/components/message-sent-button";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import usePackages from "@/hooks/usePackages";
 import useService from "@/hooks/useService";
 import useSession from "@/hooks/useSession";
+import { handleApiError } from "@/lib/handle-api-error";
+import apiClient from "@/services/api-client";
 import { Grid } from "@radix-ui/themes";
 import Image from "next/image";
 import { useState } from "react";
 import { GoDotFill } from "react-icons/go";
+import { BeatLoader } from "react-spinners";
+import { cn } from "@/lib/utils";
 
 interface Props {
   id: string;
@@ -19,8 +22,28 @@ const ServiceDetailsDialog = ({ id }: Props) => {
   const { data: packages } = usePackages(id);
   const [isOpen, setIsOpen] = useState(false);
   const { data: user } = useSession();
+  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(
+    null
+  );
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   if (!service || !packages) return null;
+
+  const handleCheckout = async (packageId: string) => {
+    setIsCheckingOut(true);
+    try {
+      const { data } = await apiClient.post("/orders/package", {
+        packageId,
+      });
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -132,7 +155,18 @@ const ServiceDetailsDialog = ({ id }: Props) => {
               {packages.data.map((d) => (
                 <div
                   key={d._id}
-                  className="border p-6 rounded-2xl relative transition-all duration-300 hover:shadow hover:-translate-y-1"
+                  onClick={() => {
+                    if (user && user.data.role === "CLIENT") {
+                      setSelectedPackageId(d._id);
+                    }
+                  }}
+                  className={cn(
+                    "border p-6 rounded-2xl relative transition-all duration-300 hover:shadow hover:-translate-y-1",
+                    user?.data.role === "CLIENT" && "cursor-pointer",
+                    selectedPackageId === d._id
+                      ? "border-primary ring-2 ring-primary/30 shadow-lg"
+                      : "border-gray-200"
+                  )}
                 >
                   <div className="flex w-full items-center justify-between mb-4">
                     <h4 className="text-xl sm:text-2xl font-bold">{d.label}</h4>
@@ -151,15 +185,39 @@ const ServiceDetailsDialog = ({ id }: Props) => {
                       </li>
                     ))}
                   </ul>
+
+                  {user && user.data.role === "CLIENT" && (
+                    <Button
+                      className="w-full mt-4"
+                      size="sm"
+                      disabled={isCheckingOut}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCheckout(d._id);
+                      }}
+                    >
+                      {isCheckingOut && selectedPackageId === d._id ? (
+                        <BeatLoader size={8} color="#fff" />
+                      ) : (
+                        `Select ${d.label}`
+                      )}
+                    </Button>
+                  )}
                 </div>
               ))}
-              {user && user.data.role === "CLIENT" && (
-                <MessageSentButton
-                  seller={service.data.userId}
-                  label={"Get Started"}
+              {user && user.data.role === "CLIENT" && selectedPackageId && (
+                <Button
                   className="w-full"
                   size="lg"
-                />
+                  disabled={isCheckingOut}
+                  onClick={() => handleCheckout(selectedPackageId)}
+                >
+                  {isCheckingOut ? (
+                    <BeatLoader size={8} color="#fff" />
+                  ) : (
+                    "Get Started"
+                  )}
+                </Button>
               )}
             </div>
             <div className="h-10" />
