@@ -36,6 +36,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 import { z } from "zod";
 
 const jobSchema = z.object({
@@ -76,7 +77,22 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
 
   const selectedJobId = form.watch("job");
   const selectedJob = jobs?.data.find((j) => j._id === selectedJobId);
+
+  useEffect(() => {
+    if (selectedJob && form.getValues("amount") < selectedJob.budgetAmount) {
+      form.setValue("amount", selectedJob.budgetAmount);
+      form.clearErrors("amount");
+    }
+  }, [selectedJobId, selectedJob, form]);
+
   const onSubmit = async (data: JobFormValues) => {
+    if (selectedJob && data.amount < selectedJob.budgetAmount) {
+      form.setError("amount", {
+        message: `Amount cannot be less than the job budget of $${selectedJob.budgetAmount}`,
+      });
+      return;
+    }
+
     try {
       const res = await apiClient.post("/orders", {
         ...data,
@@ -162,7 +178,7 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
                     <Input
                       type="number"
                       placeholder="5"
-                      min={5}
+                      min={selectedJob?.budgetAmount ?? 5}
                       max="10000"
                       step="0.01"
                       {...field}
