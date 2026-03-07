@@ -13,6 +13,7 @@ import { Avatar, Flex, Grid } from "@radix-ui/themes";
 import { SlLocationPin } from "react-icons/sl";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import SaveProfileButton from "./save-profile-button";
 
 export default async function PreviewPage() {
   const [user, { data: educations }, { data: portfolios }, { data: services }] =
@@ -116,6 +117,8 @@ export default async function PreviewPage() {
           </Grid>
         </div>
       )}
+
+      <SaveProfileButton />
     </div>
   );
 }

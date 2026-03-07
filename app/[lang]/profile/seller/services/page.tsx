@@ -23,6 +23,14 @@ export default async function ServicesPage() {
           <ServiceCard key={service._id} service={service} />
         ))}
       </Grid>
+      <div className="flex justify-end mt-6">
+        <Link
+          className={buttonVariants()}
+          href="/profile/seller/preview"
+        >
+          Next
+        </Link>
+      </div>
     </div>
   );
 }

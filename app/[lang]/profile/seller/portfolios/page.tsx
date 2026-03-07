@@ -29,6 +29,14 @@ export default async function Projects() {
           </Grid>
         </div>
       )}
+      <div className="flex justify-end mt-6">
+        <Link
+          className={buttonVariants()}
+          href="/profile/seller/services"
+        >
+          Next
+        </Link>
+      </div>
     </div>
   );
 }
