@@ -4,7 +4,7 @@ import RoyaltyProgressShared from "@/components/dashboard/royalty-progress";
 function RoyaltyProgress() {
   return (
     <RoyaltyProgressShared
-      metricField="totalSpend"
+      role="client"
       detailsHref="/dashboard/client/royalty-program"
     />
   );
