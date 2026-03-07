@@ -19,7 +19,7 @@ import MDEditor from "@uiw/react-md-editor";
 import Joi from "joi";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
@@ -41,19 +41,6 @@ const FormSchema = Joi.object({
     "string.min": "Last name must contain at least 1 character.",
     "string.max": "Last name must be less than 255 characters.",
   }),
-
-  phone: Joi.string()
-    .pattern(/^[0-9+\-\s()]*$/)
-    .min(5)
-    .max(20)
-    .required()
-    .messages({
-      "any.required": "Phone number is required.",
-      "string.empty": "Phone number cannot be empty.",
-      "string.pattern.base": "Phone number format is invalid.",
-      "string.min": "Phone number must be at least 5 digits.",
-      "string.max": "Phone number must be less than 20 digits.",
-    }),
 
   title: Joi.string().min(2).max(255).required().messages({
     "any.required": "Title is required.",
@@ -81,34 +68,37 @@ interface FromData {
   firstName: string;
   lastName: string;
   about: string;
-  phone: string;
   title: string;
   location: string;
 }
 
-export default function ProfileForm() {
+interface ProfileFormProps {
+  nextUrl?: string;
+}
+
+export default function ProfileForm({ nextUrl }: ProfileFormProps) {
   const { data: user, isLoading, error } = useSession();
   const router = useRouter();
+  const hasInitialized = useRef(false);
 
   const form = useForm<FromData>({
     resolver: joiResolver(FormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      phone: "",
       title: "",
       location: "",
       about: "",
     },
   });
 
-  // Reset form when user data loads
+  // Reset form only on initial load, not on subsequent session refetches
   useEffect(() => {
-    if (user) {
+    if (user && !hasInitialized.current) {
+      hasInitialized.current = true;
       form.reset({
         firstName: user.data.firstName || "",
         lastName: user.data.lastName || "",
-        phone: user.data.phone || "",
         title: user.data.title || "",
         location: user.data.location || "",
         about: user.data.about || "",
@@ -120,8 +110,12 @@ export default function ProfileForm() {
     try {
       await apiClient.put(`/users/${user?.data._id}`, data);
       toast.success("Profile updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      router.refresh();
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      if (nextUrl) {
+        router.push(nextUrl);
+      } else {
+        router.refresh();
+      }
     } catch (error) {
       handleApiError(error);
     }
@@ -183,44 +177,23 @@ export default function ProfileForm() {
           />
         </Grid>
 
-        <Grid columns={{ initial: "1fr", md: "2" }} gap="4">
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Phone</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Phone"
-                    type="tel"
-                    {...field}
-                    disabled={form.formState.isSubmitting}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Location</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your location"
-                    {...field}
-                    disabled={form.formState.isSubmitting}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </Grid>
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Your location"
+                  {...field}
+                  disabled={form.formState.isSubmitting}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

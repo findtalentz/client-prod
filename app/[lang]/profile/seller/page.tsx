@@ -19,7 +19,7 @@ export default async function SellerProfile() {
           </div>
         </div>
       </div>
-      <ProfileForm />
+      <ProfileForm nextUrl="/profile/seller/skills" />
     </div>
   );
 }
