@@ -76,7 +76,7 @@ export function CreateJobApplication({ job }: Props) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!job._id || isSubmitDisabled) return;
-    if (!session?.data.phone || !session?.data.title || !session?.data.about || !session?.data.location) {
+    if (!session?.data.title || !session?.data.about || !session?.data.location) {
       toast.error("Please complete your profile before applying.");
       return;
     }
@@ -110,7 +110,7 @@ export function CreateJobApplication({ job }: Props) {
   if (!session) return null;
   if (session.data.role === "CLIENT") return null;
 
-  const isProfileIncomplete = !session.data.phone || !session.data.title || !session.data.about || !session.data.location;
+  const isProfileIncomplete = !session.data.title || !session.data.about || !session.data.location;
 
   if (isProfileIncomplete) {
     return (
