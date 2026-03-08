@@ -23,7 +23,6 @@ export default function Steps({ steps }: Props) {
 
   useEffect(() => {
     // Find the matching step based on current URL
-    const langPrefix = pathname.match(/^\/[a-z]{2}\//)?.[0] || "/";
     const pathWithoutLang = pathname.replace(/^\/[a-z]{2}/, "");
 
     let matchedStep = 1;
