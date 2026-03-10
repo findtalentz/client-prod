@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { RxCross2 } from "react-icons/rx";
 import { BeatLoader } from "react-spinners";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +30,7 @@ import apiClient from "@/services/api-client";
 import MDEditor from "@uiw/react-md-editor";
 import { useRouter } from "next/navigation";
 import rehypeSanitize from "rehype-sanitize";
+import { Plus, Upload, X } from "lucide-react";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -124,6 +124,68 @@ type ServiceFormValues = {
 
 interface EditServiceProps {
   service?: Service;
+}
+
+function ArrayField({
+  label,
+  items,
+  onAdd,
+  onRemove,
+  onUpdate,
+  placeholder,
+  disabled,
+  error,
+}: {
+  label: string;
+  items: string[];
+  onAdd: () => void;
+  onRemove: (index: number) => void;
+  onUpdate: (index: number, value: string) => void;
+  placeholder: string;
+  disabled: boolean;
+  error?: string;
+}) {
+  return (
+    <div>
+      <FormLabel className="text-sm font-medium">{label}</FormLabel>
+      <div className="space-y-2 mt-2">
+        {items?.map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <Input
+              placeholder={placeholder}
+              value={item}
+              onChange={(e) => onUpdate(index, e.target.value)}
+              disabled={disabled}
+              className="flex-1"
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => onRemove(index)}
+              disabled={disabled}
+              className="shrink-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ))}
+      </div>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={onAdd}
+        disabled={disabled}
+        className="mt-2 gap-1.5 text-xs"
+      >
+        <Plus className="w-3.5 h-3.5" /> Add {label.replace(" *", "").toLowerCase()}
+      </Button>
+      {error && (
+        <p className="text-sm font-medium text-destructive mt-1.5">{error}</p>
+      )}
+    </div>
+  );
 }
 
 export default function ServiceFormPage({ service }: EditServiceProps) {
@@ -236,246 +298,155 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Service Title</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="e.g. Web Development"
-                  {...field}
-                  disabled={form.formState.isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Basic Info */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+          <h3 className="text-sm font-semibold text-gray-900">Basic Information</h3>
 
-        {/* Details */}
-        <div className="mt-4">
-          <FormLabel className="text-sm font-medium">Details *</FormLabel>
-
-          {details?.map((detail, index) => (
-            <div key={index} className="flex items-center gap-2 mt-2">
-              <Input
-                placeholder="Enter detail"
-                value={detail}
-                onChange={(e) =>
-                  handleUpdateItem("details", index, e.target.value)
-                }
-                disabled={form.formState.isSubmitting}
-                className="flex-1"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={() => handleRemoveItem("details", index)}
-                disabled={form.formState.isSubmitting}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <RxCross2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => handleAddItem("details")}
-            disabled={form.formState.isSubmitting}
-            className="mt-3"
-          >
-            Add Another Detail
-          </Button>
-
-          {form.formState.errors.details && (
-            <p className="text-sm font-medium text-destructive mt-2">
-              {form.formState.errors.details.message}
-            </p>
-          )}
-        </div>
-
-        {/* Tools */}
-        <div className="mt-4">
-          <FormLabel className="text-sm font-medium">Tools *</FormLabel>
-
-          {tools?.map((tool, index) => (
-            <div key={index} className="flex items-center gap-2 mt-2">
-              <Input
-                placeholder="Enter tool"
-                value={tool}
-                onChange={(e) =>
-                  handleUpdateItem("tools", index, e.target.value)
-                }
-                disabled={form.formState.isSubmitting}
-                className="flex-1"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={() => handleRemoveItem("tools", index)}
-                disabled={form.formState.isSubmitting}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <RxCross2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => handleAddItem("tools")}
-            disabled={form.formState.isSubmitting}
-            className="mt-3"
-          >
-            Add Another Tool
-          </Button>
-
-          {form.formState.errors.tools && (
-            <p className="text-sm font-medium text-destructive mt-2">
-              {form.formState.errors.tools.message}
-            </p>
-          )}
-        </div>
-
-        {/* Features */}
-        <div className="mt-4">
-          <FormLabel className="text-sm font-medium">Features *</FormLabel>
-
-          {features?.map((feature, index) => (
-            <div key={index} className="flex items-center gap-2 mt-2">
-              <Input
-                placeholder="Enter feature"
-                value={feature}
-                onChange={(e) =>
-                  handleUpdateItem("features", index, e.target.value)
-                }
-                disabled={form.formState.isSubmitting}
-                className="flex-1"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={() => handleRemoveItem("features", index)}
-                disabled={form.formState.isSubmitting}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <RxCross2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => handleAddItem("features")}
-            disabled={form.formState.isSubmitting}
-            className="mt-3"
-          >
-            Add Another Feature
-          </Button>
-
-          {form.formState.errors.features && (
-            <p className="text-sm font-medium text-destructive mt-2">
-              {form.formState.errors.features.message}
-            </p>
-          )}
-        </div>
-
-        {/* Description */}
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Service Description</FormLabel>
-              <FormControl>
-                <div
-                  data-color-mode="light"
-                  className="border rounded-lg overflow-hidden"
-                >
-                  <MDEditor
-                    value={field.value}
-                    onChange={field.onChange}
-                    previewOptions={{
-                      rehypePlugins: [[rehypeSanitize]],
-                    }}
-                    height={250}
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Service Title</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="e.g. Web Development"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
                   />
-                </div>
-              </FormControl>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <div
+                    data-color-mode="light"
+                    className="border rounded-xl overflow-hidden"
+                  >
+                    <MDEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      previewOptions={{
+                        rehypePlugins: [[rehypeSanitize]],
+                      }}
+                      height={200}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Details, Tools, Features */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
+          <h3 className="text-sm font-semibold text-gray-900">Service Details</h3>
+
+          <ArrayField
+            label="Details *"
+            items={details}
+            onAdd={() => handleAddItem("details")}
+            onRemove={(i) => handleRemoveItem("details", i)}
+            onUpdate={(i, v) => handleUpdateItem("details", i, v)}
+            placeholder="e.g. Responsive design included"
+            disabled={form.formState.isSubmitting}
+            error={form.formState.errors.details?.message}
+          />
+
+          <ArrayField
+            label="Tools *"
+            items={tools}
+            onAdd={() => handleAddItem("tools")}
+            onRemove={(i) => handleRemoveItem("tools", i)}
+            onUpdate={(i, v) => handleUpdateItem("tools", i, v)}
+            placeholder="e.g. React, Node.js"
+            disabled={form.formState.isSubmitting}
+            error={form.formState.errors.tools?.message}
+          />
+
+          <ArrayField
+            label="Features *"
+            items={features}
+            onAdd={() => handleAddItem("features")}
+            onRemove={(i) => handleRemoveItem("features", i)}
+            onUpdate={(i, v) => handleUpdateItem("features", i, v)}
+            placeholder="e.g. SEO optimization"
+            disabled={form.formState.isSubmitting}
+            error={form.formState.errors.features?.message}
+          />
+        </div>
 
         {/* Image Upload */}
-        <FormField
-          control={form.control}
-          name="image"
-          render={() => (
-            <FormItem>
-              <FormLabel>Service Image</FormLabel>
-              <FormControl>
-                <div className="relative h-[300px] border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center gap-2 overflow-hidden hover:border-primary transition-colors">
-                  <input
-                    id="service-image"
-                    type="file"
-                    accept={ACCEPTED_IMAGE_TYPES.join(",")}
-                    onChange={handleImageUpload}
-                    disabled={form.formState.isSubmitting || isUploading}
-                    className="absolute w-full h-full opacity-0 cursor-pointer"
-                  />
-                  {form.watch("image") ? (
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={form.watch("image")}
-                        alt="Service preview"
-                        fill
-                        className="object-cover rounded-lg w-full h-full"
-                      />
-                    </div>
-                  ) : isUploading ? (
-                    <div className="flex flex-col items-center gap-2">
-                      <BeatLoader size={8} />
-                      <Text variant="gray" size="small">
-                        Uploading...
-                      </Text>
-                    </div>
-                  ) : (
-                    <div className="text-center p-4">
-                      <Text>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
-                      </Text>
-                      <Text variant="gray" size="small">
-                        (JPG, PNG, WEBP up to 1MB)
-                      </Text>
-                    </div>
-                  )}
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+          <h3 className="text-sm font-semibold text-gray-900">Service Image</h3>
 
-        {/* Submit Button */}
+          <FormField
+            control={form.control}
+            name="image"
+            render={() => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative h-[240px] border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center gap-2 overflow-hidden hover:border-primary/40 hover:bg-primary/5 transition-all">
+                    <input
+                      id="service-image"
+                      type="file"
+                      accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                      onChange={handleImageUpload}
+                      disabled={form.formState.isSubmitting || isUploading}
+                      className="absolute w-full h-full opacity-0 cursor-pointer"
+                    />
+                    {form.watch("image") ? (
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={form.watch("image")}
+                          alt="Service preview"
+                          fill
+                          className="object-cover rounded-xl w-full h-full"
+                        />
+                      </div>
+                    ) : isUploading ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <BeatLoader size={8} color="var(--primary)" />
+                        <Text variant="gray" size="small">
+                          Uploading...
+                        </Text>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                          <Upload className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <Text className="text-sm">
+                          <span className="text-primary font-medium">Click to upload</span>{" "}
+                          or drag and drop
+                        </Text>
+                        <Text variant="gray" size="small">
+                          JPG, PNG, WEBP up to 1MB
+                        </Text>
+                      </div>
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Submit */}
         <Button
           type="submit"
           disabled={form.formState.isSubmitting || isUploading}
-          className="w-full"
+          className="w-full h-11"
         >
           {form.formState.isSubmitting ? (
             <BeatLoader size={6} color="#ffffff" />

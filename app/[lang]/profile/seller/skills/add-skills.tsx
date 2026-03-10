@@ -1,13 +1,13 @@
 "use client";
 import { queryClient } from "@/app/[lang]/query-client-provider";
 import { Button } from "@/components/ui/button";
-import Text from "@/components/ui/text";
 import useSession from "@/hooks/useSession";
 import apiClient from "@/services/api-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoAdd, IoClose } from "react-icons/io5";
+import { Wrench } from "lucide-react";
 
 const suggestedSkills = [
   { _id: "1", value: "Figma" },
@@ -64,53 +64,57 @@ export default function AddSkills() {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-primary font-medium">Skills</h3>
-      <div className="border border-gray-300 rounded-xl overflow-hidden flex items-center focus-within:border-primary transition-colors">
-        <input
-          value={skill}
-          onChange={(e) => setSkill(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddSkill())}
-          className="flex-1 border-none focus:outline-none py-2.5 px-4 text-sm"
-          placeholder="Type a skill and press Enter or click Add"
-        />
-        <button
-          onClick={handleAddSkill}
-          className="px-5 py-2.5 bg-primary border-none outline-none text-white text-sm font-medium hover:bg-primary/90 transition-colors"
-        >
-          Add
-        </button>
+    <div className="space-y-5">
+      <div className="flex items-center gap-2">
+        <Wrench className="w-4 h-4 text-primary" />
+        <h3 className="text-sm font-semibold text-gray-900">Skills</h3>
       </div>
+
+      <div className="flex items-center gap-2">
+        <div className="flex-1 relative">
+          <input
+            value={skill}
+            onChange={(e) => setSkill(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddSkill())}
+            className="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400"
+            placeholder="Type a skill and press Enter"
+          />
+        </div>
+        <Button onClick={handleAddSkill} size="sm" className="h-[42px] px-5 rounded-xl">
+          <IoAdd className="mr-1" /> Add
+        </Button>
+      </div>
+
       <div>
-        <Text size="small" className="text-gray-500">Suggested Skills</Text>
-        <div className="flex items-center gap-2 py-2 flex-wrap">
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Suggestions</p>
+        <div className="flex items-center gap-2 flex-wrap">
           {suggestedSkills.map((skillItem) => (
-            <Button
+            <button
               onClick={() => setSkill(skillItem.value)}
-              size="sm"
               key={skillItem._id}
-              variant="light"
-              className="text-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary/5 text-primary hover:bg-primary/10 border border-primary/10 transition-colors cursor-pointer"
             >
-              {skillItem.value} <IoAdd />
-            </Button>
+              {skillItem.value} <IoAdd className="w-3 h-3" />
+            </button>
           ))}
         </div>
       </div>
+
       {user.data.skills && user.data.skills.length >= 1 && (
         <div>
-          <Text size="small" className="text-gray-500">Added Skills</Text>
-          <div className="flex items-center gap-2 py-2 flex-wrap">
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+            Added Skills ({user.data.skills.length})
+          </p>
+          <div className="flex items-center gap-2 flex-wrap">
             {user.data.skills.map((skill, i) => (
-              <Button
+              <button
                 onClick={() => handleRemoveSkill(skill)}
-                size="sm"
                 key={i}
-                variant="secondary"
-                className="text-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600 border border-gray-200 hover:border-red-200 transition-colors group cursor-pointer"
               >
-                {skill} <IoClose />
-              </Button>
+                {skill}
+                <IoClose className="w-3 h-3 text-gray-400 group-hover:text-red-500" />
+              </button>
             ))}
           </div>
         </div>

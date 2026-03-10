@@ -1,10 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,12 +16,13 @@ import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MDEditor from "@uiw/react-md-editor";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { Plus, Trash2, Upload, X } from "lucide-react";
+import { ImageIcon, Plus, Trash2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { IoAdd, IoClose } from "react-icons/io5";
 import { BeatLoader } from "react-spinners";
 import rehypeSanitize from "rehype-sanitize";
 import { z } from "zod";
@@ -188,235 +187,233 @@ export function PortfolioForm({ portfolio, mode = "create", onCancel }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Project Details Section */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-6">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project title</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. E-commerce Website" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Project Details */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+          <h3 className="text-sm font-semibold text-gray-900">Project Details</h3>
 
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Your role</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Frontend Developer" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. E-commerce Website" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              {/* Skills Section */}
-              <div>
-                <FormLabel className="mb-3">Skills and deliverables</FormLabel>
-                <div className="space-y-3">
-                  <Input
-                    value={skill}
-                    onChange={(e) => setSkill(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (!skill.trim()) {
-                          toast.error("Please enter a skill");
-                          return;
-                        }
-                        setSkills([...skills, skill.trim()]);
-                        setSkill("");
-                      }
-                    }}
-                    type="text"
-                    placeholder="Add skills (press Enter to add)"
-                  />
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill, index) => (
-                      <div key={index} className="relative group">
-                        <Button variant="secondary" size="sm" className="pr-8">
-                          {skill}
-                        </Button>
-                        <button
-                          type="button"
-                          onClick={() => removeSkill(index)}
-                          className="absolute right-1 top-1/2 -translate-y-1/2 w-5 h-5 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-full text-xs flex items-center justify-center transition-colors"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Your Role</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Frontend Developer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-              {/* Description Section */}
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project Description</FormLabel>
-                    <FormControl>
-                      <div
-                        data-color-mode="light"
-                        className="border rounded-lg overflow-hidden"
-                      >
-                        <MDEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          previewOptions={{
-                            rehypePlugins: [[rehypeSanitize]],
-                          }}
-                          height={250}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormDescription>
-                      Minimum 300 characters. Markdown supported.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+          {/* Skills */}
+          <div>
+            <FormLabel className="mb-2 block">Skills & Deliverables</FormLabel>
+            <div className="flex items-center gap-2">
+              <Input
+                value={skill}
+                onChange={(e) => setSkill(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (!skill.trim()) {
+                      toast.error("Please enter a skill");
+                      return;
+                    }
+                    setSkills([...skills, skill.trim()]);
+                    setSkill("");
+                  }
+                }}
+                type="text"
+                placeholder="Add skills (press Enter)"
               />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-9 shrink-0"
+                onClick={() => {
+                  if (!skill.trim()) return;
+                  setSkills([...skills, skill.trim()]);
+                  setSkill("");
+                }}
+              >
+                <IoAdd />
+              </Button>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Thumbnail Upload Section */}
-        <Card>
-          <CardContent className="pt-6">
-            <FormLabel className="mb-4 block">Project Thumbnail</FormLabel>
-            <div className="space-y-4">
-              {thumbnail ? (
-                <div className="relative group">
-                  <div className="relative aspect-video w-full max-w-2xl mx-auto border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
-                    <Image
-                      src={thumbnail}
-                      alt="Thumbnail preview"
-                      fill
-                      className="object-cover"
-                    />
+            {skills.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"
+                  >
+                    {skill}
                     <button
                       type="button"
-                      onClick={removeThumbnail}
-                      className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                      onClick={() => removeSkill(index)}
+                      className="text-gray-400 hover:text-red-500 transition-colors"
                     >
-                      <X size={16} />
+                      <IoClose className="w-3 h-3" />
                     </button>
-                  </div>
-                </div>
-              ) : (
-                <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors">
-                  <input
-                    onChange={handleThumbnailUpload}
-                    className="hidden"
-                    type="file"
-                    accept="image/*"
-                    disabled={isUploading}
-                  />
-                  <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
-                    {isUploading ? (
-                      <BeatLoader size={8} />
-                    ) : (
-                      <>
-                        <Upload className="w-8 h-8 text-gray-400" />
-                        <div>
-                          <Text className="font-medium">
-                            <span className="text-primary">
-                              Click to upload
-                            </span>{" "}
-                            or drag and drop
-                          </Text>
-                          <Text variant="gray" size="small">
-                            Recommended: 1200×630px (JPG, PNG, WebP, max 50MB)
-                          </Text>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </label>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
 
-        {/* Additional Images Section */}
-        <Card>
-          <CardContent className="pt-6">
-            <FormLabel className="mb-4 block">Project Images</FormLabel>
-            <div className="space-y-4">
-              {/* Image Upload Area */}
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors">
-                <input
-                  onChange={handleImagesUpload}
-                  className="hidden"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  disabled={isUploadingImages}
+          {/* Description */}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <div
+                    data-color-mode="light"
+                    className="border rounded-xl overflow-hidden"
+                  >
+                    <MDEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      previewOptions={{
+                        rehypePlugins: [[rehypeSanitize]],
+                      }}
+                      height={200}
+                    />
+                  </div>
+                </FormControl>
+                <p className="text-xs text-gray-400 mt-1">
+                  Minimum 30 characters. Markdown supported.
+                </p>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Thumbnail */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+          <h3 className="text-sm font-semibold text-gray-900">Thumbnail</h3>
+          {thumbnail ? (
+            <div className="relative group">
+              <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-gray-100">
+                <Image
+                  src={thumbnail}
+                  alt="Thumbnail preview"
+                  fill
+                  className="object-cover"
                 />
-                <div className="flex flex-col items-center justify-center gap-2 text-center p-4">
-                  {isUploadingImages ? (
-                    <BeatLoader size={8} />
-                  ) : (
-                    <>
-                      <Plus className="w-6 h-6 text-gray-400" />
-                      <div>
-                        <Text size="small" className="font-medium">
-                          Add project images
-                        </Text>
-                        <Text variant="gray" size="small">
-                          Upload multiple images (JPG, PNG, WebP, max 50MB each)
-                        </Text>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </label>
-
-              {/* Image Grid */}
-              {images.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="relative group aspect-video rounded-lg overflow-hidden border"
-                    >
-                      <Image
-                        src={image}
-                        alt={`Project image ${index + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  ))}
+                <button
+                  type="button"
+                  onClick={removeThumbnail}
+                  className="absolute top-3 right-3 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors backdrop-blur-sm"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <label className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all">
+              <input
+                onChange={handleThumbnailUpload}
+                className="hidden"
+                type="file"
+                accept="image/*"
+                disabled={isUploading}
+              />
+              {isUploading ? (
+                <BeatLoader size={8} color="var(--primary)" />
+              ) : (
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    <Upload className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <div>
+                    <Text className="font-medium text-sm">
+                      <span className="text-primary">Click to upload</span>{" "}
+                      thumbnail
+                    </Text>
+                    <Text variant="gray" size="small">
+                      1200x630px recommended (JPG, PNG, WebP)
+                    </Text>
+                  </div>
                 </div>
               )}
-            </div>
-          </CardContent>
-        </Card>
+            </label>
+          )}
+        </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-end pt-6">
+        {/* Project Images */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+          <h3 className="text-sm font-semibold text-gray-900">Project Images</h3>
+
+          <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all">
+            <input
+              onChange={handleImagesUpload}
+              className="hidden"
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={isUploadingImages}
+            />
+            {isUploadingImages ? (
+              <BeatLoader size={8} color="var(--primary)" />
+            ) : (
+              <div className="flex flex-col items-center gap-1.5">
+                <Plus className="w-5 h-5 text-gray-400" />
+                <Text size="small" className="font-medium text-sm">
+                  Add images
+                </Text>
+              </div>
+            )}
+          </label>
+
+          {images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative group aspect-video rounded-xl overflow-hidden border border-gray-100"
+                >
+                  <Image
+                    src={image}
+                    alt={`Project image ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute top-2 right-2 w-7 h-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+                  >
+                    <Trash2 size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-end">
           <Button
             type="button"
             variant="outline"

@@ -1,13 +1,13 @@
 "use client";
 import { queryClient } from "@/app/[lang]/query-client-provider";
 import { Button } from "@/components/ui/button";
-import Text from "@/components/ui/text";
 import useSession from "@/hooks/useSession";
 import apiClient from "@/services/api-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoAdd, IoClose } from "react-icons/io5";
+import { Globe } from "lucide-react";
 
 const suggestedLanguages = [
   { _id: "1", value: "English" },
@@ -68,55 +68,57 @@ export default function AddLanguages() {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-primary font-medium">Languages</h3>
-      <div className="border border-gray-300 rounded-xl overflow-hidden flex items-center focus-within:border-primary transition-colors">
-        <input
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddLanguage())}
-          className="flex-1 border-none focus:outline-none py-2.5 px-4 text-sm"
-          placeholder="Type a language and press Enter or click Add"
-        />
-        <button
-          onClick={handleAddLanguage}
-          className="px-5 py-2.5 bg-primary border-none outline-none text-white text-sm font-medium hover:bg-primary/90 transition-colors"
-        >
-          Add
-        </button>
+    <div className="space-y-5">
+      <div className="flex items-center gap-2">
+        <Globe className="w-4 h-4 text-primary" />
+        <h3 className="text-sm font-semibold text-gray-900">Languages</h3>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <div className="flex-1">
+          <input
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddLanguage())}
+            className="w-full border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400"
+            placeholder="Type a language and press Enter"
+          />
+        </div>
+        <Button onClick={handleAddLanguage} size="sm" className="h-[42px] px-5 rounded-xl">
+          <IoAdd className="mr-1" /> Add
+        </Button>
       </div>
 
       <div>
-        <Text size="small" className="text-gray-500">Suggested Languages</Text>
-        <div className="flex items-center gap-2 py-2 flex-wrap">
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Suggestions</p>
+        <div className="flex items-center gap-2 flex-wrap">
           {suggestedLanguages.map((languageItem) => (
-            <Button
+            <button
               onClick={() => setLanguage(languageItem.value)}
-              size="sm"
-              variant="light"
               key={languageItem._id}
-              className="text-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary/5 text-primary hover:bg-primary/10 border border-primary/10 transition-colors cursor-pointer"
             >
-              {languageItem.value} <IoAdd className="text-xs" />
-            </Button>
+              {languageItem.value} <IoAdd className="w-3 h-3" />
+            </button>
           ))}
         </div>
       </div>
 
       {user.data.languages && user.data.languages.length > 0 && (
         <div>
-          <Text size="small" className="text-gray-500">Added Languages</Text>
-          <div className="flex items-center gap-2 py-2 flex-wrap">
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+            Added Languages ({user.data.languages.length})
+          </p>
+          <div className="flex items-center gap-2 flex-wrap">
             {user.data.languages.map((lang) => (
-              <Button
+              <button
                 onClick={() => handleRemoveLanguage(lang)}
-                size="sm"
-                variant="secondary"
                 key={lang}
-                className="text-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600 border border-gray-200 hover:border-red-200 transition-colors group cursor-pointer"
               >
-                {lang} <IoClose className="text-xs" />
-              </Button>
+                {lang}
+                <IoClose className="w-3 h-3 text-gray-400 group-hover:text-red-500" />
+              </button>
             ))}
           </div>
         </div>

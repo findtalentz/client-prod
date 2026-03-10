@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaRegEdit } from "react-icons/fa";
 import { BeatLoader } from "react-spinners";
+import { Plus } from "lucide-react";
 import { z } from "zod";
 
 const educationFormSchema = z
@@ -102,25 +103,27 @@ export function EducationFormDialog({ education }: Props) {
         className={
           isEdit
             ? buttonVariants({ variant: "ghost", size: "sm" })
-            : buttonVariants()
+            : buttonVariants({ variant: "outline" }) + " gap-2"
         }
       >
         {isEdit ? (
           <FaRegEdit className="text-gray-600 hover:text-gray-900" />
         ) : (
-          "Add Education"
+          <>
+            <Plus className="w-4 h-4" /> Add Education
+          </>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-lg">
             {isEdit ? "Edit Education" : "Add Education"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6"
+            className="space-y-5"
           >
             <FormField
               control={form.control}

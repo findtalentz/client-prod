@@ -35,7 +35,10 @@ const stepsFreelancer = [
 
 export default function SellerProfileSidebar() {
   return (
-    <div className="p-4">
+    <div className="sticky top-0 p-6">
+      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-6">
+        Setup Progress
+      </p>
       <Steps steps={stepsFreelancer} />
     </div>
   );
