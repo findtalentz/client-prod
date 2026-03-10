@@ -26,7 +26,7 @@ import ReactCrop, {
 } from "react-image-crop";
 import { BeatLoader } from "react-spinners";
 
-const ASPECT_RATIO = 16 / 5;
+const ASPECT_RATIO = 1546 / 423;
 const MIN_WIDTH = 400;
 
 const UpdateCoverPhoto = () => {
@@ -145,8 +145,8 @@ const UpdateCoverPhoto = () => {
               style={{
                 border: "1px solid black",
                 objectFit: "contain",
-                width: 800,
-                height: 250,
+                width: 1546,
+                height: 423,
               }}
             />
           </div>

@@ -79,7 +79,7 @@ export default async function PreviewPage({ params: searchParams }: Props) {
     <Container className="py-10">
       <div className="space-y-10 pb-20">
         {/* Cover Photo */}
-        <div className="relative w-full h-[200px] rounded-2xl overflow-hidden bg-gradient-to-r from-primary/20 to-primary/5">
+        <div className="relative w-full aspect-[1546/423] rounded-2xl overflow-hidden bg-gradient-to-r from-primary/20 to-primary/5">
           {user.data.coverPhoto ? (
             <Image
               src={user.data.coverPhoto}

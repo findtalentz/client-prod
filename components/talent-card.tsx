@@ -34,7 +34,7 @@ export default function TalentCard({ talent }: Props) {
   return (
     <Link href={`/hire/${talent._id}`} className="block">
     <div className="rounded-2xl overflow-hidden border border-gray-200 shadow hover:shadow-md transition-shadow cursor-pointer">
-      <div className="relative w-full h-[140px] bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5">
+      <div className="relative w-full aspect-[1546/423] bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5">
         <Image
           src={talent.coverPhoto || "/card-1.png"}
           fill
