@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Chat } from "@/schemas/Chat";
 import { useChatStore } from "@/store";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
@@ -17,10 +18,10 @@ export default function AiChatItem() {
       onClick={() =>
         setCurrent({
           _id: "ai-assistant",
-          buyer: { _id: "", firstName: "Talentz", lastName: "AI", image: "" },
-          seller: { _id: "", firstName: "Talentz", lastName: "AI", image: "" },
+          buyer: { _id: "", firstName: "Talentz", lastName: "AI", image: "", role: "" },
+          seller: { _id: "", firstName: "Talentz", lastName: "AI", image: "", role: "" },
           lastMessage: "Ask me anything about Talentz",
-        } as any)
+        } as Chat)
       }
       className={cn(
         "flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-150 mx-2 mb-1",

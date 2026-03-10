@@ -43,7 +43,6 @@ export default function AiChatBubble() {
     setShowMessages,
     isBotTyping,
     showMessages,
-    clearMessages,
   } = useMessageStore();
 
   const notificationAudio = useRef<HTMLAudioElement | null>(null);
