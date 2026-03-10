@@ -8,6 +8,7 @@ export interface Talent {
   languages: string[];
   about: string;
   image: string;
+  coverPhoto?: string;
   role: string;
   createdAt: Date;
 }

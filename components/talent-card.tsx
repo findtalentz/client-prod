@@ -34,13 +34,14 @@ export default function TalentCard({ talent }: Props) {
   return (
     <Link href={`/hire/${talent._id}`} className="block">
     <div className="rounded-2xl overflow-hidden border border-gray-200 shadow hover:shadow-md transition-shadow cursor-pointer">
-      <Image
-        src="/card-1.png"
-        width={560}
-        height={220}
-        alt="talent"
-        className="w-full h-auto object-cover"
-      />
+      <div className="relative w-full h-[140px] bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5">
+        <Image
+          src={talent.coverPhoto || "/card-1.png"}
+          fill
+          alt="talent"
+          className="object-cover"
+        />
+      </div>
       <div className="py-4 px-3 space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-1 md:gap-3 cursor-pointer">
