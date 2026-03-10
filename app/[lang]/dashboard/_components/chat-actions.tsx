@@ -5,6 +5,7 @@ import useSession from "@/hooks/useSession";
 import { useChatStore } from "@/store";
 import { Avatar } from "@radix-ui/themes";
 import { RefreshCw } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { Hire } from "../client/_components/hire";
 
@@ -39,22 +40,41 @@ export default function ChatActions() {
 
   return (
     <div className="h-[68px] flex items-center justify-between px-5 border-b border-gray-100 bg-white">
-      <div className="flex items-center gap-3">
-        <Avatar
-          src={chatUser.image}
-          fallback={chatUser.firstName.charAt(0)}
-          radius="full"
-          size="3"
-        />
-        <div>
-          <p className="text-sm font-semibold text-gray-900 leading-tight">
-            {chatUser.firstName + " " + chatUser.lastName}
-          </p>
-          <p className="text-xs text-gray-400 mt-0.5 capitalize">
-            {chatUser.role?.toLowerCase()}
-          </p>
+      {chatUser.role === "SELLER" ? (
+        <Link href={`/hire/${chatUser._id}`} className="flex items-center gap-3">
+          <Avatar
+            src={chatUser.image}
+            fallback={chatUser.firstName.charAt(0)}
+            radius="full"
+            size="3"
+          />
+          <div>
+            <p className="text-sm font-semibold text-gray-900 leading-tight cursor-pointer hover:underline">
+              {chatUser.firstName + " " + chatUser.lastName}
+            </p>
+            <p className="text-xs text-gray-400 mt-0.5 capitalize">
+              {chatUser.role?.toLowerCase()}
+            </p>
+          </div>
+        </Link>
+      ) : (
+        <div className="flex items-center gap-3">
+          <Avatar
+            src={chatUser.image}
+            fallback={chatUser.firstName.charAt(0)}
+            radius="full"
+            size="3"
+          />
+          <div>
+            <p className="text-sm font-semibold text-gray-900 leading-tight">
+              {chatUser.firstName + " " + chatUser.lastName}
+            </p>
+            <p className="text-xs text-gray-400 mt-0.5 capitalize">
+              {chatUser.role?.toLowerCase()}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex items-center gap-2">
         {chatUser.role === "SELLER" && <Hire sellerId={chatUser._id} />}
         <Button
