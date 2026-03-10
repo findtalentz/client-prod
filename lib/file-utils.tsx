@@ -10,9 +10,14 @@ export function getFileIcon(url: string) {
 export function getFileNameFromUrl(url: string) {
   try {
     const urlObj = new URL(url);
-    const pathname = urlObj.pathname;
-    return pathname.substring(pathname.lastIndexOf("/") + 1);
+    const pathname = decodeURIComponent(urlObj.pathname);
+    // Extract just the filename (last segment after the last /)
+    const fullName = pathname.substring(pathname.lastIndexOf("/") + 1);
+    // Strip the timestamp prefix (e.g. "1234567890-filename.jpg" -> "filename.jpg")
+    return fullName.replace(/^\d{10,}-/, "");
   } catch {
-    return url.substring(url.lastIndexOf("/") + 1);
+    const decoded = decodeURIComponent(url);
+    const fullName = decoded.substring(decoded.lastIndexOf("/") + 1);
+    return fullName.replace(/^\d{10,}-/, "");
   }
 }

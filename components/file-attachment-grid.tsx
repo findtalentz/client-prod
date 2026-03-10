@@ -65,10 +65,6 @@ export default function FileAttachmentGrid({ files, size = "md" }: Props) {
               >
                 <FiDownload className="text-gray-700" />
               </a>
-
-              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent p-2">
-                <p className="text-xs text-white truncate">{fileName}</p>
-              </div>
             </div>
           );
         })}

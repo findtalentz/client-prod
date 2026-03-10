@@ -133,7 +133,7 @@ export default function Messages() {
                               rel="noopener noreferrer"
                               className="w-48 h-28 flex flex-col items-center justify-center p-4 bg-gray-50 cursor-pointer"
                             >
-                              <div className="text-2xl mb-1.5">
+                              <div className="text-3xl mb-1.5">
                                 {getFileIcon(fileName)}
                               </div>
                               <p className="text-xs text-center text-gray-600 truncate w-full px-2">
