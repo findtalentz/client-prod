@@ -18,7 +18,14 @@ instance.interceptors.request.use(async (config) => {
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
+    const requestUrl = error.config?.url || "";
+    const isSessionCheck = requestUrl.includes("/auth/me");
+
+    if (
+      error.response?.status === 401 &&
+      typeof window !== "undefined" &&
+      !isSessionCheck
+    ) {
       Cookies.remove("token", { path: "/" });
       window.location.href = "/log-in";
     }
