@@ -2,6 +2,7 @@
 import useChats from "@/hooks/useChats";
 import { MessageCircle, Search } from "lucide-react";
 import { useState } from "react";
+import AiChatItem from "./ai-chat-item";
 import ChatDetails from "./chat";
 
 export default function Chats() {
@@ -10,14 +11,21 @@ export default function Chats() {
 
   if (!data || data.data.length === 0)
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-          <MessageCircle className="w-7 h-7 text-gray-400" />
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <div className="p-4 pb-3">
+          <h3 className="!text-base font-semibold text-gray-900 mb-3">Messages</h3>
         </div>
-        <p className="text-sm font-medium text-gray-500">No conversations yet</p>
-        <p className="text-xs text-gray-400 mt-1">
-          Start a conversation to see it here
-        </p>
+        <AiChatItem />
+        <div className="border-b border-gray-100 mx-4 my-1" />
+        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <MessageCircle className="w-7 h-7 text-gray-400" />
+          </div>
+          <p className="text-sm font-medium text-gray-500">No conversations yet</p>
+          <p className="text-xs text-gray-400 mt-1">
+            Start a conversation to see it here
+          </p>
+        </div>
       </div>
     );
 
@@ -47,6 +55,8 @@ export default function Chats() {
           />
         </div>
       </div>
+      <AiChatItem />
+      <div className="border-b border-gray-100 mx-4 my-1" />
       <div className="flex-1 overflow-y-auto px-2 pb-2 space-y-0.5">
         {filteredChats.map((chat) => (
           <ChatDetails key={chat._id} chat={chat} />
