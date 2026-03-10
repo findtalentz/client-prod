@@ -49,7 +49,7 @@ const AddJobWishlist = ({ jobId, className }: Props) => {
     <div
       onClick={handleLikeClick}
       className={cn(
-        "w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center border border-gray-200 cursor-pointer absolute right-3 top-3",
+        "w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors shrink-0",
         className
       )}
     >

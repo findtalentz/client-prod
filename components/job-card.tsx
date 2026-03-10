@@ -17,22 +17,24 @@ interface Props {
 
 export default function JobCard({ job }: Props) {
   return (
-    <div className="space-y-2 border-b border-gray py-6 relative">
-      <AddJobWishlist jobId={job._id} />
-      <div className="flex items-center justify-between">
+    <div className="space-y-3 border-b border-gray-200 py-6">
+      <div className="flex items-center justify-between gap-3">
         <Text variant="gray" size="small">
           Posted {formatDate(job.createdAt)}
         </Text>
-        {job.budgetAmount && (
-          <Text size="small" className="font-semibold text-primary">
-            Budget: ${job.budgetAmount}
-          </Text>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+          {job.budgetAmount && (
+            <Text size="small" className="font-semibold text-primary">
+              Budget: ${job.budgetAmount}
+            </Text>
+          )}
+          <AddJobWishlist jobId={job._id} />
+        </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-start gap-2 flex-wrap">
         <Link
           href={`/jobs/${job._id}`}
-          className="cursor-pointer font-medium text-2xl"
+          className="cursor-pointer font-medium text-xl md:text-2xl hover:text-primary transition-colors"
         >
           {job.title}
         </Link>
@@ -58,7 +60,7 @@ export default function JobCard({ job }: Props) {
           </Text>
         </div>
       )}
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3 md:gap-5 flex-wrap">
         <IconBadge text={job.location || "N/A"}>
           <GrLocation />
         </IconBadge>
