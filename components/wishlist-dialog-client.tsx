@@ -35,7 +35,7 @@ export function WishlistDialogClient() {
   };
 
   const handleTalentClick = (talentId: string) => {
-    window.open(`/hire/preview?userId=${talentId}`, "_blank");
+    window.open(`/hire/${talentId}`, "_blank");
   };
 
   const getInitials = (firstName: string, lastName: string) => {
