@@ -15,6 +15,8 @@ import Service from "@/schemas/Service";
 import User from "@/schemas/User";
 import apiClient from "@/services/api-client";
 import { Avatar, Flex, Grid } from "@radix-ui/themes";
+import { Star } from "lucide-react";
+import Image from "next/image";
 import { headers } from "next/headers";
 import { SlLocationPin } from "react-icons/sl";
 import Markdown from "react-markdown";
@@ -67,9 +69,29 @@ export default async function PreviewPage({ params: searchParams }: Props) {
     getSession(),
   ]);
 
+  const averageRating =
+    reviews.data.length > 0
+      ? reviews.data.reduce((sum, r) => sum + (r.averageRating || 0), 0) /
+        reviews.data.length
+      : 0;
+
   return (
     <Container className="py-10">
       <div className="space-y-10 pb-20">
+        {/* Cover Photo */}
+        <div className="relative w-full h-[200px] rounded-2xl overflow-hidden bg-gradient-to-r from-primary/20 to-primary/5">
+          {user.data.coverPhoto ? (
+            <Image
+              src={user.data.coverPhoto}
+              alt="Cover"
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5" />
+          )}
+        </div>
+
         <div className="flex items-start justify-between mb-5 flex-col md:flex-row">
           <div className="flex gap-5 flex-col md:flex w-full items-center md:items-start md:flex-row mb-6">
             <Avatar
@@ -91,6 +113,29 @@ export default async function PreviewPage({ params: searchParams }: Props) {
                     </Text>
                   )}
                 </Flex>
+                {/* Rating */}
+                {averageRating > 0 && (
+                  <Flex align="center" gap="2" className="mt-2">
+                    <Flex align="center" gap="1">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i <= Math.round(averageRating)
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </Flex>
+                    <Text className="text-sm font-medium text-gray-700">
+                      {averageRating.toFixed(1)}
+                    </Text>
+                    <Text className="text-sm text-gray-400">
+                      ({reviews.data.length} {reviews.data.length === 1 ? "review" : "reviews"})
+                    </Text>
+                  </Flex>
+                )}
               </div>
               {user.data.skills && (
                 <Flex wrap="wrap" gap="2">

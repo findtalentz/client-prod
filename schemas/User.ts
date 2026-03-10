@@ -8,6 +8,7 @@ export default interface User {
   languages: [string];
   role: "SELLER" | "CLIENT";
   image: string;
+  coverPhoto?: string;
   phone?: string;
   totalEarning: number;
   totalSpend: number;

@@ -1,4 +1,5 @@
 import getSession from "@/actions/get-session";
+import EditableCoverPhoto from "@/components/editable-cover-photo";
 import EditableProfilePhoto from "@/components/editable-profile-photo";
 import { GrLocation } from "react-icons/gr";
 import ProfileForm from "../_components/profile-form";
@@ -10,6 +11,7 @@ export default async function SellerProfile() {
   return (
     <div className="space-y-6">
       <h2 className="text-primary font-semibold">Profile</h2>
+      <EditableCoverPhoto />
       <div className="py-2 px-4 flex items-center gap-6 border shadow rounded-3xl md:min-w-[600px]">
         <EditableProfilePhoto />
         <div>
