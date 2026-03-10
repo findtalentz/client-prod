@@ -16,7 +16,7 @@ import apiClient from "@/services/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MDEditor from "@uiw/react-md-editor";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { ImageIcon, Plus, Trash2, Upload, X } from "lucide-react";
+import { Plus, Trash2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
