@@ -1,4 +1,5 @@
 "use client";
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 import useSession from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { Chat } from "@/schemas/Chat";
@@ -13,10 +14,12 @@ export default function ChatDetails({ chat }: Props) {
   const currentChat = useChatStore((s) => s.currentChat);
   const setCurrent = useChatStore((s) => s.setCurrentChat);
   const { data: user } = useSession();
+  const onlineUsers = useOnlineUsers();
 
   const chatUser =
     user?.data._id === chat.buyer._id ? chat.seller : chat.buyer;
   const isActive = chat._id === currentChat?._id;
+  const isOnline = onlineUsers.has(chatUser._id);
 
   return (
     <div
@@ -35,6 +38,9 @@ export default function ChatDetails({ chat }: Props) {
           radius="full"
           size="3"
         />
+        {isOnline && (
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+        )}
       </div>
       <div className="flex-1 min-w-0">
         <p

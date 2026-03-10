@@ -4,16 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useFilesUpload } from "@/hooks/useFilesUpload";
 import useSession from "@/hooks/useSession";
+import socket from "@/lib/socket";
 import apiClient from "@/services/api-client";
 import { useChatStore } from "@/store";
 import { Loader2, Paperclip, Send, X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function MessageForm() {
   const [message, setMessage] = useState("");
   const currentChat = useChatStore((s) => s.currentChat);
   const { data: user } = useSession();
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isTypingRef = useRef(false);
 
   const {
     fileInputRef,
@@ -25,6 +28,39 @@ export default function MessageForm() {
     removeAttachment,
     resetAttachments,
   } = useFilesUpload(currentChat ? `chat/${currentChat._id}` : "temp-uploads");
+
+  const receiverId = currentChat
+    ? user?.data._id === currentChat.buyer._id
+      ? currentChat.seller._id
+      : currentChat.buyer._id
+    : null;
+
+  const stopTyping = useCallback(() => {
+    if (isTypingRef.current && receiverId && currentChat) {
+      socket.emit("stop_typing", { chatId: currentChat._id, receiverId });
+      isTypingRef.current = false;
+    }
+  }, [receiverId, currentChat]);
+
+  const handleTyping = useCallback(() => {
+    if (!receiverId || !currentChat) return;
+
+    if (!isTypingRef.current) {
+      socket.emit("typing", { chatId: currentChat._id, receiverId });
+      isTypingRef.current = true;
+    }
+
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = setTimeout(stopTyping, 2000);
+  }, [receiverId, currentChat, stopTyping]);
+
+  // Clean up typing on chat change or unmount
+  useEffect(() => {
+    return () => {
+      stopTyping();
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+  }, [stopTyping]);
 
   if (!currentChat || !user) return <div className="h-0" />;
 
@@ -39,6 +75,7 @@ export default function MessageForm() {
       });
 
       setMessage("");
+      stopTyping();
       resetAttachments();
       if (fileInputRef.current) fileInputRef.current.value = "";
 
@@ -140,7 +177,10 @@ export default function MessageForm() {
 
         <input
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            setMessage(e.target.value);
+            handleTyping();
+          }}
           onKeyDown={handleKeyPress}
           placeholder="Type a message..."
           className="flex-1 px-4 py-2.5 text-sm bg-gray-100 rounded-full border-0 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:bg-gray-50 transition-all"

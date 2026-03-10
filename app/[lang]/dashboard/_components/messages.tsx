@@ -4,6 +4,7 @@ import useChatSocket from "@/hooks/useChatSocket";
 import useMessages from "@/hooks/useMessages";
 import useSession from "@/hooks/useSession";
 import { getFileIcon, getFileNameFromUrl } from "@/lib/file-utils";
+import socket from "@/lib/socket";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
 import { useChatStore } from "@/store";
@@ -19,7 +20,29 @@ export default function Messages() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: messages } = useMessages(currentChat?._id as string);
   const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
+  const [isOtherTyping, setIsOtherTyping] = useState(false);
   useChatSocket(currentChat?._id as string);
+
+  // Listen for typing indicators
+  useEffect(() => {
+    if (!currentChat) return;
+
+    const onTyping = (data: { chatId: string }) => {
+      if (data.chatId === currentChat._id) setIsOtherTyping(true);
+    };
+    const onStopTyping = (data: { chatId: string }) => {
+      if (data.chatId === currentChat._id) setIsOtherTyping(false);
+    };
+
+    socket.on("user_typing", onTyping);
+    socket.on("user_stop_typing", onStopTyping);
+
+    return () => {
+      socket.off("user_typing", onTyping);
+      socket.off("user_stop_typing", onStopTyping);
+      setIsOtherTyping(false);
+    };
+  }, [currentChat]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -169,6 +192,15 @@ export default function Messages() {
             </div>
           );
         })}
+        {isOtherTyping && (
+          <div className="flex items-center gap-2 mt-2 ml-10">
+            <div className="flex gap-1 px-3.5 py-2.5 rounded-2xl bg-white border border-gray-100 shadow-sm rounded-bl-md">
+              <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]" />
+              <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]" />
+              <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]" />
+            </div>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
