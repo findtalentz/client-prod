@@ -3,18 +3,23 @@ import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-async function Profile() {
+async function Profile({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   const sessionData = await getSessionFromToken();
 
   if (!sessionData) {
-    redirect("/log-in");
+    redirect(`/${lang}/log-in`);
   }
 
   switch (sessionData.session.role) {
     case "CLIENT":
-      redirect("/dashboard/client");
+      redirect(`/${lang}/dashboard/client`);
     case "SELLER":
-      redirect("/dashboard/seller");
+      redirect(`/${lang}/dashboard/seller`);
     default:
       return <div>Unauthorized access</div>;
   }

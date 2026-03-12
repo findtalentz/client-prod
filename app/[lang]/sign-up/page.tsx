@@ -4,10 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function SignUpPage() {
+export default async function SignUpPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   const sessionData = await getSessionFromToken();
   if (sessionData) {
-    redirect("/dashboard");
+    redirect(`/${lang}/dashboard`);
   }
   return (
     <Container className="md:min-h-[calc(100dvh-65px)] flex items-center justify-center px-4 py-10">

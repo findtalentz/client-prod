@@ -5,10 +5,15 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import LoginForm from "./login-form";
 
-export default async function Login() {
+export default async function Login({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   const sessionData = await getSessionFromToken();
   if (sessionData) {
-    redirect("/dashboard");
+    redirect(`/${lang}/dashboard`);
   }
   return (
     <div className="grid w-full !max-h-[calc(100dvh-65px)] grid-cols-1 md:grid-cols-2">
