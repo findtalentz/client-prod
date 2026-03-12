@@ -6,7 +6,7 @@ import apiClient from "@/services/api-client";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
@@ -16,6 +16,7 @@ function Passport() {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
+  const { lang } = useParams();
 
   const handleImageUpload = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +66,7 @@ function Passport() {
       toast.success("Passport submitted successfully!");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["session"] });
-      router.push("/identity-verify/submitted");
+      router.push(`/${lang}/identity-verify/submitted`);
     } catch (error) {
       toast.error("Failed to submit passport");
       console.error("Submission error:", error);
@@ -83,7 +84,7 @@ function Passport() {
             Financial regulation require us to verify your identity, Please have
             a look for our{" "}
             <Link
-              href="/privacy-policy"
+              href={`/${lang}/privacy-policy`}
               className="text-primary hover:underline"
             >
               Privacy Policy

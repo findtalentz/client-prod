@@ -27,7 +27,8 @@ instance.interceptors.response.use(
       !isSessionCheck
     ) {
       Cookies.remove("token", { path: "/" });
-      window.location.href = "/log-in";
+      const lang = window.location.pathname.split("/")[1] || "en";
+      window.location.href = `/${lang}/log-in`;
     }
     return Promise.reject(error);
   }

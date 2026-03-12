@@ -30,7 +30,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
 import useDictionary from "@/hooks/useDictionary";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
@@ -56,6 +56,7 @@ const JobScopeAndBudgetSchema = Joi.object({
 function ScopeAndBudget() {
   const dict = useDictionary();
   const router = useRouter();
+  const { lang } = useParams();
   const setStep = useStepStore((s) => s.setStep);
   const { jobScopeAndBudget, saveJobScopeAndBudget } =
     useJobScopeAndBudgetStore();
@@ -74,7 +75,7 @@ function ScopeAndBudget() {
     try {
       setIsLoading(true);
       saveJobScopeAndBudget(data);
-      router.push("/dashboard/client/jobs/new/preview");
+      router.push(`/${lang}/dashboard/client/jobs/new/preview`);
     } catch (error) {
       console.error("Error saving data:", error);
       setIsLoading(false);
@@ -160,7 +161,7 @@ function ScopeAndBudget() {
         <div className="flex items-center justify-between">
           <Link
             onClick={() => saveJobScopeAndBudget(form.getValues())}
-            href="/dashboard/client/jobs"
+            href={`/${lang}/dashboard/client/jobs`}
             className={cn(buttonVariants({ variant: "outline" }))}
           >
             {dict.common.saveDraftAndExit}

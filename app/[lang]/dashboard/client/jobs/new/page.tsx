@@ -26,7 +26,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
 import useDictionary from "@/hooks/useDictionary";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
@@ -65,6 +65,7 @@ function OverView() {
   const { data: categorys } = useJobCategorys();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { lang } = useParams();
 
   const form = useForm<JobOverview>({
     resolver: joiResolver(OverviewSchema),
@@ -80,7 +81,7 @@ function OverView() {
     try {
       setIsLoading(true);
       saveOverview(data);
-      router.push("/dashboard/client/jobs/new/skills");
+      router.push(`/${lang}/dashboard/client/jobs/new/skills`);
     } catch (error) {
       console.error(error);
     } finally {
@@ -191,7 +192,7 @@ function OverView() {
         <div className="flex items-center justify-between">
           <Link
             onClick={() => saveOverview(form.getValues())}
-            href="/dashboard/client/jobs"
+            href={`/${lang}/dashboard/client/jobs`}
             className={cn(buttonVariants({ variant: "outline" }))}
           >
             {dict.common.saveDraftAndExit}

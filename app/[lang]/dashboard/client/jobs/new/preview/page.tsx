@@ -14,7 +14,7 @@ import {
   useStepStore,
 } from "@/store";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useDictionary from "@/hooks/useDictionary";
 import { handleApiError } from "@/lib/handle-api-error";
@@ -82,6 +82,7 @@ const JobPreview = () => {
   const setStep = useStepStore((s) => s.setStep);
   const jobSkills = useJobSkillsStore((s) => s.jobSkills);
   const router = useRouter();
+  const { lang } = useParams();
   const clearSkills = useJobSkillsStore((s) => s.clear);
   const jobScopeAndBudget = useJobScopeAndBudgetStore(
     (s) => s.jobScopeAndBudget
@@ -105,7 +106,7 @@ const JobPreview = () => {
       clearOverview();
       clearSkills();
       clearJobScopeAndBudget();
-      router.push("/dashboard/client/jobs/open");
+      router.push(`/${lang}/dashboard/client/jobs/open`);
     } catch (error) {
       handleApiError(error);
       setIsSubmitting(false);
@@ -246,7 +247,7 @@ const JobPreview = () => {
       {/* Actions */}
       <div className="flex items-center justify-between">
         <Link
-          href="/dashboard/client/jobs"
+          href={`/${lang}/dashboard/client/jobs`}
           className={cn(buttonVariants({ variant: "outline" }), "gap-2")}
         >
           <ArrowLeft className="w-4 h-4" />

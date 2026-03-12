@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import apiClient from "@/services/api-client";
 import { AxiosError } from "axios";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 
 export default function DepositSuccess() {
   const router = useRouter();
+  const { lang } = useParams();
   const searchParams = useSearchParams();
   const [isCapturing, setIsCapturing] = useState(false);
   const [captureError, setCaptureError] = useState<string | null>(null);
@@ -39,7 +40,7 @@ export default function DepositSuccess() {
       if (response.data.success) {
         toast.success("Payment captured successfully!");
         const timer = setTimeout(() => {
-          router.push("/dashboard/client/jobs");
+          router.push(`/${lang}/dashboard/client/jobs`);
         }, 3000);
         return () => clearTimeout(timer);
       } else {
@@ -48,17 +49,17 @@ export default function DepositSuccess() {
     } catch (error) {
       console.error("PayPal capture error:", error);
       let errorMessage = "Failed to capture payment. Please try again.";
-      
+
       if (error instanceof AxiosError && error.response) {
         errorMessage = error.response.data?.message || errorMessage;
       }
-      
+
       setCaptureError(errorMessage);
       toast.error(errorMessage);
     } finally {
       setIsCapturing(false);
     }
-  }, [orderId, transactionId, searchParams, router]);
+  }, [orderId, transactionId, searchParams, router, lang]);
 
   useEffect(() => {
     // Handle PayPal capture
@@ -68,7 +69,7 @@ export default function DepositSuccess() {
       // Stripe payment is handled by webhook, just show success
       // Success state will be shown automatically (no error, not capturing)
       const timer = setTimeout(() => {
-        router.push("/dashboard/client/jobs");
+        router.push(`/${lang}/dashboard/client/jobs`);
       }, 3000);
       return () => clearTimeout(timer);
     } else if (paymentGateway === "paypal" && !orderId) {
@@ -86,7 +87,7 @@ export default function DepositSuccess() {
     } else if (paymentGateway !== "stripe" && paymentGateway !== "paypal") {
       setCaptureError("Invalid payment gateway. Please contact support.");
     }
-  }, [paymentGateway, orderId, transactionId, sessionId, router, capturePayPalPayment, searchParams]);
+  }, [paymentGateway, orderId, transactionId, sessionId, router, capturePayPalPayment, searchParams, lang]);
 
   // Show loading state during PayPal capture
   if (paymentGateway === "paypal" && isCapturing) {
@@ -138,7 +139,7 @@ export default function DepositSuccess() {
             <p className="text-gray-600 mb-6">{captureError}</p>
             <div className="flex gap-4 justify-center">
               <button
-                onClick={() => router.push("/dashboard/client/jobs")}
+                onClick={() => router.push(`/${lang}/dashboard/client/jobs`)}
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
               >
                 Go to Jobs

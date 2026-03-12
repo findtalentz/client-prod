@@ -1,10 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export default function DepositCancelled() {
   const router = useRouter();
+  const { lang } = useParams();
 
   return (
     <div className="w-full h-dvh bg-linear-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4">
@@ -54,7 +55,7 @@ export default function DepositCancelled() {
             className="flex gap-4 justify-center"
           >
             <button
-              onClick={() => router.push("/dashboard/client/jobs")}
+              onClick={() => router.push(`/${lang}/dashboard/client/jobs`)}
               className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
             >
               Go to Jobs

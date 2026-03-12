@@ -5,8 +5,10 @@ import usePendingEarnings from "@/hooks/usePendingEarnings";
 import useSession from "@/hooks/useSession";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 function MyBalance() {
+  const { lang } = useParams();
   const dict = useDictionary();
   const { data: session } = useSession();
   const { data: pendingEarnings } = usePendingEarnings();
@@ -18,7 +20,7 @@ function MyBalance() {
           {dict.seller.myBalance}
         </span>
         <Link
-          href="/dashboard/seller/earnings"
+          href={`/${lang}/dashboard/seller/earnings`}
           className={buttonVariants({ variant: "link" })}
         >
           {dict.seller.viewWallet}

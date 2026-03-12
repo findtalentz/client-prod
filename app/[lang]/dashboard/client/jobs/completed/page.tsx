@@ -14,7 +14,12 @@ import apiClient from "@/services/api-client";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
-export default async function CompletedJob() {
+interface Props {
+  params: Promise<{ lang: "en" | "ch" }>;
+}
+
+export default async function CompletedJob({ params }: Props) {
+  const { lang } = await params;
   const { data } = await apiClient.get<ApiResponse<Job[]>>("/jobs/client", {
     params: {
       status: "COMPLETED",
@@ -24,7 +29,7 @@ export default async function CompletedJob() {
   return (
     <>
       <div className="flex items-center justify-end w-full">
-        <Link href="/dashboard/client/jobs/new" className={buttonVariants()}>
+        <Link href={`/${lang}/dashboard/client/jobs/new`} className={buttonVariants()}>
           Create New Job
         </Link>
       </div>
@@ -44,7 +49,7 @@ export default async function CompletedJob() {
               <TableCell>
                 <Link
                   className="text-xl text-primary"
-                  href={`/dashboard/client/jobs/completed/${job._id}`}
+                  href={`/${lang}/dashboard/client/jobs/completed/${job._id}`}
                 >
                   {job.title}
                 </Link>

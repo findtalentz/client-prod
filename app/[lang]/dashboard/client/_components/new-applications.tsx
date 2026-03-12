@@ -42,7 +42,7 @@ async function NewApplications({ lang }: Props) {
           </span>
           {data.count > 6 && (
             <Link
-              href="/dashboard/client/jobs/open"
+              href={`/${lang}/dashboard/client/jobs/open`}
               className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
               {t.common.viewAll} <ArrowRight className="h-4 w-4" />

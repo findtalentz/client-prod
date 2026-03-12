@@ -21,6 +21,7 @@ import Actions from "./actions";
 
 interface Props {
   params: Promise<{
+    lang: "en" | "ch";
     id: string;
   }>;
 }
@@ -28,7 +29,7 @@ interface Props {
 export const dynamic = "force-dynamic";
 
 async function JobDetails({ params }: Props) {
-  const { id } = await params;
+  const { id, lang } = await params;
   const { data: job } = await apiClient.get<ApiResponse<Job>>(`/jobs/${id}`);
   const { data: user } = await apiClient.get<ApiResponse<User>>(
     "/users/public",
@@ -43,7 +44,7 @@ async function JobDetails({ params }: Props) {
     <div>
       <Flex justify="between" align="center" className="px-1" mb="6">
         <Link
-          href="/dashboard/client/jobs"
+          href={`/${lang}/dashboard/client/jobs`}
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "gap-2 text-gray-600 hover:text-gray-900"

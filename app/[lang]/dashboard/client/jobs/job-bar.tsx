@@ -3,33 +3,35 @@ import { cn } from "@/lib/utils";
 import { useStepStore } from "@/store";
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { CgNotes } from "react-icons/cg";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoBriefcaseOutline } from "react-icons/io5";
 
-const items = [
-  {
-    id: 1,
-    label: "In Progress Jobs",
-    path: "/dashboard/client/jobs",
-    icon: <IoBriefcaseOutline />,
-  },
-  {
-    id: 2,
-    label: "Open Jobs",
-    path: "/dashboard/client/jobs/open",
-    icon: <CgNotes />,
-  },
-  {
-    id: 3,
-    label: "Completed Jobs",
-    path: "/dashboard/client/jobs/completed",
-    icon: <FaRegCheckCircle />,
-  },
-];
-
 export default function JobBar() {
   const stepStore = useStepStore();
+  const { lang } = useParams();
+
+  const items = [
+    {
+      id: 1,
+      label: "In Progress Jobs",
+      path: `/${lang}/dashboard/client/jobs`,
+      icon: <IoBriefcaseOutline />,
+    },
+    {
+      id: 2,
+      label: "Open Jobs",
+      path: `/${lang}/dashboard/client/jobs/open`,
+      icon: <CgNotes />,
+    },
+    {
+      id: 3,
+      label: "Completed Jobs",
+      path: `/${lang}/dashboard/client/jobs/completed`,
+      icon: <FaRegCheckCircle />,
+    },
+  ];
   return (
     <Flex align="center" gap="6" className="border-b-2 pb-2">
       {items.map((i) => (

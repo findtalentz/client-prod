@@ -23,7 +23,7 @@ async function BuyerDashboard({ params }: Props) {
     <div className="p-2 sm:p-4 space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-primary">{t.common.dashboard}</h2>
-        <Link className={buttonVariants()} href="/dashboard/client/jobs/new">
+        <Link className={buttonVariants()} href={`/${lang}/dashboard/client/jobs/new`}>
           {t.client.postNewJobAds}
         </Link>
       </div>

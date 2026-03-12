@@ -25,7 +25,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
 import useDictionary from "@/hooks/useDictionary";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
@@ -55,6 +55,7 @@ function Skills() {
   const setStep = useStepStore((s) => s.setStep);
   const { saveSkills, jobSkills } = useJobSkillsStore();
   const router = useRouter();
+  const { lang } = useParams();
   const [skillInput, setSkillInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -99,7 +100,7 @@ function Skills() {
     try {
       setIsLoading(true);
       saveSkills({ ...data, requiredSkills: skills });
-      router.push("/dashboard/client/jobs/new/scope-budget");
+      router.push(`/${lang}/dashboard/client/jobs/new/scope-budget`);
     } catch (error) {
       console.error("Failed to save skills:", error);
       form.setError("root", {
@@ -207,7 +208,7 @@ function Skills() {
         <div className="flex items-center justify-between">
           <Link
             onClick={() => saveSkills(form.getValues())}
-            href="/dashboard/client/jobs"
+            href={`/${lang}/dashboard/client/jobs`}
             className={cn(buttonVariants({ variant: "outline" }))}
           >
             {dict.common.saveDraftAndExit}

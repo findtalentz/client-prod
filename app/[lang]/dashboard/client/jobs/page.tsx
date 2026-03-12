@@ -35,7 +35,7 @@ export default async function JobManagement({ params }: Props) {
   return (
     <>
       <div className="flex items-center justify-end w-full">
-        <Link href="/dashboard/client/jobs/new" className={buttonVariants()}>
+        <Link href={`/${lang}/dashboard/client/jobs/new`} className={buttonVariants()}>
           {t.client.createNewJob}
         </Link>
       </div>
@@ -55,7 +55,7 @@ export default async function JobManagement({ params }: Props) {
               <TableCell>
                 <Link
                   className="text-xl text-primary"
-                  href={`/dashboard/client/jobs/${job._id}`}
+                  href={`/${lang}/dashboard/client/jobs/${job._id}`}
                 >
                   {job.title}
                 </Link>

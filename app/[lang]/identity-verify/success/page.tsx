@@ -3,8 +3,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function VerificationSuccess() {
+  const { lang } = useParams();
   return (
     <div className="flex items-center justify-center min-h-[calc(100dvh-70px)] p-4">
       <div className="w-full max-w-md text-center">
@@ -23,7 +25,7 @@ export default function VerificationSuccess() {
 
         <div className="space-y-4 flex items-center justify-center flex-col">
           <Link
-            href="/profile"
+            href={`/${lang}/profile`}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "!py-5 w-full"
@@ -32,7 +34,7 @@ export default function VerificationSuccess() {
             Set Up Profile
           </Link>
           <Link
-            href="/dashboard"
+            href={`/${lang}/dashboard`}
             className={cn(buttonVariants(), "!py-5 w-full")}
           >
             Back To Dashboard
@@ -41,7 +43,7 @@ export default function VerificationSuccess() {
 
         <p className="mt-8 text-xs text-gray-500">
           Need help?{" "}
-          <Link href="/contact" className="text-primary hover:underline">
+          <Link href={`/${lang}/contact`} className="text-primary hover:underline">
             Contact support
           </Link>
         </p>

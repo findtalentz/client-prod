@@ -15,7 +15,12 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-export default async function OpenJobs() {
+interface Props {
+  params: Promise<{ lang: "en" | "ch" }>;
+}
+
+export default async function OpenJobs({ params }: Props) {
+  const { lang } = await params;
   const { data } = await apiClient.get<ApiResponse<JobSchema[]>>(
     "/jobs/client",
     {
@@ -28,7 +33,7 @@ export default async function OpenJobs() {
   return (
     <>
       <div className="flex items-center justify-end w-full">
-        <Link href="/dashboard/client/jobs/new" className={buttonVariants()}>
+        <Link href={`/${lang}/dashboard/client/jobs/new`} className={buttonVariants()}>
           Create New Job
         </Link>
       </div>
@@ -47,7 +52,7 @@ export default async function OpenJobs() {
               <TableCell>
                 <Link
                   className="text-xl text-primary"
-                  href={`/dashboard/client/jobs/open/${job._id}`}
+                  href={`/${lang}/dashboard/client/jobs/open/${job._id}`}
                 >
                   {job.title}
                 </Link>

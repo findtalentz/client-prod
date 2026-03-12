@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa6";
 
-function IdentityVerificationPage() {
+async function IdentityVerificationPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   return (
     <div className="flex items-center justify-center h-[calc(100dvh-70px)]">
       <div className="flex items-center justify-center flex-col gap-6 w-[300px] md:w-[400px]">
@@ -14,7 +19,7 @@ function IdentityVerificationPage() {
         </div>
         <Card className="w-full">
           <Link
-            href="/identity-verify/passport"
+            href={`/${lang}/identity-verify/passport`}
             className="px-4 flex items-center justify-between"
           >
             <div className="flex items-center gap-2">
@@ -33,7 +38,7 @@ function IdentityVerificationPage() {
         </Card>
         <Card className="w-full">
           <Link
-            href="/identity-verify/id"
+            href={`/${lang}/identity-verify/id`}
             className="px-4 flex items-center justify-between"
           >
             <div className="flex items-center gap-2">
@@ -50,7 +55,7 @@ function IdentityVerificationPage() {
             <FaChevronRight />
           </Link>
         </Card>
-        <Link className={buttonVariants({ variant: "link" })} href="/dashboard">
+        <Link className={buttonVariants({ variant: "link" })} href={`/${lang}/dashboard`}>
           Skip For Now
         </Link>
       </div>

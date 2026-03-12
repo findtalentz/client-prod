@@ -21,12 +21,13 @@ import remarkGfm from "remark-gfm";
 
 interface Props {
   params: Promise<{
+    lang: "en" | "ch";
     id: string;
   }>;
 }
 
 const TalentDetails = async ({ params }: Props) => {
-  const { id } = await params;
+  const { id, lang } = await params;
   const [
     { data },
     { data: completedjobs },
@@ -56,7 +57,7 @@ const TalentDetails = async ({ params }: Props) => {
     <Grid columns={{ initial: "1", md: "1fr 440px" }} gap="6">
       <div className="space-y-6 px-4">
         <Link
-          href="/dashboard/client/talents"
+          href={`/${lang}/dashboard/client/talents`}
           className="flex items-center mb-8!"
         >
           <FaAngleLeft className="mr-2" /> Back

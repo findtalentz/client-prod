@@ -6,7 +6,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
@@ -25,6 +25,7 @@ export default function IDVerification() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { lang } = useParams();
 
   const handleUpload = useCallback(
     async (side: "front" | "back", e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +85,7 @@ export default function IDVerification() {
       toast.success("ID verification submitted successfully!");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["session"] });
-      router.push("/identity-verify/submitted");
+      router.push(`/${lang}/identity-verify/submitted`);
     } catch (error) {
       toast.error("Failed to submit ID verification");
       console.error("Submission error:", error);
@@ -105,7 +106,7 @@ export default function IDVerification() {
             verification.
             <br />
             <Link
-              href="/privacy-policy"
+              href={`/${lang}/privacy-policy`}
               className="text-primary hover:underline"
             >
               View our Privacy Policy

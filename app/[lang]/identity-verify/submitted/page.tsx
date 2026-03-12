@@ -3,8 +3,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function VerificationSubmitted() {
+  const { lang } = useParams();
   return (
     <main className="flex items-center justify-center min-h-[calc(100dvh-70px)] p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-sm p-8 text-center">
@@ -23,7 +25,7 @@ export default function VerificationSubmitted() {
 
         <div className="space-y-4">
           <Link
-            href="/profile"
+            href={`/${lang}/profile`}
             className={cn(
               buttonVariants({ size: "lg", variant: "outline" }),
               "w-full py-6 text-base font-medium"
@@ -32,7 +34,7 @@ export default function VerificationSubmitted() {
             Complete Your Profile
           </Link>
           <Link
-            href="/dashboard"
+            href={`/${lang}/dashboard`}
             className={cn(
               buttonVariants({ size: "lg" }),
               "w-full py-6 text-base font-medium"
@@ -45,7 +47,7 @@ export default function VerificationSubmitted() {
         <p className="mt-8 text-sm text-gray-500">
           Need help?{" "}
           <Link
-            href="/contact"
+            href={`/${lang}/contact`}
             className="text-primary hover:underline font-medium"
           >
             Contact support
