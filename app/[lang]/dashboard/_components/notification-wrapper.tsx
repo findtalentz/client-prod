@@ -1,5 +1,8 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { CardContent } from "@/components/ui/card";
+import useDictionary from "@/hooks/useDictionary";
 import Notification from "@/schemas/Notification";
 import { Bell } from "lucide-react";
 import MarkAllAsRead from "./mark-as-all-read";
@@ -10,6 +13,7 @@ interface Props {
 }
 
 function NotificationWrapper({ notifications }: Props) {
+  const dict = useDictionary();
   const unreadCount = notifications.filter((i) => i.status === "Unread").length;
 
   return (
@@ -17,10 +21,10 @@ function NotificationWrapper({ notifications }: Props) {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Bell className="h-8 w-8" />
-          <h1 className="text-3xl font-bold">Notifications</h1>
+          <h1 className="text-3xl font-bold">{dict.notifications.title}</h1>
           {unreadCount > 0 && (
             <Badge variant="secondary" className="ml-2">
-              {unreadCount} unread
+              {unreadCount} {dict.notifications.unread}
             </Badge>
           )}
         </div>
@@ -33,7 +37,7 @@ function NotificationWrapper({ notifications }: Props) {
             {notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-60 text-muted-foreground">
                 <Bell className="h-12 w-12 mb-4 opacity-50" />
-                <p>No notifications found</p>
+                <p>{dict.notifications.noNotificationsFound}</p>
               </div>
             ) : (
               <div className="space-y-6">

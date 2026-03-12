@@ -5,9 +5,11 @@ import TimeRangeToggle from "@/components/time-range-toggle";
 import ApiResponse from "@/schemas/ApiRespose";
 import apiClient from "@/services/api-client";
 import { useQuery } from "@tanstack/react-query";
+import useDictionary from "@/hooks/useDictionary";
 import { useState } from "react";
 
 export default function ViewsChart() {
+  const dict = useDictionary();
   const [timeRange, setTimeRange] = useState("month");
 
   const numberOfMonth = timeRange === "year" ? 12 : 6;
@@ -30,14 +32,14 @@ export default function ViewsChart() {
     <div className="shadow !p-6 !rounded-3xl !overflow-hidden border">
       <div className="w-full flex items-center justify-between pb-6">
         <span className="text-primary font-semibold text-[18px]">
-          Number of Views
+          {dict.seller.numberOfViews}
         </span>
         <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
       </div>
       <AppLineChart
         config={{
           views: {
-            label: "Views",
+            label: dict.seller.views,
             color: "var(--primary)",
           },
         }}

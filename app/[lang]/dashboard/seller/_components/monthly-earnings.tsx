@@ -6,17 +6,19 @@ import ApiResponse from "@/schemas/ApiRespose";
 import SalseReport from "@/schemas/SalseReport";
 import apiClient from "@/services/api-client";
 import { useQuery } from "@tanstack/react-query";
+import useDictionary from "@/hooks/useDictionary";
 import { useState } from "react";
 
-const monthlyConfig = {
-  earnings: {
-    label: "Monthly Earnings",
-    color: "var(--color-primary)",
-  },
-};
-
 export default function MonthlyEarnings() {
+  const dict = useDictionary();
   const [timeRange, setTimeRange] = useState("month");
+
+  const monthlyConfig = {
+    earnings: {
+      label: dict.seller.monthlyEarnings,
+      color: "var(--color-primary)",
+    },
+  };
 
   const { data } = useQuery<ApiResponse<SalseReport>>({
     queryKey: ["monthly_earnings", timeRange],
@@ -36,7 +38,7 @@ export default function MonthlyEarnings() {
     <div className="shadow !p-6 !rounded-3xl !overflow-hidden border">
       <div className="w-full flex items-center justify-between pb-6">
         <span className="text-primary font-semibold text-[18px]">
-          Monthly Earnings
+          {dict.seller.monthlyEarnings}
         </span>
         <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
       </div>

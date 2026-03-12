@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import useDictionary from "@/hooks/useDictionary";
 import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 function MarkAllAsRead({ unreadCount }: Props) {
+  const dict = useDictionary();
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const markAllAsRead = async () => {
@@ -30,7 +32,7 @@ function MarkAllAsRead({ unreadCount }: Props) {
   };
   return (
     <Button onClick={markAllAsRead} disabled={unreadCount === 0 || isLoading}>
-      {isLoading ? <BeatLoader /> : "Mark all as read"}
+      {isLoading ? <BeatLoader /> : dict.notifications.markAllAsRead}
     </Button>
   );
 }

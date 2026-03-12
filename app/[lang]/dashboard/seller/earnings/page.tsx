@@ -20,6 +20,7 @@ import useTotalEarnings from "@/hooks/useTotalEarning";
 
 import useBalances from "@/hooks/useBalances";
 import useBankAccountStatus from "@/hooks/useBankAccountStatus";
+import useDictionary from "@/hooks/useDictionary";
 import usePaymentMethods from "@/hooks/usePaymentMethods";
 import { formatDate } from "@/lib/utils";
 import { AddPaymentMethodDialog } from "./add-payment-method-dialog";
@@ -31,6 +32,7 @@ import WithdrawForm from "./withdraw-form";
 import WithdrawFund from "./withdraw-fund";
 
 export default function EarningsPage() {
+  const dict = useDictionary();
   const { data: userData, isLoading, error } = useSession();
   const { data: withdrawals } = useMyWithdraws();
   const { data: totalEarnings } = useTotalEarnings();
@@ -44,7 +46,7 @@ export default function EarningsPage() {
   if (error)
     return (
       <div className="container mx-auto py-8 text-destructive">
-        Failed to load earnings data.
+        {dict.earnings.failedToLoad}
       </div>
     );
 
@@ -54,10 +56,10 @@ export default function EarningsPage() {
     <div className="container mx-auto py-8 space-y-8">
       <header className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          Earnings Dashboard
+          {dict.earnings.title}
         </h1>
         <p className="text-muted-foreground">
-          View your earnings, payment methods, and withdrawal history
+          {dict.earnings.description}
         </p>
       </header>
 
@@ -65,7 +67,7 @@ export default function EarningsPage() {
         <Card className="bg-gradient-to-br from-primary/5 to-primary/10">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Available Balance
+              {dict.earnings.availableBalance}
             </CardTitle>
             <Wallet className="w-5 h-5 text-primary" />
           </CardHeader>
@@ -85,7 +87,7 @@ export default function EarningsPage() {
         <Card className="bg-gradient-to-br from-secondary/5 to-secondary/10">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Pending Clearance
+              {dict.earnings.pendingClearance}
             </CardTitle>
             <History className="w-5 h-5 text-secondary-foreground" />
           </CardHeader>
@@ -95,8 +97,8 @@ export default function EarningsPage() {
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               {pendingEarnings?.data
-                ? "Will be available soon"
-                : "No pending earnings"}
+                ? dict.earnings.willBeAvailableSoon
+                : dict.earnings.noPendingEarnings}
             </p>
           </CardContent>
         </Card>
@@ -105,7 +107,7 @@ export default function EarningsPage() {
         <Card className="bg-gradient-to-br from-emerald-500/5 to-emerald-500/10">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Lifetime Earnings
+              {dict.earnings.lifetimeEarnings}
             </CardTitle>
             <DollarSign className="w-5 h-5 text-emerald-500" />
           </CardHeader>
@@ -114,7 +116,7 @@ export default function EarningsPage() {
               ${totalEarnings?.data?.toFixed(2) || "0.00"}
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              All-time total earnings
+              {dict.earnings.allTimeTotalEarnings}
             </p>
           </CardContent>
         </Card>
@@ -125,7 +127,7 @@ export default function EarningsPage() {
         {/* Withdraw Section */}
         <Card>
           <CardHeader className="border-b">
-            <CardTitle className="text-lg">Withdraw Funds</CardTitle>
+            <CardTitle className="text-lg">{dict.earnings.withdrawFunds}</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <WithdrawForm />
@@ -136,7 +138,7 @@ export default function EarningsPage() {
         <Card>
           <CardHeader className="border-b">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Payment Methods</CardTitle>
+              <CardTitle className="text-lg">{dict.earnings.paymentMethods}</CardTitle>
               <AddPaymentMethodDialog hideIfExists />
             </div>
           </CardHeader>
@@ -155,9 +157,9 @@ export default function EarningsPage() {
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <Wallet className="w-10 h-10 text-muted-foreground mb-3" />
-                <h3 className="text-lg font-medium">No payment methods</h3>
+                <h3 className="text-lg font-medium">{dict.earnings.noPaymentMethods}</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Add a payment method to withdraw your earnings
+                  {dict.earnings.addPaymentMethodToWithdraw}
                 </p>
               </div>
             )}
@@ -171,15 +173,15 @@ export default function EarningsPage() {
       <section>
         <Card>
           <CardHeader className="border-b">
-            <CardTitle className="text-lg">Withdrawal History</CardTitle>
+            <CardTitle className="text-lg">{dict.earnings.withdrawalHistory}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{dict.earnings.date}</TableHead>
+                  <TableHead>{dict.earnings.amount}</TableHead>
+                  <TableHead>{dict.earnings.status}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -213,10 +215,10 @@ export default function EarningsPage() {
                       <div className="flex flex-col items-center justify-center">
                         <History className="w-10 h-10 text-muted-foreground mb-3" />
                         <h3 className="text-lg font-medium">
-                          No withdrawals yet
+                          {dict.earnings.noWithdrawalsYet}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          Your withdrawal history will appear here
+                          {dict.earnings.withdrawalHistoryWillAppear}
                         </p>
                       </div>
                     </TableCell>

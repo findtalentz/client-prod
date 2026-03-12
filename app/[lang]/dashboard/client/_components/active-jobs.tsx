@@ -1,8 +1,10 @@
 "use client";
 import ActiveJobsShared from "@/components/dashboard/active-jobs";
+import useDictionary from "@/hooks/useDictionary";
 
 function ActiveJobs() {
-  return <ActiveJobsShared endpoint="/buyer/active-jobs-report" title="Active Jobs" layout="horizontal" />;
+  const dict = useDictionary();
+  return <ActiveJobsShared endpoint="/buyer/active-jobs-report" title={dict.common?.activeJobs || "Active Jobs"} layout="horizontal" />;
 }
 
 export default ActiveJobs;

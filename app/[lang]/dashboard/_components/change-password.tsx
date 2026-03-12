@@ -33,6 +33,7 @@ export const passwordChangeSchema = z
 
 export type PasswordChangeFormValues = z.infer<typeof passwordChangeSchema>;
 
+import useDictionary from "@/hooks/useDictionary";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -52,6 +53,7 @@ import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
 
 export function ChangePasswordForm() {
+  const dict = useDictionary();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<PasswordChangeFormValues>({
@@ -81,9 +83,9 @@ export function ChangePasswordForm() {
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Change Password</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{dict.changePassword.title}</h2>
           <p className="text-sm text-muted-foreground mt-2">
-            Secure your account with a new password
+            {dict.changePassword.subtitle}
           </p>
         </div>
 
@@ -94,12 +96,12 @@ export function ChangePasswordForm() {
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
+                  <FormLabel>{dict.changePassword.currentPassword}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
-                      placeholder="Enter current password"
+                      placeholder={dict.changePassword.currentPasswordPlaceholder}
                       className="focus-visible:ring-primary"
                     />
                   </FormControl>
@@ -113,12 +115,12 @@ export function ChangePasswordForm() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel>{dict.changePassword.newPassword}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
-                      placeholder="Enter new password"
+                      placeholder={dict.changePassword.newPasswordPlaceholder}
                       className="focus-visible:ring-primary"
                     />
                   </FormControl>
@@ -132,12 +134,12 @@ export function ChangePasswordForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormLabel>{dict.changePassword.confirmNewPassword}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
-                      placeholder="Confirm new password"
+                      placeholder={dict.changePassword.confirmNewPasswordPlaceholder}
                       className="focus-visible:ring-primary"
                     />
                   </FormControl>
@@ -153,7 +155,7 @@ export function ChangePasswordForm() {
                     <BeatLoader />
                   </>
                 ) : (
-                  "Change Password"
+                  dict.changePassword.button
                 )}
               </Button>
             </div>

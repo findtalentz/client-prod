@@ -1,4 +1,7 @@
+"use client";
+
 import { Calendar } from "@/components/calender";
+import useDictionary from "@/hooks/useDictionary";
 import { Grid } from "@radix-ui/themes";
 import ActiveJobs from "./_components/active-jobs";
 import EarningsSummary from "./_components/earnings-summary";
@@ -9,10 +12,11 @@ import ViewsChart from "./_components/views-chart";
 
 export const dynamic = "force-dynamic";
 
-async function SellerDashboard() {
+function SellerDashboard() {
+  const dict = useDictionary();
   return (
     <div>
-      <h2 className="mb-2 text-primary">Dashboard</h2>
+      <h2 className="mb-2 text-primary">{dict.common.dashboard}</h2>
       <Grid columns={{ initial: "1", lg: "1fr 400px" }} gap="5">
         <div className="space-y-6">
           <EarningsSummary />

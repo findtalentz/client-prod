@@ -1,4 +1,5 @@
 "use client";
+import useDictionary from "@/hooks/useDictionary";
 import apiClient from "@/services/api-client";
 import RoyaltyCard from "./_components/royalty-card";
 import ApiResponse from "@/schemas/ApiRespose";
@@ -7,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import RoyaltyCardSkeleton from "@/components/skeletons/royalty-card-skeleton";
 
 const RoyaltyProgram = () => {
+  const dict = useDictionary();
   const { data: royalty, isLoading } = useQuery({
     queryKey: ["royalty", "seller"],
     queryFn: async () => {
@@ -29,12 +31,12 @@ const RoyaltyProgram = () => {
 
   return (
     <div>
-      <h2 className="mb-2 text-primary-dark">Royalty Program</h2>
+      <h2 className="mb-2 text-primary-dark">{dict.royalty.title}</h2>
       <p className="text-gray-500 mb-6 text-sm">
-        Complete milestones to unlock higher tiers and earn rewards.
+        {dict.royalty.completeMilestones}
         {royalty.currentTierName !== "None" && (
           <span className="ml-1 font-medium text-primary">
-            Current tier: {royalty.currentTierName}
+            {dict.royalty.currentTier + ": "}{royalty.currentTierName}
           </span>
         )}
       </p>

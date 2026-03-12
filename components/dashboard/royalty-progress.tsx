@@ -1,4 +1,5 @@
 "use client";
+import useDictionary from "@/hooks/useDictionary";
 import apiClient from "@/services/api-client";
 import ApiResponse from "@/schemas/ApiRespose";
 import Royalty from "@/schemas/Royalty";
@@ -33,6 +34,7 @@ const TIER_COLORS: Record<string, string> = {
 };
 
 function RoyaltyProgress({ role, detailsHref, className }: Props) {
+  const dict = useDictionary();
   const params = useParams();
   const lang = params?.lang || "en";
 
@@ -64,10 +66,10 @@ function RoyaltyProgress({ role, detailsHref, className }: Props) {
         href={`/${lang}${detailsHref}`}
         className="text-primary underline absolute top-4 right-4 font-[500]"
       >
-        View Details
+        {dict.royalty?.viewDetails || "View Details"}
       </Link>
       <span className="text-primary font-semibold text-[18px]">
-        Royalty Progress
+        {dict.royalty?.royaltyProgress || "Royalty Progress"}
       </span>
 
       <div className="space-y-3 mt-2">
@@ -81,14 +83,14 @@ function RoyaltyProgress({ role, detailsHref, className }: Props) {
             />
           )}
           <div>
-            <p className="text-xs text-gray-400">Current Tier</p>
+            <p className="text-xs text-gray-400">{dict.royalty?.currentTier || "Current Tier"}</p>
             <p
               className={cn(
                 "font-semibold",
                 TIER_COLORS[currentTierName] || "text-gray-400"
               )}
             >
-              {currentTierName === "None" ? "No Tier Yet" : currentTierName}
+              {currentTierName === "None" ? (dict.royalty?.noTierYet || "No Tier Yet") : currentTierName}
             </p>
           </div>
         </div>
@@ -96,7 +98,7 @@ function RoyaltyProgress({ role, detailsHref, className }: Props) {
         {nextTierName ? (
           <div className="space-y-1">
             <p className="!text-sm !text-gray-400">
-              Upgrade to {nextTierName}
+              {(dict.royalty?.upgradeTo || "Upgrade to") + " "}{nextTierName}
             </p>
             <Slider
               defaultValue={[progress]}
@@ -104,11 +106,11 @@ function RoyaltyProgress({ role, detailsHref, className }: Props) {
               color="cyan"
               style={{ pointerEvents: "none", opacity: 1 }}
             />
-            <p className="text-primary text-sm">{progress}% completed</p>
+            <p className="text-primary text-sm">{progress}{"% " + (dict.royalty?.completed || "completed")}</p>
           </div>
         ) : (
           <p className="text-sm text-green-600 font-medium">
-            You have reached the highest tier!
+            {dict.royalty?.highestTierReached || "You have reached the highest tier!"}
           </p>
         )}
       </div>
