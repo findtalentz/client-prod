@@ -13,10 +13,19 @@ import ApiResponse from "@/schemas/ApiRespose";
 import Job from "@/schemas/Job";
 import apiClient from "@/services/api-client";
 import Link from "next/link";
+import { getDictionary } from "../../../dictionaries";
 
 export const dynamic = "force-dynamic";
 
-export default async function JobManagement() {
+interface Props {
+  params: Promise<{ lang: "en" | "ch" }>;
+}
+
+export default async function JobManagement({ params }: Props) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.dashboard;
+
   const { data } = await apiClient.get<ApiResponse<Job[]>>("/jobs/client", {
     params: {
       status: "IN_PROGRESS",
@@ -27,17 +36,17 @@ export default async function JobManagement() {
     <>
       <div className="flex items-center justify-end w-full">
         <Link href="/dashboard/client/jobs/new" className={buttonVariants()}>
-          Create New Job
+          {t.client.createNewJob}
         </Link>
       </div>
-      <h1 className="my-5">In Progress Tasks</h1>
+      <h1 className="my-5">{t.common.inProgressTasks}</h1>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Job Title</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Start Date</TableHead>
-            <TableHead>Deliver Date</TableHead>
+            <TableHead>{t.common.jobTitle}</TableHead>
+            <TableHead>{t.client.price}</TableHead>
+            <TableHead>{t.common.startDate}</TableHead>
+            <TableHead>{t.common.deliverDate}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -60,7 +69,7 @@ export default async function JobManagement() {
 
                 {new Date(job.deliveryDate) < new Date() && (
                   <Badge className="ms-2" variant="destructive">
-                    LATE
+                    {t.common.late}
                   </Badge>
                 )}
               </TableCell>

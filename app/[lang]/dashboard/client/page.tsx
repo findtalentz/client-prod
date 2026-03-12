@@ -1,31 +1,37 @@
-"use client";
-
 import { Calendar } from "@/components/calender";
 import { buttonVariants } from "@/components/ui/button";
-import useDictionary from "@/hooks/useDictionary";
 import Link from "next/link";
 import ActiveJobs from "./_components/active-jobs";
 import NewApplications from "./_components/new-applications";
 import NewActions from "./_components/request-actions";
 import RoyaltyProgress from "./_components/royalty-progress";
 import SpendChart from "./_components/spend-chart";
+import { getDictionary } from "../../dictionaries";
 
-function BuyerDashboard() {
-  const dict = useDictionary();
+export const dynamic = "force-dynamic";
+
+interface Props {
+  params: Promise<{ lang: "en" | "ch" }>;
+}
+
+async function BuyerDashboard({ params }: Props) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.dashboard;
 
   return (
     <div className="p-2 sm:p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-primary">{dict.common.dashboard}</h2>
+        <h2 className="text-2xl font-bold text-primary">{t.common.dashboard}</h2>
         <Link className={buttonVariants()} href="/dashboard/client/jobs/new">
-          {dict.client.postNewJobAds}
+          {t.client.postNewJobAds}
         </Link>
       </div>
 
       {/* Top row: Applications, Actions, Calendar */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <NewApplications />
-        <NewActions />
+        <NewApplications lang={lang} />
+        <NewActions lang={lang} />
         <Calendar />
       </div>
 

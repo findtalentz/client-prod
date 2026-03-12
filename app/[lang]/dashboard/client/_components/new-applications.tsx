@@ -6,10 +6,18 @@ import { Flex } from "@radix-ui/themes";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Application from "./application";
+import { getDictionary } from "../../../dictionaries";
 
 export const dynamic = "force-dynamic";
 
-async function NewApplications() {
+interface Props {
+  lang: "en" | "ch";
+}
+
+async function NewApplications({ lang }: Props) {
+  const dict = await getDictionary(lang);
+  const t = dict.dashboard;
+
   const { data } = await apiClient.get<ApiResponse<ApplicationSchema[]>>(
     "/applications/"
   );
@@ -17,7 +25,7 @@ async function NewApplications() {
   if (!data.data)
     return (
       <div className="flex flex-col items-center justify-center py-4 text-center text-gray-500">
-        No new applications
+        {t.client.noNewApplications}
       </div>
     );
 
@@ -30,14 +38,14 @@ async function NewApplications() {
       <CardHeader>
         <Flex align="center" justify="between" mb="3">
           <span className="text-primary font-semibold text-[18px]">
-            New Applications
+            {t.client.newApplications}
           </span>
           {data.count > 6 && (
             <Link
               href="/dashboard/client/jobs/open"
               className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
-              View All <ArrowRight className="h-4 w-4" />
+              {t.common.viewAll} <ArrowRight className="h-4 w-4" />
             </Link>
           )}
         </Flex>

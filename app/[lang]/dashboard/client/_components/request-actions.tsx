@@ -6,10 +6,18 @@ import { Flex } from "@radix-ui/themes";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Comment from "./comment";
+import { getDictionary } from "../../../dictionaries";
 
 export const dynamic = "force-dynamic";
 
-async function NewActions() {
+interface Props {
+  lang: "en" | "ch";
+}
+
+async function NewActions({ lang }: Props) {
+  const dict = await getDictionary(lang);
+  const t = dict.dashboard;
+
   const { data } = await apiClient.get<ApiResponse<CommentSchema[]>>(
     "/comments/client"
   );
@@ -20,14 +28,14 @@ async function NewActions() {
       <CardHeader>
         <Flex align="center" justify="between" mb="3">
           <span className="text-primary font-semibold text-[18px]">
-            Required Actions
+            {t.client.requiredActions}
           </span>
           {data.count > 5 && (
             <Link
               href="/dashboard/client/jobs"
               className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
-              View All <ArrowRight className="h-4 w-4" />
+              {t.common.viewAll} <ArrowRight className="h-4 w-4" />
             </Link>
           )}
         </Flex>

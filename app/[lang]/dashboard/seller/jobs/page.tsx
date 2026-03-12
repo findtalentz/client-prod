@@ -13,10 +13,19 @@ import ApiResponse from "@/schemas/ApiRespose";
 import Job from "@/schemas/Job";
 import apiClient from "@/services/api-client";
 import Link from "next/link";
+import { getDictionary } from "../../../dictionaries";
 
 export const dynamic = "force-dynamic";
 
-export default async function JobManagemnet() {
+interface Props {
+  params: Promise<{ lang: "en" | "ch" }>;
+}
+
+export default async function JobManagemnet({ params }: Props) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.dashboard;
+
   const { data } = await apiClient.get<ApiResponse<Job[]>>("/jobs/seller", {
     params: {
       status: "IN_PROGRESS",
@@ -26,21 +35,21 @@ export default async function JobManagemnet() {
   if (data.count <= 0)
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center text-gray-500">
-        <p className="text-lg font-medium">No in-progress tasks</p>
-        <p className="text-sm mt-1">Jobs you are working on will appear here.</p>
+        <p className="text-lg font-medium">{t.seller.noInProgressTasks}</p>
+        <p className="text-sm mt-1">{t.seller.jobsWillAppearHere}</p>
       </div>
     );
 
   return (
     <>
-      <h1 className="my-5">In Progress Tasks</h1>
+      <h1 className="my-5">{t.common.inProgressTasks}</h1>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Job Title</TableHead>
-            <TableHead>Earnings</TableHead>
-            <TableHead>Start Date</TableHead>
-            <TableHead>Deliver Date</TableHead>
+            <TableHead>{t.common.jobTitle}</TableHead>
+            <TableHead>{t.seller.sellerEarnings}</TableHead>
+            <TableHead>{t.common.startDate}</TableHead>
+            <TableHead>{t.common.deliverDate}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -63,7 +72,7 @@ export default async function JobManagemnet() {
 
                 {new Date(job.deliveryDate) < new Date() && (
                   <Badge className="ms-2" variant="destructive">
-                    LATE
+                    {t.common.late}
                   </Badge>
                 )}
               </TableCell>
