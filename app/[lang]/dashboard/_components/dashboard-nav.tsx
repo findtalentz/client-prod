@@ -5,6 +5,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { WishlistDialogClient } from "@/components/wishlist-dialog-client";
 import { WishlistDialogSeller } from "@/components/wishlist-dialog-seller";
 import useSession from "@/hooks/useSession";
+import LanguageSwitcher from "@/components/language-switcher";
 import { MenuIcon } from "lucide-react";
 
 export default function DashboardNav() {
@@ -16,6 +17,7 @@ export default function DashboardNav() {
         <MenuIcon className="text-white" />
       </div>
       <div className="flex items-center gap-3 text-white">
+        <LanguageSwitcher />
         <NotificationDialog />
         {user && user.data && user.data.role === "CLIENT" && (
           <WishlistDialogClient />

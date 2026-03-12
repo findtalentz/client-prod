@@ -3,6 +3,7 @@ import { NotificationDialog } from "@/components/notification-dialog";
 import { ProfileCard } from "@/components/profile-card";
 import Container from "@/components/ui/container";
 import { WishlistDialogSeller } from "@/components/wishlist-dialog-seller";
+import LanguageSwitcher from "@/components/language-switcher";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,6 +15,7 @@ export default function Navbar() {
           <Image src="/logo.svg" alt="logo" width={120} height={40} priority />
         </Link>
         <div className="flex items-center justify-between gap-3">
+          <LanguageSwitcher />
           <NotificationDialog />
           <WishlistDialogSeller />
           <ProfileCard />
