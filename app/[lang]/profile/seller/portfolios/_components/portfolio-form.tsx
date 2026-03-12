@@ -18,7 +18,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Plus, Trash2, Upload, X } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -78,6 +78,7 @@ export function PortfolioForm({ portfolio, mode = "create", onCancel }: Props) {
   const [images, setImages] = useState<string[]>(portfolio?.images || []);
   const [isUploading, setIsUploading] = useState(false);
   const [isUploadingImages, setIsUploadingImages] = useState(false);
+  const { lang } = useParams();
   const router = useRouter();
 
   const form = useForm<PortfolioFormValues>({
@@ -163,7 +164,7 @@ export function PortfolioForm({ portfolio, mode = "create", onCancel }: Props) {
         toast.success("Portfolio updated successfully!");
         router.refresh();
         form.reset();
-        router.push("/profile/seller/portfolios");
+        router.push(`/${lang}/profile/seller/portfolios`);
       } else {
         await apiClient.post("/portfolios", portfolioData);
         toast.success("Portfolio created successfully!");
@@ -174,7 +175,7 @@ export function PortfolioForm({ portfolio, mode = "create", onCancel }: Props) {
       }
 
       router.refresh();
-      router.push("/profile/seller/portfolios");
+      router.push(`/${lang}/profile/seller/portfolios`);
     } catch (error) {
       toast.error(`Failed to ${mode} portfolio`);
       console.error("Submission error:", error);

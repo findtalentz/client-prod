@@ -2,12 +2,17 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { PortfolioForm } from "../_components/portfolio-form";
 
-const AddPortfolio = () => {
+interface Props {
+  params: Promise<{ lang: string }>;
+}
+
+const AddPortfolio = async ({ params }: Props) => {
+  const { lang } = await params;
   return (
     <div className="pb-20 space-y-6">
       <div>
         <Link
-          href="/profile/seller/portfolios"
+          href={`/${lang}/profile/seller/portfolios`}
           className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" /> Back to portfolios

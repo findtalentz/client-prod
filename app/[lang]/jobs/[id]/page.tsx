@@ -13,17 +13,18 @@ export const dynamic = "force-dynamic";
 interface Props {
   params: Promise<{
     id: string;
+    lang: string;
   }>;
 }
 
 async function JobDetails({ params }: Props) {
-  const { id } = await params;
+  const { id, lang } = await params;
   const { data: job } = await apiClient.get<ApiResponse<Job>>(`/jobs/${id}`);
 
   return (
     <Container>
       <div className="py-5 px-4 flex items-center justify-between">
-        <Link href="/jobs">
+        <Link href={`/${lang}/jobs`}>
           <FaArrowLeft />
         </Link>
         <div className="flex items-center gap-2">

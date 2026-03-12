@@ -6,11 +6,11 @@ import Link from "next/link";
 import { PortfolioForm } from "../_components/portfolio-form";
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; lang: string }>;
 }
 
 async function EditPortfolio({ params }: Props) {
-  const { id } = await params;
+  const { id, lang } = await params;
   const { data } = await apiClient.get<ApiResponse<Portfolio>>(
     `/portfolios/${id}`
   );
@@ -18,7 +18,7 @@ async function EditPortfolio({ params }: Props) {
     <div className="pb-20 space-y-6">
       <div>
         <Link
-          href="/profile/seller/portfolios"
+          href={`/${lang}/profile/seller/portfolios`}
           className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" /> Back to portfolios

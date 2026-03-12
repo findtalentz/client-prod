@@ -6,7 +6,12 @@ import apiClient from "@/services/api-client";
 import Link from "next/link";
 import { ArrowRight, FolderOpen, Plus } from "lucide-react";
 
-export default async function Projects() {
+interface Props {
+  params: Promise<{ lang: string }>;
+}
+
+export default async function Projects({ params }: Props) {
+  const { lang } = await params;
   const { data } = await apiClient.get<ApiResponse<Portfolio[]>>("/portfolios");
   return (
     <div className="pb-20 space-y-8">
@@ -22,7 +27,7 @@ export default async function Projects() {
         </div>
         <Link
           className={buttonVariants({ variant: "outline" }) + " gap-2"}
-          href="/profile/seller/portfolios/new"
+          href={`/${lang}/profile/seller/portfolios/new`}
         >
           <Plus className="w-4 h-4" /> Add Project
         </Link>
@@ -43,7 +48,7 @@ export default async function Projects() {
           <p className="text-xs text-gray-400 mb-4">Add your best work to stand out</p>
           <Link
             className={buttonVariants({ variant: "outline", size: "sm" }) + " gap-2"}
-            href="/profile/seller/portfolios/new"
+            href={`/${lang}/profile/seller/portfolios/new`}
           >
             <Plus className="w-4 h-4" /> Add Your First Project
           </Link>
@@ -53,7 +58,7 @@ export default async function Projects() {
       <div className="flex justify-end">
         <Link
           className={buttonVariants({ size: "lg" }) + " gap-2"}
-          href="/profile/seller/services"
+          href={`/${lang}/profile/seller/services`}
         >
           Continue <ArrowRight className="w-4 h-4" />
         </Link>

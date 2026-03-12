@@ -2,15 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function SaveProfileButton() {
+  const { lang } = useParams();
   const router = useRouter();
 
   const handleSave = () => {
     toast.success("Profile setup completed!");
-    router.push("/dashboard/seller");
+    router.push(`/${lang}/dashboard/seller`);
   };
 
   return (

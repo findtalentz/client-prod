@@ -7,7 +7,12 @@ import { ArrowRight, GraduationCap } from "lucide-react";
 import { AddEducation } from "./add-education";
 import Educations from "./educations";
 
-export default async function EducationsPage() {
+interface Props {
+  params: Promise<{ lang: string }>;
+}
+
+export default async function EducationsPage({ params }: Props) {
+  const { lang } = await params;
   const { data: educations } = await apiClient.get<ApiResponse<Education[]>>(
     "/educations"
   );
@@ -44,7 +49,7 @@ export default async function EducationsPage() {
       <div className="flex justify-end">
         <Link
           className={buttonVariants({ size: "lg" }) + " gap-2"}
-          href="/profile/seller/portfolios"
+          href={`/${lang}/profile/seller/portfolios`}
         >
           Continue <ArrowRight className="w-4 h-4" />
         </Link>

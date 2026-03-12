@@ -23,7 +23,7 @@ export default async function Hero({ lang }: Props) {
             id="how-we-work"
           >
             <Link
-              href="/chat"
+              href={`/${lang}/chat`}
               className="cursor-pointer mb-8 p-1.5 rounded-full pr-4 bg-primary-light/10 text-white flex items-center gap-2"
             >
               <div className="py-1.5 px-2 pr-3 text-[12px] bg-primary-light/20 rounded-full flex items-center">

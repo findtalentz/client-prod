@@ -26,13 +26,14 @@ interface Props {
   }>;
   params: Promise<{
     id: string;
+    lang: string;
   }>;
 }
 
 export const dynamic = "force-dynamic";
 
 async function BlogDetails({ params, searchParams }: Props) {
-  const { id } = await params;
+  const { id, lang } = await params;
   const { language } = await searchParams;
 
   const { data } = await apiClient.get<ApiResponse<BlogSchema>>(`/blog/${id}`, {
@@ -49,7 +50,7 @@ async function BlogDetails({ params, searchParams }: Props) {
       <Container>
         <div className="py-10 flex items-center justify-between">
           <Link
-            href="/blog"
+            href={`/${lang}/blog`}
             className="cursor-pointer flex items-center gap-1 gorup"
           >
             <FaArrowLeftLong /> <span>Back</span>
@@ -111,7 +112,7 @@ async function BlogDetails({ params, searchParams }: Props) {
         <div className="space-y-10 mb-20 max-w-3xl">
           <Markdown remarkPlugins={[remarkGfm]}>{blog.body}</Markdown>
         </div>
-        <OthersBlog />
+        <OthersBlog lang={lang} />
       </Container>
     </Suspense>
   );

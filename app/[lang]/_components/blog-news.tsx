@@ -53,7 +53,7 @@ async function BlogNews({ lang }: Props) {
                 <h4>{blog.title}</h4>
               </div>
               <Link
-                href={`/blog/${blog._id}`}
+                href={`/${lang}/blog/${blog._id}`}
                 className="group flex items-center gap-2"
               >
                 <p className="!text-black">{blogLang.readMore}</p>
@@ -65,7 +65,7 @@ async function BlogNews({ lang }: Props) {
         <div className="w-full flex items-center justify-center mt-16">
           <Link
             className={buttonVariants({ variant: "outline", size: "lg" })}
-            href="/blog"
+            href={`/${lang}/blog`}
           >
             {blogLang.button}
           </Link>

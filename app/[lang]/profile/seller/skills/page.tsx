@@ -4,7 +4,12 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import AddLanguages from "./add-languages";
 import AddSkills from "./add-skills";
 
-export default function SkillsLanguages() {
+interface Props {
+  params: Promise<{ lang: string }>;
+}
+
+export default async function SkillsLanguages({ params }: Props) {
+  const { lang } = await params;
   return (
     <div className="pb-20 space-y-8">
       <div>
@@ -27,7 +32,7 @@ export default function SkillsLanguages() {
       <div className="flex justify-end">
         <Link
           className={buttonVariants({ size: "lg" }) + " gap-2"}
-          href="/profile/seller/educations"
+          href={`/${lang}/profile/seller/educations`}
         >
           Continue <ArrowRight className="w-4 h-4" />
         </Link>

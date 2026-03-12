@@ -16,7 +16,7 @@ import Job from "@/schemas/Job";
 import apiClient from "@/services/api-client";
 import { useChatStore } from "@/store";
 import { Flex } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaAngleLeft } from "react-icons/fa6";
@@ -36,6 +36,7 @@ const commentTypes: CommentOptions = [
 export function JobDetails({ job, title }: Props) {
   const [isOpen, setOpen] = useState(false);
   const { data } = useComments(job._id);
+  const { lang } = useParams();
   const setCurrentChat = useChatStore((s) => s.setCurrentChat);
   const router = useRouter();
 
@@ -72,7 +73,7 @@ export function JobDetails({ job, title }: Props) {
                   queryClient.invalidateQueries({
                     queryKey: ["chats"],
                   });
-                  router.push("/dashboard/seller/messages");
+                  router.push(`/${lang}/dashboard/seller/messages`);
                 } catch {
                   toast.error("Failed to start chat");
                 }

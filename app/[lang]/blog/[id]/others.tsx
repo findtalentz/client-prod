@@ -10,7 +10,11 @@ import { FaArrowRight } from "react-icons/fa";
 
 export const dynamic = "force-dynamic";
 
-async function OthersBlog() {
+interface Props {
+  lang: string;
+}
+
+async function OthersBlog({ lang }: Props) {
   const { data } = await apiClient.get<ApiResponse<BlogSchema[]>>("/blog", {
     params: {
       pageSize: 3,
@@ -46,7 +50,7 @@ async function OthersBlog() {
                 <h4>{blog.title}</h4>
               </div>
               <Link
-                href={`/blog/${blog._id}`}
+                href={`/${lang}/blog/${blog._id}`}
                 className="group flex items-center gap-2"
               >
                 <p className="!text-black">Read More</p>
@@ -58,7 +62,7 @@ async function OthersBlog() {
         <div className="w-full flex items-center justify-center mt-16">
           <Link
             className={buttonVariants({ variant: "outline", size: "lg" })}
-            href="/blog"
+            href={`/${lang}/blog`}
           >
             More Blogs
           </Link>

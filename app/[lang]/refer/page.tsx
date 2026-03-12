@@ -4,7 +4,7 @@ import ApiResponse from "@/schemas/ApiRespose";
 import apiClient from "@/services/api-client";
 import { AxiosError } from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
@@ -15,6 +15,7 @@ const formSchema = z.object({
 });
 
 function Refer() {
+  const { lang } = useParams();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -30,7 +31,7 @@ function Refer() {
       });
 
       toast.success(res.data.message);
-      router.push("/profile");
+      router.push(`/${lang}/profile`);
     } catch (err) {
       if (err instanceof z.ZodError) {
         setError(err.errors[0].message);
@@ -81,7 +82,7 @@ function Refer() {
           </div>
           <Link
             className="text-primary-dark font-semibold underline"
-            href="/profile"
+            href={`/${lang}/profile`}
           >
             Skip for Now
           </Link>

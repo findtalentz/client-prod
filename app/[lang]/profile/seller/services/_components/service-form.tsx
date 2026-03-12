@@ -28,7 +28,7 @@ import Service from "@/schemas/Service";
 import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
 import MDEditor from "@uiw/react-md-editor";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import rehypeSanitize from "rehype-sanitize";
 import { Plus, Upload, X } from "lucide-react";
 
@@ -208,6 +208,7 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
   const details = watch("details");
   const tools = watch("tools");
   const features = watch("features");
+  const { lang } = useParams();
   const router = useRouter();
 
   const handleRemoveItem = (
@@ -284,11 +285,11 @@ export default function ServiceFormPage({ service }: EditServiceProps) {
       const { data } = await apiClient[method](endpoint, serviceData);
       toast.success(`Service ${service ? "updated" : "created"} successfully!`);
       if (!service) {
-        router.push(`/profile/seller/services/${data.data._id}`);
+        router.push(`/${lang}/profile/seller/services/${data.data._id}`);
       }
       queryClient.invalidateQueries({ queryKey: ["services"] });
       if (service) {
-        router.push("/profile/seller/services/");
+        router.push(`/${lang}/profile/seller/services/`);
       }
     } catch (error) {
       handleApiError(error);

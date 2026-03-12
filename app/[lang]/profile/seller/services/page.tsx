@@ -6,7 +6,12 @@ import apiClient from "@/services/api-client";
 import Link from "next/link";
 import { ArrowRight, Briefcase, Plus } from "lucide-react";
 
-export default async function ServicesPage() {
+interface Props {
+  params: Promise<{ lang: string }>;
+}
+
+export default async function ServicesPage({ params }: Props) {
+  const { lang } = await params;
   const { data: services } = await apiClient.get<ApiResponse<Service[]>>(
     "/services"
   );
@@ -24,7 +29,7 @@ export default async function ServicesPage() {
         </div>
         <Link
           className={buttonVariants({ variant: "outline" }) + " gap-2"}
-          href="/profile/seller/services/new"
+          href={`/${lang}/profile/seller/services/new`}
         >
           <Plus className="w-4 h-4" /> Add Service
         </Link>
@@ -47,7 +52,7 @@ export default async function ServicesPage() {
           </p>
           <Link
             className={buttonVariants({ variant: "outline", size: "sm" }) + " gap-2"}
-            href="/profile/seller/services/new"
+            href={`/${lang}/profile/seller/services/new`}
           >
             <Plus className="w-4 h-4" /> Create Your First Service
           </Link>
@@ -57,7 +62,7 @@ export default async function ServicesPage() {
       <div className="flex justify-end">
         <Link
           className={buttonVariants({ size: "lg" }) + " gap-2"}
-          href="/profile/seller/preview"
+          href={`/${lang}/profile/seller/preview`}
         >
           Continue <ArrowRight className="w-4 h-4" />
         </Link>
