@@ -6,9 +6,11 @@ import apiClient from "@/services/api-client";
 import { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function SelectRole() {
+  const { lang } = useParams();
   return (
     <Container className="md:min-h-[calc(100dvh-65px)] flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-4xl space-y-8 md:space-y-16">
@@ -32,7 +34,7 @@ export default function SelectRole() {
                   sameSite: "lax",
                   path: "/",
                 });
-                window.location.href = "/dashboard";
+                window.location.href = `/${lang}/dashboard`;
               } catch (error) {
                 if (error instanceof AxiosError) {
                   toast.error(error.message);
@@ -55,7 +57,7 @@ export default function SelectRole() {
                   sameSite: "lax",
                   path: "/",
                 });
-                window.location.href = "/dashboard";
+                window.location.href = `/${lang}/dashboard`;
               } catch (error) {
                 if (error instanceof AxiosError) {
                   toast.error(error.message);

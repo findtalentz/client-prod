@@ -20,6 +20,7 @@ import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -37,6 +38,7 @@ const FormSchema = z
   });
 
 function NewPassword() {
+  const { lang } = useParams();
   const [isLoading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -64,7 +66,7 @@ function NewPassword() {
       setLoading(false);
       sessionStorage.removeItem("vCode");
       sessionStorage.removeItem("vEmail");
-      window.location.href = "/log-in";
+      window.location.href = `/${lang}/log-in`;
     } catch (error) {
       handleApiError(error);
     } finally {
@@ -74,7 +76,7 @@ function NewPassword() {
   return (
     <div className="flex items-start justify-between flex-col py-10 md:max-w-[500px] mx-auto h-[calc(100dvh-65px)] px-3">
       <div className="w-full text-2xl text-primary-dark">
-        <Link href="/forgot/check-email">
+        <Link href={`/${lang}/forgot/check-email`}>
           <FaArrowLeftLong />
         </Link>
       </div>

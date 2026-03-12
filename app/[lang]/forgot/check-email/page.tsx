@@ -19,7 +19,7 @@ import {
 import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -32,6 +32,7 @@ function VerifyEmail() {
   const [isResending, setResending] = useState(false);
   const [email, setEmail] = useState("");
   const router = useRouter();
+  const { lang } = useParams();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -56,7 +57,7 @@ function VerifyEmail() {
       form.reset();
       setLoading(false);
       sessionStorage.setItem("vCode", data.data.toString());
-      router.push("/forgot/new-password");
+      router.push(`/${lang}/forgot/new-password`);
     } catch (error) {
       handleApiError(error);
     } finally {
@@ -67,7 +68,7 @@ function VerifyEmail() {
   return (
     <div className="flex items-start justify-between flex-col py-10 md:max-w-[500px] mx-auto h-[calc(100dvh-65px)] px-3">
       <div className="w-full text-2xl text-primary-dark">
-        <Link href="/log-in/forgot">
+        <Link href={`/${lang}/forgot`}>
           <FaArrowLeftLong />
         </Link>
       </div>

@@ -18,7 +18,7 @@ import {
 import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -31,6 +31,7 @@ const FormSchema = z.object({
 
 function ForgotPassword() {
   const router = useRouter();
+  const { lang } = useParams();
   const [isLoading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -49,7 +50,7 @@ function ForgotPassword() {
       form.reset();
       setLoading(false);
       sessionStorage.setItem("vEmail", data.data);
-      router.push("/forgot/check-email");
+      router.push(`/${lang}/forgot/check-email`);
     } catch (error) {
       handleApiError(error);
     } finally {
@@ -60,7 +61,7 @@ function ForgotPassword() {
   return (
     <div className="flex items-start justify-between flex-col py-10 md:max-w-[500px] mx-auto h-[calc(100dvh-65px)] px-3">
       <div className="w-full text-2xl text-primary-dark">
-        <Link href="/log-in">
+        <Link href={`/${lang}/log-in`}>
           <FaArrowLeftLong />
         </Link>
       </div>
@@ -100,7 +101,7 @@ function ForgotPassword() {
       </div>
       <div className="text-sm text-gray-600">
         Already have an account?{" "}
-        <Link href="/log-in" className="text-primary underline">
+        <Link href={`/${lang}/log-in`} className="text-primary underline">
           Log in here
         </Link>
       </div>

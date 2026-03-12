@@ -27,7 +27,7 @@ export default async function Login({
             <LoginForm />
             <div className="text-center w-full">
               <Link
-                href="/forgot"
+                href={`/${lang}/forgot`}
                 className="text-primary underline font-semibold"
               >
                 Forgot Password?
@@ -38,7 +38,7 @@ export default async function Login({
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="text-primary underline">
+            <Link href={`/${lang}/sign-up`} className="text-primary underline">
               Sign Up here
             </Link>
           </p>

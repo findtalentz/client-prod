@@ -26,13 +26,13 @@ export default async function SignUpPage({
             title="Job Seeker"
             imageSrc="/signup_client.png"
             altText="Freelancer"
-            href="/sign-up/seller"
+            href={`/${lang}/sign-up/seller`}
           />
           <RoleCard
             title="Employer"
             imageSrc="/signup_seller.png"
             altText="Client"
-            href="/sign-up/client"
+            href={`/${lang}/sign-up/client`}
           />
         </div>
       </div>

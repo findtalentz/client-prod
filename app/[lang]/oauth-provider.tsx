@@ -1,12 +1,13 @@
 "use client";
 
 import Cookies from "js-cookie";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, useParams } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 
 function OauthProviders({ children }: PropsWithChildren) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { lang } = useParams();
   const token = searchParams.get("token");
 
   useEffect(() => {
@@ -19,7 +20,7 @@ function OauthProviders({ children }: PropsWithChildren) {
       });
       // Remove token from URL to prevent exposure in browser history
       window.history.replaceState({}, "", window.location.pathname);
-      window.location.href = "/dashboard";
+      window.location.href = `/${lang}/dashboard`;
     }
   }, [token, router]);
 

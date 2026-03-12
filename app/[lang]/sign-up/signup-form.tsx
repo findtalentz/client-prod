@@ -22,6 +22,7 @@ import {
 import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -49,6 +50,7 @@ interface Props {
 }
 
 export default function SignupForm({ role }: Props) {
+  const { lang } = useParams();
   const [isLoading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -80,7 +82,7 @@ export default function SignupForm({ role }: Props) {
       });
       form.reset();
       setLoading(false);
-      window.location.href = "/email-verify";
+      window.location.href = `/${lang}/email-verify`;
     } catch (error) {
       handleApiError(error, "Oops! Something went wrong. Please try again.");
     } finally {
@@ -162,7 +164,7 @@ export default function SignupForm({ role }: Props) {
         <OauthButtons message="Or Continue With" />
         <div className="text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/log-in" className="text-primary underline">
+          <Link href={`/${lang}/log-in`} className="text-primary underline">
             Log in here
           </Link>
         </div>

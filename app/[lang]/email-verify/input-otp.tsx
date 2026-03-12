@@ -25,7 +25,7 @@ import ApiResponse from "@/schemas/ApiRespose";
 import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { queryClient } from "../query-client-provider";
 
@@ -39,6 +39,7 @@ export function InputOTPForm() {
   const { data: session } = useSession();
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
+  const { lang } = useParams();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -84,7 +85,7 @@ export function InputOTPForm() {
       setLoading(false);
       queryClient.invalidateQueries({ queryKey: ["session"] });
       router.refresh();
-      window.location.href = "/refer";
+      window.location.href = `/${lang}/refer`;
     } catch (error) {
       handleApiError(error);
     } finally {

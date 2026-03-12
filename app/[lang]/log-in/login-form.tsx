@@ -19,6 +19,7 @@ import {
 import { handleApiError } from "@/lib/handle-api-error";
 import ApiResponse from "@/schemas/ApiRespose";
 import Cookies from "js-cookie";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -34,6 +35,7 @@ const FormSchema = z.object({
 });
 
 export default function LoginForm() {
+  const { lang } = useParams();
   const [isLoading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -58,7 +60,7 @@ export default function LoginForm() {
         sameSite: "lax",
         path: "/",
       });
-      window.location.href = "/dashboard";
+      window.location.href = `/${lang}/dashboard`;
     } catch (error) {
       handleApiError(error);
     } finally {
