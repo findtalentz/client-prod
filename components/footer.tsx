@@ -43,7 +43,7 @@ async function Footer({ lang }: Props) {
               <p className="text-2xl text-white mb-4">{content.title}</p>
               <Link
                 className={buttonVariants({ size: "lg", variant: "light" })}
-                href="/chat"
+                href={`/${lang}/chat`}
               >
                 {content.button}
               </Link>

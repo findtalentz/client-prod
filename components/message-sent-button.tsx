@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Chat } from "@/schemas/Chat";
 import apiClient from "@/services/api-client";
 import { useChatStore } from "@/store";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface Props {
   seller: string;
@@ -22,6 +22,7 @@ export default function MessageSentButton({
   className,
 }: Props) {
   const setCurrentChat = useChatStore((s) => s.setCurrentChat);
+  const { lang } = useParams();
   const router = useRouter();
   const { data } = useSession();
 
@@ -41,7 +42,7 @@ export default function MessageSentButton({
           queryClient.invalidateQueries({
             queryKey: ["chats"],
           });
-          router.push("/dashboard/client/messages");
+          router.push(`/${lang}/dashboard/client/messages`);
         } catch (error) {
           console.log(error);
         }

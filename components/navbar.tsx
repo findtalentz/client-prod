@@ -3,6 +3,7 @@ import useSession from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import LanguageSwitcher from "./language-switcher";
 import { NotificationDialog } from "./notification-dialog";
@@ -12,12 +13,12 @@ import Container from "./ui/container";
 import { WishlistDialogClient } from "./wishlist-dialog-client";
 import { WishlistDialogSeller } from "./wishlist-dialog-seller";
 
-const navItems = [
-  { id: "1", label: "About Us", path: "/about" },
-  { id: "2", label: "Jobs", path: "/jobs" },
-  { id: "3", label: "Hire", path: "/hire" },
-  { id: "4", label: "Blog", path: "/blog" },
-  { id: "5", label: "Contact Us", path: "/contact" },
+const getNavItems = (lang: string) => [
+  { id: "1", label: "About Us", path: `/${lang}/about` },
+  { id: "2", label: "Jobs", path: `/${lang}/jobs` },
+  { id: "3", label: "Hire", path: `/${lang}/hire` },
+  { id: "4", label: "Blog", path: `/${lang}/blog` },
+  { id: "5", label: "Contact Us", path: `/${lang}/contact` },
 ];
 
 const toggleLineClasses = "h-[2px] bg-white w-[26px] transition-all";
@@ -54,8 +55,10 @@ const HamburgerMenu = ({
 );
 
 const NavMenu = ({ isActive }: { isActive: boolean }) => {
+  const { lang } = useParams();
   const { data } = useSession();
   const session = data?.data;
+  const navItems = getNavItems(lang as string);
 
   return (
     <ul
@@ -74,7 +77,7 @@ const NavMenu = ({ isActive }: { isActive: boolean }) => {
       {!session && (
         <div className="flex items-center justify-center gap-5 w-full md:hidden mt-10">
           <Link
-            href="/log-in"
+            href={`/${lang}/log-in`}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "px-8 text-white border-white"
@@ -82,7 +85,7 @@ const NavMenu = ({ isActive }: { isActive: boolean }) => {
           >
             Log In
           </Link>
-          <Link className={cn(buttonVariants(), "px-8")} href="/sign-up">
+          <Link className={cn(buttonVariants(), "px-8")} href={`/${lang}/sign-up`}>
             Sign Up
           </Link>
         </div>
@@ -92,10 +95,12 @@ const NavMenu = ({ isActive }: { isActive: boolean }) => {
 };
 
 export default function Navbar() {
+  const { lang } = useParams();
   const { data, isLoading } = useSession();
   const session = data?.data;
   const [isActive, setActive] = useState(false);
   const toggleMenu = useCallback(() => setActive((prev) => !prev), []);
+  const navItems = getNavItems(lang as string);
 
   return (
     <>
@@ -130,10 +135,10 @@ export default function Navbar() {
               <div className={cn(flexClasses, "hidden md:flex")}>
                 {!isLoading && !session && (
                   <>
-                    <Link href="/log-in" className="text-white text-[13px]">
+                    <Link href={`/${lang}/log-in`} className="text-white text-[13px]">
                       Log In
                     </Link>
-                    <Link href="/sign-up">
+                    <Link href={`/${lang}/sign-up`}>
                       <Button className="py-2 px-8 text-[13px]">Sign Up</Button>
                     </Link>
                   </>

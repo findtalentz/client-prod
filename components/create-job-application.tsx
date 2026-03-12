@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -48,6 +48,7 @@ export function CreateJobApplication({ job }: Props) {
   const [isOpen, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { lang } = useParams();
   const router = useRouter();
   const { data: session } = useSession();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -115,7 +116,7 @@ export function CreateJobApplication({ job }: Props) {
   if (isProfileIncomplete) {
     return (
       <Button size="sm" className="px-8 cursor-pointer" asChild>
-        <Link href="/profile">Complete Profile</Link>
+        <Link href={`/${lang}/profile`}>Complete Profile</Link>
       </Button>
     );
   }
@@ -123,7 +124,7 @@ export function CreateJobApplication({ job }: Props) {
   if (session.data.identityStatus !== "VERIFIED") {
     return (
       <Button size="sm" className="px-8 cursor-pointer" asChild>
-        <Link href="/identity-verify">Verify Identity</Link>
+        <Link href={`/${lang}/identity-verify`}>Verify Identity</Link>
       </Button>
     );
   }

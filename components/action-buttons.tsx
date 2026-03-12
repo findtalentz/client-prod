@@ -1,5 +1,7 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { buttonVariants } from "./ui/button";
 
 interface Props {
@@ -8,6 +10,8 @@ interface Props {
 }
 
 export default function ActionButtons({ className, isAllSecondary }: Props) {
+  const { lang } = useParams();
+
   return (
     <div
       className={cn(
@@ -16,13 +20,13 @@ export default function ActionButtons({ className, isAllSecondary }: Props) {
       )}
     >
       <Link
-        href="/sign-up/freelancer"
+        href={`/${lang}/sign-up/freelancer`}
         className={cn("w-full md:w-auto", buttonVariants())}
       >
         Join as a Freelancer
       </Link>
       <Link
-        href="/sign-up/client"
+        href={`/${lang}/sign-up/client`}
         className={cn(
           "w-full md:w-auto",
           buttonVariants({ variant: isAllSecondary ? "default" : "dark" })

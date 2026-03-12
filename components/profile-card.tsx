@@ -12,6 +12,7 @@ import useSession from "@/hooks/useSession";
 import { Avatar } from "@radix-ui/themes";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { BiSolidChevronDown } from "react-icons/bi";
 import { BsShieldLock } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -26,6 +27,7 @@ import { VscVerified } from "react-icons/vsc";
 import Text from "./ui/text";
 
 export function ProfileCard() {
+  const { lang } = useParams();
   const { data: user } = useSession();
   if (!user) return null;
 
@@ -68,7 +70,7 @@ export function ProfileCard() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {user.data.identityStatus === "UNVERIFIED" && (
-            <Link href="/identity-verify">
+            <Link href={`/${lang}/identity-verify`}>
               <DropdownMenuItem className="bg-destructive/20 text-destructive hover:bg-destructive/30 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <VscVerified className="text-destructive" />
@@ -79,21 +81,21 @@ export function ProfileCard() {
             </Link>
           )}
           {user.data.identityStatus === "PENDING" && (
-            <Link href="/verify/identity">
+            <Link href={`/${lang}/verify/identity`}>
               <DropdownMenuItem className="bg-green-500/20 text-green-500 hover:bg-green-500/30">
                 <MdPendingActions className="text-green-500" />
                 Identity Verification Pending
               </DropdownMenuItem>
             </Link>
           )}
-          <Link href="/profile">
+          <Link href={`/${lang}/profile`}>
             <DropdownMenuItem>
               <FaRegUserCircle />
               Profile
             </DropdownMenuItem>
           </Link>
 
-          <Link href="/dashboard">
+          <Link href={`/${lang}/dashboard`}>
             <DropdownMenuItem>
               <GrAppsRounded />
               Dashboard
@@ -101,14 +103,14 @@ export function ProfileCard() {
           </Link>
 
           {user.data.role === "SELLER" && (
-            <Link href="/dashboard/seller/earnings">
+            <Link href={`/${lang}/dashboard/seller/earnings`}>
               <DropdownMenuItem>
                 <MdOutlineAccountBalanceWallet />
                 Wallet
               </DropdownMenuItem>
             </Link>
           )}
-          <Link href="/dashboard/settings">
+          <Link href={`/${lang}/dashboard/settings`}>
             <DropdownMenuItem>
               <BsShieldLock />
               Password
@@ -121,7 +123,7 @@ export function ProfileCard() {
           onClick={async () => {
             try {
               Cookies.remove("token");
-              window.location.href = "/";
+              window.location.href = `/${lang}`;
             } catch (error) {
               console.log(error);
             }
