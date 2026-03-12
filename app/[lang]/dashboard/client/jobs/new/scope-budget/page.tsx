@@ -29,6 +29,7 @@ import {
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
+import useDictionary from "@/hooks/useDictionary";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -53,6 +54,7 @@ const JobScopeAndBudgetSchema = Joi.object({
 });
 
 function ScopeAndBudget() {
+  const dict = useDictionary();
   const router = useRouter();
   const setStep = useStepStore((s) => s.setStep);
   const { jobScopeAndBudget, saveJobScopeAndBudget } =
@@ -86,7 +88,7 @@ function ScopeAndBudget() {
   return (
     <Form {...form}>
       <form className="space-y-6 p-4">
-        <h2 className="text-xl font-semibold mb-4">Job Scope & Budget</h2>
+        <h2 className="text-xl font-semibold mb-4">{dict.jobPost.jobScopeAndBudget}</h2>
 
         {/* Duration */}
         <FormField
@@ -94,19 +96,19 @@ function ScopeAndBudget() {
           name="duration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration *</FormLabel>
+              <FormLabel>{dict.jobPost.duration}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full border-primary">
-                    <SelectValue placeholder="Select duration" />
+                    <SelectValue placeholder={dict.jobPost.selectDuration} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Project Duration</SelectLabel>
-                    <SelectItem value="large">More than 6 months</SelectItem>
-                    <SelectItem value="medium">3 - 6 months</SelectItem>
-                    <SelectItem value="small">1 - 3 months</SelectItem>
+                    <SelectLabel>{dict.jobPost.projectDuration}</SelectLabel>
+                    <SelectItem value="large">{dict.jobPost.moreThan6Months}</SelectItem>
+                    <SelectItem value="medium">{dict.jobPost["3to6months"]}</SelectItem>
+                    <SelectItem value="small">{dict.jobPost["1to3months"]}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -121,11 +123,11 @@ function ScopeAndBudget() {
           name="budgetAmount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Budget Amount ($)*</FormLabel>
+              <FormLabel>{dict.jobPost.budgetAmount}</FormLabel>
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="Enter budget amount"
+                  placeholder={dict.jobPost.enterBudgetAmount}
                   value={field.value || ""}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
@@ -141,10 +143,10 @@ function ScopeAndBudget() {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Job Description *</FormLabel>
+              <FormLabel>{dict.jobPost.jobDescription}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Describe the job requirements..."
+                  placeholder={dict.jobPost.describeJobRequirements}
                   rows={8}
                   {...field}
                 />
@@ -161,10 +163,10 @@ function ScopeAndBudget() {
             href="/dashboard/client/jobs"
             className={cn(buttonVariants({ variant: "outline" }))}
           >
-            Save draft and exit
+            {dict.common.saveDraftAndExit}
           </Link>
           <Button disabled={isLoading} onClick={form.handleSubmit(onSubmit)}>
-            {isLoading ? <BeatLoader size={8} color="white" /> : "Save & Next"}
+            {isLoading ? <BeatLoader size={8} color="white" /> : dict.common.saveAndNext}
           </Button>
         </div>
       </form>

@@ -1,5 +1,8 @@
+"use client";
+
 import { Calendar } from "@/components/calender";
 import { buttonVariants } from "@/components/ui/button";
+import useDictionary from "@/hooks/useDictionary";
 import Link from "next/link";
 import ActiveJobs from "./_components/active-jobs";
 import NewApplications from "./_components/new-applications";
@@ -7,15 +10,15 @@ import NewActions from "./_components/request-actions";
 import RoyaltyProgress from "./_components/royalty-progress";
 import SpendChart from "./_components/spend-chart";
 
-export const dynamic = "force-dynamic";
+function BuyerDashboard() {
+  const dict = useDictionary();
 
-async function BuyerDashboard() {
   return (
     <div className="p-2 sm:p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-primary">Dashboard</h2>
+        <h2 className="text-2xl font-bold text-primary">{dict.common.dashboard}</h2>
         <Link className={buttonVariants()} href="/dashboard/client/jobs/new">
-          Post New Job Ads
+          {dict.client.postNewJobAds}
         </Link>
       </div>
 

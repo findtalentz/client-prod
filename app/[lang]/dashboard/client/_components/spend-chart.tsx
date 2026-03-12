@@ -6,6 +6,7 @@ import { ChartConfig } from "@/components/ui/chart";
 import ApiResponse from "@/schemas/ApiRespose";
 import SpendReport from "@/schemas/SpendReport";
 import apiClient from "@/services/api-client";
+import useDictionary from "@/hooks/useDictionary";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const SpendChart = () => {
+  const dict = useDictionary();
   const [timeRange, setTimeRange] = useState("month");
 
   const { data } = useQuery<ApiResponse<SpendReport>>({
@@ -39,21 +41,21 @@ const SpendChart = () => {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <div className="border-l-2 border-primary/30 pl-3">
-            <p className="text-xs text-muted-foreground">Monthly Spending</p>
+            <p className="text-xs text-muted-foreground">{dict.client.monthlySpending}</p>
             <p className="text-sm font-semibold text-primary">
               ${report.monthlySpend}
             </p>
           </div>
 
           <div className="border-l-2 border-primary/30 pl-3">
-            <p className="text-xs text-muted-foreground">Total Spending</p>
+            <p className="text-xs text-muted-foreground">{dict.client.totalSpending}</p>
             <p className="text-sm font-semibold text-primary">
               ${report.totalSpend}
             </p>
           </div>
 
           <div className="border-l-2 border-primary/30 pl-3 col-span-2 sm:col-span-1">
-            <p className="text-xs text-muted-foreground">Avg. Project Cost</p>
+            <p className="text-xs text-muted-foreground">{dict.client.avgProjectCost}</p>
             <p className="text-sm font-semibold text-primary">
               ${report.averateProjectCost}
             </p>

@@ -1,41 +1,27 @@
 "use client";
 
+import useDictionary from "@/hooks/useDictionary";
 import { useStepStore } from "@/store";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
-const steps = [
-  {
-    id: 1,
-    name: "Overview",
-    description: "Title, category & location",
-  },
-  {
-    id: 2,
-    name: "Skills",
-    description: "Experience & required skills",
-  },
-  {
-    id: 3,
-    name: "Scope & Budget",
-    description: "Duration, budget & description",
-  },
-  {
-    id: 4,
-    name: "Preview",
-    description: "Review & submit",
-  },
-];
-
 const JobPostSteps = () => {
+  const dict = useDictionary();
   const currentStep = useStepStore((s) => s.step);
+
+  const steps = [
+    { id: 1, name: dict.jobPost?.overview || "Overview", description: dict.jobPost?.titleCategoryLocation || "Title, category & location" },
+    { id: 2, name: dict.jobPost?.skills?.replace(" *", "") || "Skills", description: dict.jobPost?.experienceAndSkills || "Experience & required skills" },
+    { id: 3, name: dict.jobPost?.scopeAndBudget || "Scope & Budget", description: dict.jobPost?.durationBudgetDescription || "Duration, budget & description" },
+    { id: 4, name: dict.jobPost?.preview || "Preview", description: dict.jobPost?.reviewAndSubmit || "Review & submit" },
+  ];
 
   return (
     <div className="py-4 pr-6">
       {/* Progress header */}
       <div className="mb-6">
         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
-          Step {currentStep} of {steps.length}
+          {dict.jobPost?.step || "Step"} {currentStep} {dict.jobPost?.of || "of"} {steps.length}
         </p>
         <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
           <motion.div

@@ -25,6 +25,7 @@ import { JobOverview, useJobOverviewStore, useStepStore } from "@/store";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
+import useDictionary from "@/hooks/useDictionary";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -58,6 +59,7 @@ const OverviewSchema = Joi.object({
   }),
 });
 function OverView() {
+  const dict = useDictionary();
   const { overview, saveOverview } = useJobOverviewStore();
   const setStep = useStepStore((s) => s.setStep);
   const { data: categorys } = useJobCategorys();
@@ -90,7 +92,7 @@ function OverView() {
   }, [setStep]);
   return (
     <Form {...form}>
-      <h2 className="mb-6">Overview</h2>
+      <h2 className="mb-6">{dict.jobPost.overview}</h2>
 
       {/* ✅ Only one form element */}
       <form className="space-y-6">
@@ -99,9 +101,9 @@ function OverView() {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Job Title*</FormLabel>
+              <FormLabel>{dict.jobPost.jobTitleLabel}</FormLabel>
               <FormControl>
-                <Input placeholder="e.g. Senior UX Designer" {...field} />
+                <Input placeholder={dict.jobPost.jobTitlePlaceholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,7 +116,7 @@ function OverView() {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Category*</FormLabel>
+                <FormLabel>{dict.jobPost.category}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
@@ -122,12 +124,12 @@ function OverView() {
                 >
                   <FormControl>
                     <SelectTrigger className="w-full border-primary">
-                      <SelectValue placeholder="Select a category" />
+                      <SelectValue placeholder={dict.jobPost.selectCategory} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Categories</SelectLabel>
+                      <SelectLabel>{dict.jobPost.categories}</SelectLabel>
                       {categorys?.data.map((category) => (
                         <SelectItem key={category._id} value={category._id}>
                           {category.name}
@@ -146,7 +148,7 @@ function OverView() {
             name="jobType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Job Type*</FormLabel>
+                <FormLabel>{dict.jobPost.jobType}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
@@ -154,14 +156,14 @@ function OverView() {
                 >
                   <FormControl>
                     <SelectTrigger className="w-full border-primary">
-                      <SelectValue placeholder="Select job type" />
+                      <SelectValue placeholder={dict.jobPost.selectJobType} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Types</SelectLabel>
-                      <SelectItem value="fixed">Fixed</SelectItem>
-                      <SelectItem value="full-time">Full-time</SelectItem>
+                      <SelectLabel>{dict.jobPost.types}</SelectLabel>
+                      <SelectItem value="fixed">{dict.jobPost.fixed}</SelectItem>
+                      <SelectItem value="full-time">{dict.jobPost.fullTime}</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -177,9 +179,9 @@ function OverView() {
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Location*</FormLabel>
+              <FormLabel>{dict.jobPost.location}</FormLabel>
               <FormControl>
-                <Input placeholder="e.g. Remote, New York" {...field} />
+                <Input placeholder={dict.jobPost.locationPlaceholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -192,10 +194,10 @@ function OverView() {
             href="/dashboard/client/jobs"
             className={cn(buttonVariants({ variant: "outline" }))}
           >
-            Save draft and exit
+            {dict.common.saveDraftAndExit}
           </Link>
           <Button onClick={form.handleSubmit(onSubmit)}>
-            {isLoading ? <BeatLoader /> : "Save & Next"}
+            {isLoading ? <BeatLoader /> : dict.common.saveAndNext}
           </Button>
         </div>
       </form>

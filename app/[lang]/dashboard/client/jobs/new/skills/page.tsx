@@ -24,6 +24,7 @@ import { JobSkills, useJobSkillsStore, useStepStore } from "@/store";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Link from "next/link";
+import useDictionary from "@/hooks/useDictionary";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,6 +51,7 @@ const SkillSchema = Joi.object({
 });
 
 function Skills() {
+  const dict = useDictionary();
   const setStep = useStepStore((s) => s.setStep);
   const { saveSkills, jobSkills } = useJobSkillsStore();
   const router = useRouter();
@@ -113,26 +115,26 @@ function Skills() {
   return (
     <Form {...form}>
       <form className="space-y-6 p-4">
-        <h2 className="text-xl font-semibold mb-4">Skills Overview</h2>
+        <h2 className="text-xl font-semibold mb-4">{dict.jobPost.skillsOverview}</h2>
 
         <FormField
           control={form.control}
           name="requiredExperienceLevel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Required Experience Level *</FormLabel>
+              <FormLabel>{dict.jobPost.requiredExperienceLevel}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full border-primary">
-                    <SelectValue placeholder="Select Required Experience Level" />
+                    <SelectValue placeholder={dict.jobPost.selectExperienceLevel} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Required Experience Level</SelectLabel>
-                    <SelectItem value="entry">Entry</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="expert">Expert</SelectItem>
+                    <SelectLabel>{dict.jobPost.experienceLevelLabel}</SelectLabel>
+                    <SelectItem value="entry">{dict.jobPost.entry}</SelectItem>
+                    <SelectItem value="intermediate">{dict.jobPost.intermediate}</SelectItem>
+                    <SelectItem value="expert">{dict.jobPost.expert}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -143,7 +145,7 @@ function Skills() {
 
         {/* Skills Field */}
         <div>
-          <FormLabel>Skills *</FormLabel>
+          <FormLabel>{dict.jobPost.skills}</FormLabel>
           <div className="border border-primary rounded-md flex items-center overflow-hidden mt-2">
             <Input
               value={skillInput}
@@ -154,7 +156,7 @@ function Skills() {
                   addSkill();
                 }
               }}
-              placeholder="Type a skill and press Add"
+              placeholder={dict.jobPost.typeSkillPlaceholder}
               className="flex-1 border-none focus-visible:ring-0"
             />
             <Button
@@ -162,13 +164,13 @@ function Skills() {
               onClick={addSkill}
               className="rounded-none w-20"
             >
-              Add
+              {dict.jobPost.add}
             </Button>
           </div>
 
           {skills.length > 0 && (
             <div className="pt-4">
-              <p className="font-medium mb-2">Added Skills</p>
+              <p className="font-medium mb-2">{dict.jobPost.addedSkills}</p>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
                   <div
@@ -208,10 +210,10 @@ function Skills() {
             href="/dashboard/client/jobs"
             className={cn(buttonVariants({ variant: "outline" }))}
           >
-            Save draft and exit
+            {dict.common.saveDraftAndExit}
           </Link>
           <Button disabled={isLoading} onClick={form.handleSubmit(onSubmit)}>
-            {isLoading ? <BeatLoader size={8} color="white" /> : "Save & Next"}
+            {isLoading ? <BeatLoader size={8} color="white" /> : dict.common.saveAndNext}
           </Button>
         </div>
       </form>

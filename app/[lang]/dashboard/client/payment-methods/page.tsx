@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { CreditCard, History, Wallet } from "lucide-react";
 
+import useDictionary from "@/hooks/useDictionary";
 import useMyTransactions from "@/hooks/useMyTransactions";
 import usePaymentMethods from "@/hooks/usePaymentMethods";
 import useSession from "@/hooks/useSession";
@@ -21,6 +22,7 @@ import BankCard from "../../seller/earnings/bank-card";
 import PaypalCard from "../../seller/earnings/paypal-card";
 
 export default function PaymentMethodsPage() {
+  const dict = useDictionary();
   const { data: userData, isLoading } = useSession();
   const { data: paymentMethods } = usePaymentMethods();
   const { data: transactions } = useMyTransactions();
@@ -45,9 +47,9 @@ export default function PaymentMethodsPage() {
   return (
     <div className="container mx-auto py-8 space-y-8">
       <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Payment Methods</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{dict.paymentMethods.title}</h1>
         <p className="text-muted-foreground">
-          Manage your payment methods and view transaction history
+          {dict.paymentMethods.description}
         </p>
       </header>
 
@@ -56,7 +58,7 @@ export default function PaymentMethodsPage() {
         <Card className="bg-gradient-to-br from-primary/5 to-primary/10">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Account Balance
+              {dict.paymentMethods.accountBalance}
             </CardTitle>
             <Wallet className="w-5 h-5 text-primary" />
           </CardHeader>
@@ -65,7 +67,7 @@ export default function PaymentMethodsPage() {
               ${userData.data.balance.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              Available for hiring talent
+              {dict.paymentMethods.availableForHiring}
             </p>
           </CardContent>
         </Card>
@@ -76,7 +78,7 @@ export default function PaymentMethodsPage() {
         <Card>
           <CardHeader className="border-b">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Saved Payment Methods</CardTitle>
+              <CardTitle className="text-lg">{dict.paymentMethods.savedPaymentMethods}</CardTitle>
               <AddPaymentMethodDialog hideIfExists />
             </div>
           </CardHeader>
@@ -97,9 +99,9 @@ export default function PaymentMethodsPage() {
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <CreditCard className="w-10 h-10 text-muted-foreground mb-3" />
-                <h3 className="text-lg font-medium">No payment methods</h3>
+                <h3 className="text-lg font-medium">{dict.paymentMethods.noPaymentMethods}</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Add a payment method to get started
+                  {dict.paymentMethods.addPaymentMethodToStart}
                 </p>
               </div>
             )}
@@ -111,17 +113,17 @@ export default function PaymentMethodsPage() {
       <section>
         <Card>
           <CardHeader className="border-b">
-            <CardTitle className="text-lg">Transaction History</CardTitle>
+            <CardTitle className="text-lg">{dict.paymentMethods.transactionHistory}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Gateway</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{dict.paymentMethods.date}</TableHead>
+                  <TableHead>{dict.paymentMethods.type}</TableHead>
+                  <TableHead>{dict.paymentMethods.amount}</TableHead>
+                  <TableHead>{dict.paymentMethods.gateway}</TableHead>
+                  <TableHead>{dict.paymentMethods.status}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -132,7 +134,7 @@ export default function PaymentMethodsPage() {
                       <TableCell className="capitalize">{tx.type}</TableCell>
                       <TableCell>${tx.amount.toFixed(2)}</TableCell>
                       <TableCell className="capitalize">
-                        {tx.paymentGateway || "N/A"}
+                        {tx.paymentGateway || dict.paymentMethods.na}
                       </TableCell>
                       <TableCell>
                         <Badge
@@ -156,10 +158,10 @@ export default function PaymentMethodsPage() {
                       <div className="flex flex-col items-center justify-center py-12">
                         <History className="w-10 h-10 text-muted-foreground mb-3" />
                         <h3 className="text-lg font-medium">
-                          No transactions yet
+                          {dict.paymentMethods.noTransactionsYet}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          Your transaction history will appear here
+                          {dict.paymentMethods.transactionHistoryWillAppear}
                         </p>
                       </div>
                     </TableCell>
