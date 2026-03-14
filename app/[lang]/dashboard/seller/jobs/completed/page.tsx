@@ -1,3 +1,4 @@
+import DownloadInvoiceButton from "@/components/download-invoice-button";
 import {
   Table,
   TableBody,
@@ -38,6 +39,7 @@ export default async function CompletedJob() {
             <TableHead>Earnings</TableHead>
             <TableHead>Start Date</TableHead>
             <TableHead>Completed At</TableHead>
+            <TableHead>Invoice</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -56,6 +58,9 @@ export default async function CompletedJob() {
               </TableCell>
               <TableCell>{formatDate(job.startDate)}</TableCell>
               <TableCell>{formatDate(job.completedAt)}</TableCell>
+              <TableCell>
+                <DownloadInvoiceButton jobId={job._id} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

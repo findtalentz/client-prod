@@ -1,9 +1,10 @@
+import DownloadInvoiceButton from "@/components/download-invoice-button";
 import ApiResponse from "@/schemas/ApiRespose";
 import CommentType from "@/schemas/Comment";
 import Job from "@/schemas/Job";
 import Review from "@/schemas/Reviews";
 import apiClient from "@/services/api-client";
-import { Grid } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import Comment from "./comment";
 import ReviewDetails from "./review";
 import ReviewBox from "./review-box";
@@ -28,8 +29,10 @@ const JobDetails = async ({ params }: Props) => {
     <Grid columns={{ initial: "1", md: "3fr 2fr" }} gap="6">
       <div className="px-4 pb-10 overflow-y-scroll">
         <div className="space-y-5">
-          {/* Dispute Section */}
-          <DisputeSection jobId={job.data._id} />
+          <Flex justify="between" align="center">
+            <DisputeSection jobId={job.data._id} />
+            <DownloadInvoiceButton jobId={job.data._id} />
+          </Flex>
           
           <div className="bg-gray-50 p-6 rounded-lg">
             <h3 className="text-xl font-bold mb-4"> {job.data.title} </h3>

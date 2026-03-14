@@ -1,3 +1,4 @@
+import DownloadInvoiceButton from "@/components/download-invoice-button";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Table,
@@ -41,6 +42,7 @@ export default async function CompletedJob({ params }: Props) {
             <TableHead>Price</TableHead>
             <TableHead>Start Date</TableHead>
             <TableHead>Completed At</TableHead>
+            <TableHead>Invoice</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -59,6 +61,9 @@ export default async function CompletedJob({ params }: Props) {
               </TableCell>
               <TableCell>{formatDate(job.startDate)}</TableCell>
               <TableCell>{formatDate(job.completedAt)}</TableCell>
+              <TableCell>
+                <DownloadInvoiceButton jobId={job._id} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

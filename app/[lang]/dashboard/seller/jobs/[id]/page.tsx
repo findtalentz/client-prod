@@ -1,3 +1,4 @@
+import DownloadInvoiceButton from "@/components/download-invoice-button";
 import {
   Accordion,
   AccordionContent,
@@ -53,6 +54,9 @@ async function JobDetails({ params }: Props) {
           <FaAngleLeft className="h-4 w-4" />
           Back
         </Link>
+        {job.data.status === "COMPLETED" && (
+          <DownloadInvoiceButton jobId={job.data._id} />
+        )}
       </Flex>
       <div className="grid grid-cols-1 md:grid-cols-6">
         <div className="mb-6 col-span-1 md:col-span-4">

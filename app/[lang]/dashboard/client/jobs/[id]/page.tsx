@@ -1,3 +1,4 @@
+import DownloadInvoiceButton from "@/components/download-invoice-button";
 import MessageSentButton from "@/components/message-sent-button";
 import {
   Accordion,
@@ -53,7 +54,12 @@ async function JobDetails({ params }: Props) {
           <FaAngleLeft className="h-4 w-4" />
           Back
         </Link>
-        <MessageSentButton seller={job.data.seller._id} />
+        <Flex align="center" gap="3">
+          {job.data.status === "COMPLETED" && (
+            <DownloadInvoiceButton jobId={job.data._id} />
+          )}
+          <MessageSentButton seller={job.data.seller._id} />
+        </Flex>
       </Flex>
       <div className="grid grid-cols-1 md:grid-cols-6">
         <div className="mb-6 col-span-1 md:col-span-4">
