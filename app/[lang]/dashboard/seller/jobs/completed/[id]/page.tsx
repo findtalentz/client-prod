@@ -2,7 +2,6 @@ import ApiResponse from "@/schemas/ApiRespose";
 import CommentType from "@/schemas/Comment";
 import Job from "@/schemas/Job";
 import Review from "@/schemas/Reviews";
-import { COMMISSION_RATE } from "@/lib/constants";
 import apiClient from "@/services/api-client";
 import { Grid } from "@radix-ui/themes";
 import Comment from "./comment";
@@ -16,12 +15,14 @@ interface Props {
 
 const JobDetails = async ({ params }: Props) => {
   const { id } = await params;
-  const [{ data: job }, { data: review }, { data: comments }] =
+  const [{ data: job }, { data: review }, { data: comments }, { data: settingsRes }] =
     await Promise.all([
       apiClient.get<ApiResponse<Job>>(`/jobs/${id}`),
       apiClient.get<ApiResponse<Review>>(`/reviews/job/${id}`),
       apiClient.get<ApiResponse<CommentType[]>>(`/comments/job/${id}`),
+      apiClient.get<ApiResponse<{ serviceFee: number }>>("/settings/public"),
     ]);
+  const COMMISSION_RATE = 1 - (settingsRes.data.serviceFee ?? 10) / 100;
 
   return (
     <Grid columns={{ initial: "1", md: "3fr 2fr" }} gap="6">

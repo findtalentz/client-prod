@@ -1,7 +1,5 @@
 export const pageSize = 10;
 
-export const COMMISSION_RATE = 0.9;
-
 export const CACHE = {
   STANDARD: 5 * 60 * 1000, // 5 min — most data
   FREQUENT: 60 * 1000, // 1 min — session, applications

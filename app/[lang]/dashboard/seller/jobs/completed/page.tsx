@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { COMMISSION_RATE } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import ApiResponse from "@/schemas/ApiRespose";
 import Job from "@/schemas/Job";
@@ -17,9 +16,13 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function CompletedJob() {
-  const { data } = await apiClient.get<ApiResponse<Job[]>>("/jobs/seller", {
-    params: { status: "COMPLETED" },
-  });
+  const [{ data }, { data: settingsRes }] = await Promise.all([
+    apiClient.get<ApiResponse<Job[]>>("/jobs/seller", {
+      params: { status: "COMPLETED" },
+    }),
+    apiClient.get<ApiResponse<{ serviceFee: number }>>("/settings/public"),
+  ]);
+  const COMMISSION_RATE = 1 - (settingsRes.data.serviceFee ?? 10) / 100;
 
   if (data.count <= 0)
     return (

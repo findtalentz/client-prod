@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { COMMISSION_RATE } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import ApiResponse from "@/schemas/ApiRespose";
 import Job from "@/schemas/Job";
@@ -26,11 +25,13 @@ export default async function JobManagemnet({ params }: Props) {
   const dict = await getDictionary(lang);
   const t = dict.dashboard;
 
-  const { data } = await apiClient.get<ApiResponse<Job[]>>("/jobs/seller", {
-    params: {
-      status: "IN_PROGRESS",
-    },
-  });
+  const [{ data }, { data: settingsRes }] = await Promise.all([
+    apiClient.get<ApiResponse<Job[]>>("/jobs/seller", {
+      params: { status: "IN_PROGRESS" },
+    }),
+    apiClient.get<ApiResponse<{ serviceFee: number }>>("/settings/public"),
+  ]);
+  const COMMISSION_RATE = 1 - (settingsRes.data.serviceFee ?? 10) / 100;
 
   if (data.count <= 0)
     return (

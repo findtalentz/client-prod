@@ -6,7 +6,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
-import { COMMISSION_RATE } from "@/lib/constants";
 import { calculateTimeLeft, cn, formatDate } from "@/lib/utils";
 import ApiResponse from "@/schemas/ApiRespose";
 import Job from "@/schemas/Job";
@@ -30,7 +29,11 @@ export const dynamic = "force-dynamic";
 
 async function JobDetails({ params }: Props) {
   const { id, lang } = await params;
-  const { data: job } = await apiClient.get<ApiResponse<Job>>(`/jobs/${id}`);
+  const [{ data: job }, { data: settingsRes }] = await Promise.all([
+    apiClient.get<ApiResponse<Job>>(`/jobs/${id}`),
+    apiClient.get<ApiResponse<{ serviceFee: number }>>("/settings/public"),
+  ]);
+  const COMMISSION_RATE = 1 - (settingsRes.data.serviceFee ?? 10) / 100;
 
   const { data: user } = await apiClient.get<ApiResponse<User>>(
     "/users/public",
