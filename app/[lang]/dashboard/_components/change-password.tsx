@@ -36,6 +36,13 @@ export type PasswordChangeFormValues = z.infer<typeof passwordChangeSchema>;
 import useDictionary from "@/hooks/useDictionary";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Form,
   FormControl,
   FormField,
@@ -51,6 +58,7 @@ import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 import { handleApiError } from "@/lib/handle-api-error";
 import apiClient from "@/services/api-client";
+import { Lock } from "lucide-react";
 
 export function ChangePasswordForm() {
   const dict = useDictionary();
@@ -69,8 +77,7 @@ export function ChangePasswordForm() {
     setIsLoading(true);
     try {
       await apiClient.post("/auth/change-password", data);
-      toast.success("Success!");
-
+      toast.success("Password changed successfully!");
       form.reset();
     } catch (error) {
       handleApiError(error, "Failed to change password. Please try again.");
@@ -80,28 +87,33 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">{dict.changePassword.title}</h2>
-          <p className="text-sm text-muted-foreground mt-2">
-            {dict.changePassword.subtitle}
-          </p>
-        </div>
-
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Lock className="h-5 w-5 text-primary" />
+          {dict.changePassword.title}
+        </CardTitle>
+        <CardDescription>{dict.changePassword.subtitle}</CardDescription>
+      </CardHeader>
+      <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
             <FormField
               control={form.control}
               name="currentPassword"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="md:col-span-2">
                   <FormLabel>{dict.changePassword.currentPassword}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
-                      placeholder={dict.changePassword.currentPasswordPlaceholder}
+                      placeholder={
+                        dict.changePassword.currentPasswordPlaceholder
+                      }
                       className="focus-visible:ring-primary"
                     />
                   </FormControl>
@@ -134,12 +146,16 @@ export function ChangePasswordForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{dict.changePassword.confirmNewPassword}</FormLabel>
+                  <FormLabel>
+                    {dict.changePassword.confirmNewPassword}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
-                      placeholder={dict.changePassword.confirmNewPasswordPlaceholder}
+                      placeholder={
+                        dict.changePassword.confirmNewPasswordPlaceholder
+                      }
                       className="focus-visible:ring-primary"
                     />
                   </FormControl>
@@ -148,20 +164,14 @@ export function ChangePasswordForm() {
               )}
             />
 
-            <div className="pt-4">
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <BeatLoader />
-                  </>
-                ) : (
-                  dict.changePassword.button
-                )}
+            <div className="md:col-span-2">
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? <BeatLoader size={8} color="white" /> : dict.changePassword.button}
               </Button>
             </div>
           </form>
         </Form>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
