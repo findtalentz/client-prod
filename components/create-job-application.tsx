@@ -26,6 +26,7 @@ import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import LoginPromptDialog from "@/components/login-prompt-dialog";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -108,8 +109,29 @@ export function CreateJobApplication({ job }: Props) {
     }
   }
 
-  if (!session) return null;
-  if (session.data.role === "CLIENT") return null;
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+  // Hide for logged-in CLIENT users (they post jobs, not apply)
+  if (session && session.data.role === "CLIENT") return null;
+
+  // Not logged in — show Apply button that opens login prompt
+  if (!session) {
+    return (
+      <>
+        <Button
+          size="sm"
+          className="px-8 cursor-pointer"
+          onClick={() => setShowLoginPrompt(true)}
+        >
+          Apply
+        </Button>
+        <LoginPromptDialog
+          open={showLoginPrompt}
+          onOpenChange={setShowLoginPrompt}
+        />
+      </>
+    );
+  }
 
   const isProfileIncomplete = !session.data.title || !session.data.about || !session.data.location;
 

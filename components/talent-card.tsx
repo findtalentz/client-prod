@@ -1,6 +1,4 @@
 "use client";
-import IconBadge from "@/components/ui/icon-badge";
-import Text from "@/components/ui/text";
 import useCompletedJobCount from "@/hooks/useCompletedJobCount";
 import useSellerRating from "@/hooks/useSellerRating";
 import useSession from "@/hooks/useSession";

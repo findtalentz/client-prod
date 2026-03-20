@@ -1,12 +1,14 @@
 "use client";
 import { queryClient } from "@/app/[lang]/query-client-provider";
 import { Button } from "@/components/ui/button";
+import LoginPromptDialog from "@/components/login-prompt-dialog";
 import useSession from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { Chat } from "@/schemas/Chat";
 import apiClient from "@/services/api-client";
 import { useChatStore } from "@/store";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   seller: string;
@@ -25,8 +27,26 @@ export default function MessageSentButton({
   const { lang } = useParams();
   const router = useRouter();
   const { data } = useSession();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
-  if (!data) return null;
+  if (!data) {
+    return (
+      <>
+        <Button
+          variant="outline"
+          size={size}
+          className={cn("cursor-pointer", className)}
+          onClick={() => setShowLoginPrompt(true)}
+        >
+          {label}
+        </Button>
+        <LoginPromptDialog
+          open={showLoginPrompt}
+          onOpenChange={setShowLoginPrompt}
+        />
+      </>
+    );
+  }
 
   return (
     <Button

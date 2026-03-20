@@ -253,20 +253,20 @@ export function Hire({ sellerId, amount, jobId }: HireProps) {
             />
 
             {/* Order Summary with buyer fee */}
-            {form.watch("amount") > 0 && feeData?.data?.buyerServiceFee > 0 && (
+            {form.watch("amount") > 0 && (feeData?.data?.buyerServiceFee ?? 0) > 0 && (
               <div className="bg-muted/50 rounded-lg p-3 space-y-1.5 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Job Amount</span>
                   <span>${form.watch("amount").toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-orange-600">
-                  <span>Service Fee ({feeData.data.buyerServiceFee}%)</span>
-                  <span>+${((form.watch("amount") * feeData.data.buyerServiceFee) / 100).toFixed(2)}</span>
+                  <span>Service Fee ({feeData!.data.buyerServiceFee}%)</span>
+                  <span>+${((form.watch("amount") * feeData!.data.buyerServiceFee!) / 100).toFixed(2)}</span>
                 </div>
                 <hr />
                 <div className="flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${(form.watch("amount") + (form.watch("amount") * feeData.data.buyerServiceFee) / 100).toFixed(2)}</span>
+                  <span>${(form.watch("amount") + (form.watch("amount") * feeData!.data.buyerServiceFee!) / 100).toFixed(2)}</span>
                 </div>
               </div>
             )}

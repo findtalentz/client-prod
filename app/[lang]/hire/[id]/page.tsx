@@ -147,13 +147,13 @@ export default async function PreviewPage({ params: searchParams }: Props) {
                 </Flex>
               )}
             </div>
-            {session && session.role === "CLIENT" && (
+            {(!session || session.role === "CLIENT") && (
               <div className="block md:hidden">
                 <MessageSentButton seller={user.data._id} />
               </div>
             )}
           </div>
-          {session && session.role === "CLIENT" && (
+          {(!session || session.role === "CLIENT") && (
             <div className="hidden md:block">
               <MessageSentButton seller={user.data._id} />
             </div>
