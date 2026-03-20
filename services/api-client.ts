@@ -20,11 +20,16 @@ instance.interceptors.response.use(
   (error) => {
     const requestUrl = error.config?.url || "";
     const isSessionCheck = requestUrl.includes("/auth/me");
+    const hadToken = !!error.config?.headers?.["x-auth-token"];
 
+    // Only redirect on 401 if:
+    // 1. The request had a token (session expired), not an unauthenticated visitor
+    // 2. It's not the session check endpoint
     if (
       error.response?.status === 401 &&
       typeof window !== "undefined" &&
-      !isSessionCheck
+      !isSessionCheck &&
+      hadToken
     ) {
       Cookies.remove("token", { path: "/" });
       const lang = window.location.pathname.split("/")[1] || "en";
