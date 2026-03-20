@@ -24,7 +24,7 @@ const TalentsPage = async ({ searchParams }: Props) => {
     <Container className="py-6 mb-8 md:mb-3">
       <h2 className="text-primary mb-6">Talents</h2>
       <TalentActions />
-      <Grid columns={{ initial: "1", md: "2" }} className="gap-8 md:gap-6">
+      <Grid columns={{ initial: "1", md: "2", lg: "3" }} className="gap-8 md:gap-6">
         {data.data.map((talent) => (
           <TalentCard key={talent._id} talent={talent} />
         ))}

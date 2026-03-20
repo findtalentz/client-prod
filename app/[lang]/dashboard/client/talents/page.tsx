@@ -31,7 +31,7 @@ export default async function TalentsPage({ searchParams }: Props) {
       <h2 className="text-primary mb-6">Talent</h2>
       <TalentActions />
       <Grid
-        columns={{ initial: "1", md: "2", lg: "3" }}
+        columns={{ initial: "1", md: "2", lg: "4" }}
         className="gap-8 md:gap-6"
       >
         {data.data.map((talent) => (
