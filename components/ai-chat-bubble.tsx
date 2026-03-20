@@ -109,7 +109,7 @@ export default function AiChatBubble() {
   };
 
   // Hide on the full AI chat page
-  if (pathname.includes("/chat")) return null;
+  if (pathname.includes("/chat") || pathname.includes("/messages")) return null;
 
   return (
     <>

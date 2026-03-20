@@ -10,6 +10,7 @@ import { useChatStore } from "@/store";
 import { Loader2, Paperclip, Send, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import CreateOfferDialog from "./create-offer-dialog";
 
 export default function MessageForm() {
   const [message, setMessage] = useState("");
@@ -155,7 +156,7 @@ export default function MessageForm() {
 
       {/* Input row */}
       <div className="flex items-center gap-2 px-4 py-3">
-        <div className="relative">
+        <div className="relative flex items-center gap-1">
           <input
             type="file"
             ref={fileInputRef}
@@ -173,6 +174,9 @@ export default function MessageForm() {
           >
             <Paperclip className="w-4 h-4" />
           </Button>
+
+          {/* Show offer button only for sellers */}
+          {user?.data.role === "SELLER" && <CreateOfferDialog />}
         </div>
 
         <input

@@ -13,6 +13,7 @@ import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FiDownload } from "react-icons/fi";
+import OfferCard from "./offer-card";
 
 export default function Messages() {
   const currentChat = useChatStore((s) => s.currentChat);
@@ -111,7 +112,10 @@ export default function Messages() {
                     {message.sender.firstName}
                   </span>
                 )}
-                {message.message && (
+                {/* Offer card */}
+                {message.type === "offer" && message.offer ? (
+                  <OfferCard offer={message.offer} isOwn={isOwn} />
+                ) : message.message ? (
                   <div
                     className={cn(
                       "px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed break-words",
@@ -122,7 +126,7 @@ export default function Messages() {
                   >
                     {message.message}
                   </div>
-                )}
+                ) : null}
 
                 {/* File attachments */}
                 {message.files.length > 0 && (
