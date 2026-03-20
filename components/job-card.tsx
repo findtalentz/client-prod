@@ -64,7 +64,7 @@ export default function JobCard({ job }: Props) {
         <IconBadge text={job.location || "N/A"}>
           <GrLocation />
         </IconBadge>
-        <IconBadge text={job.category.name}>
+        <IconBadge text={job.category?.name || "Not specified"}>
           <TbListDetails />
         </IconBadge>
         <IconBadge text={job.jobType}>

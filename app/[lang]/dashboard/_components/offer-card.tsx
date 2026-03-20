@@ -35,7 +35,17 @@ export default function OfferCard({ offer, isOwn }: OfferCardProps) {
   const handleStatusUpdate = async (status: string) => {
     setLoading(status);
     try {
-      await apiClient.patch(`/offers/${offer._id}/status`, { status });
+      const res = await apiClient.patch(`/offers/${offer._id}/status`, {
+        status,
+        paymentGateway: "stripe",
+      });
+
+      if (status === "accepted" && res.data?.data?.paymentData?.url) {
+        toast.success("Offer accepted! Redirecting to payment...");
+        window.location.href = res.data.data.paymentData.url;
+        return;
+      }
+
       toast.success(
         status === "accepted"
           ? "Offer accepted!"

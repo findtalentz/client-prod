@@ -52,7 +52,7 @@ async function JobDetails({ params }: Props) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <p className="font-mediu text-black">Category</p>
-                  <p>{job.data.category.name || "Not specified"}</p>
+                  <p>{job.data.category?.name || "Not specified"}</p>
                 </div>
                 <div>
                   <p className="font-mediu text-black">Location</p>

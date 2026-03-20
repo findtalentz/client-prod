@@ -29,7 +29,7 @@ export default function Job({ job }: Props) {
         <IconBadge text="ABC, Tech">
           <PiBuildingApartmentDuotone />
         </IconBadge>
-        <IconBadge text={job.category.name}>
+        <IconBadge text={job.category?.name || "Not specified"}>
           <TbListDetails />
         </IconBadge>
         <IconBadge text={formatDate(job.createdAt)}>
