@@ -3,6 +3,7 @@ import { CACHE } from "@/lib/constants";
 
 interface ServiceFeeData {
   serviceFee: number;
+  buyerServiceFee: number;
 }
 
 const useServiceFee = createQuery<ServiceFeeData>({
