@@ -1,5 +1,4 @@
 import getSessionFromToken from "@/actions/get-session-from-token";
-import Container from "@/components/ui/container";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -15,9 +14,9 @@ export default async function SignUpPage({
     redirect(`/${lang}/dashboard`);
   }
   return (
-    <Container className="md:min-h-[calc(100dvh-65px)] flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-4xl space-y-8 md:space-y-16">
-        <h3 className="text-center text-primary-dark font-medium text-[18px] md:text-[24px] mb-20">
+    <div className="min-h-screen bg-primary-dark flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 relative z-10 w-full max-w-3xl space-y-8">
+        <h3 className="text-center text-primary font-bold italic text-2xl md:text-3xl">
           Please Select Your Role
         </h3>
 
@@ -36,7 +35,7 @@ export default async function SignUpPage({
           />
         </div>
       </div>
-    </Container>
+    </div>
   );
 }
 

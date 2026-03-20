@@ -59,7 +59,7 @@ function ForgotPassword() {
   }
 
   return (
-    <div className="flex items-start justify-between flex-col py-10 md:max-w-[500px] mx-auto h-[calc(100dvh-65px)] px-3">
+    <div className="flex items-start justify-between flex-col space-y-8">
       <div className="w-full text-2xl text-primary-dark">
         <Link href={`/${lang}/log-in`}>
           <FaArrowLeftLong />
