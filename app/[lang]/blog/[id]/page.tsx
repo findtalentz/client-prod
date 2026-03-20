@@ -5,6 +5,7 @@ import ApiResponse from "@/schemas/ApiRespose";
 import BlogSchema from "@/schemas/Blog";
 import apiClient from "@/services/api-client";
 import { Avatar, Grid } from "@radix-ui/themes";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -31,6 +32,37 @@ interface Props {
 }
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const { data } = await apiClient.get<ApiResponse<BlogSchema>>(`/blog/${id}`);
+    const blog = data.data;
+    const title = blog.seoTitle || blog.title;
+    const description =
+      blog.metaDescription || blog.excerpt || blog.body?.slice(0, 160);
+
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        type: "article",
+        images: blog.thumbnail ? [{ url: blog.thumbnail }] : [],
+        publishedTime: new Date(blog.createdAt).toISOString(),
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: blog.thumbnail ? [blog.thumbnail] : [],
+      },
+    };
+  } catch {
+    return { title: "Blog Post" };
+  }
+}
 
 async function BlogDetails({ params, searchParams }: Props) {
   const { id, lang } = await params;

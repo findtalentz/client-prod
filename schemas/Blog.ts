@@ -12,5 +12,8 @@ export default interface BlogSchema {
   tags: string;
   status: "draft" | "published" | "archived";
   featured: boolean;
+  seoTitle?: string;
+  metaDescription?: string;
+  slug?: string;
   createdAt: Date;
 }
