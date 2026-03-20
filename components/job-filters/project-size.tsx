@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import JobFilterBox from "../job-filter-box";
 import { Checkbox } from "../ui/checkbox";
 
@@ -12,7 +11,6 @@ const jobSizes = [
 ];
 
 function JobSize() {
-  const [isVisible, setVisible] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -33,32 +31,25 @@ function JobSize() {
   const selectedType = searchParams.get("duration");
 
   return (
-    <>
-      {isVisible && (
-        <JobFilterBox
-          title="Project Size"
-          onVisibleChange={() => setVisible(false)}
-        >
-          <div className="space-y-2">
-            {jobSizes.map((item) => (
-              <div key={item.value} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`type-${item.value}`}
-                  checked={selectedType === item.value}
-                  onCheckedChange={() => onFilterJobJize(item.value)}
-                />
-                <label
-                  htmlFor={`type-${item.value}`}
-                  className="text-sm font-medium leading-none"
-                >
-                  {item.label}
-                </label>
-              </div>
-            ))}
+    <JobFilterBox title="Project Size" value="projectSize">
+      <div className="space-y-2">
+        {jobSizes.map((item) => (
+          <div key={item.value} className="flex items-center space-x-2">
+            <Checkbox
+              id={`type-${item.value}`}
+              checked={selectedType === item.value}
+              onCheckedChange={() => onFilterJobJize(item.value)}
+            />
+            <label
+              htmlFor={`type-${item.value}`}
+              className="text-sm font-medium leading-none"
+            >
+              {item.label}
+            </label>
           </div>
-        </JobFilterBox>
-      )}
-    </>
+        ))}
+      </div>
+    </JobFilterBox>
   );
 }
 

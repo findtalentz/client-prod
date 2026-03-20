@@ -1,25 +1,28 @@
-import Text from "@/components/ui/text";
+"use client";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ReactNode } from "react";
 
 interface Props {
   title: string;
   children: ReactNode;
-  onVisibleChange?: () => void;
+  value: string;
 }
 
-export default function JobFilterBox({
-  title,
-  children,
-  onVisibleChange,
-}: Props) {
+export default function JobFilterBox({ title, children, value }: Props) {
   return (
-    <div className="rounded-xl p-3 border border-gray-400 relative">
-      <div
-        onClick={onVisibleChange}
-        className="absolute top-3 right-3 w-3 h-0.5 bg-black cursor-pointer"
-      ></div>
-      <Text className="mb-2 font-semibold"> {title} </Text>
-      {children}
-    </div>
+    <Accordion type="single" collapsible defaultValue={value}>
+      <AccordionItem value={value} className="rounded-xl border border-gray-400 px-3">
+        <AccordionTrigger className="py-3 text-sm font-semibold hover:no-underline">
+          {title}
+        </AccordionTrigger>
+        <AccordionContent>{children}</AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }

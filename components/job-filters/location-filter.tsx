@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from "react";
 import JobFilterBox from "../job-filter-box";
 
 function LocationFilter() {
-  const [isVisible, setVisible] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -35,22 +34,15 @@ function LocationFilter() {
   }, [locationText, router, pathname, searchParams]);
 
   return (
-    <>
-      {isVisible && (
-        <JobFilterBox
-          title="Location"
-          onVisibleChange={() => setVisible(false)}
-        >
-          <input
-            value={locationText}
-            onChange={(e) => setLocationText(e.target.value)}
-            className="w-full py-1.5 px-2 border border-gray-300 rounded-md focus:outline-none text-sm"
-            type="text"
-            placeholder="Filter by location..."
-          />
-        </JobFilterBox>
-      )}
-    </>
+    <JobFilterBox title="Location" value="location">
+      <input
+        value={locationText}
+        onChange={(e) => setLocationText(e.target.value)}
+        className="w-full py-1.5 px-2 border border-gray-300 rounded-md focus:outline-none text-sm"
+        type="text"
+        placeholder="Filter by location..."
+      />
+    </JobFilterBox>
   );
 }
 
