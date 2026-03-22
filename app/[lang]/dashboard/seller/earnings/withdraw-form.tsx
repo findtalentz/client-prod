@@ -129,6 +129,9 @@ function WithdrawForm({ onSuccess }: Props) {
       queryClient.invalidateQueries({ queryKey: ["session"] });
       queryClient.invalidateQueries({ queryKey: ["my_withdraws"] });
       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      queryClient.invalidateQueries({ queryKey: ["pending_earning"] });
+      queryClient.invalidateQueries({ queryKey: ["total_earning"] });
+      queryClient.invalidateQueries({ queryKey: ["balances"] });
 
       if (onSuccess) {
         onSuccess();
