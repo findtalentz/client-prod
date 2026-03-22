@@ -3,70 +3,89 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function EarningsSkeleton() {
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="space-y-2">
-        <Skeleton className="h-9 w-64" />
-        <Skeleton className="h-5 w-96" />
+      <div className="space-y-1">
+        <Skeleton className="h-8 w-52" />
+        <Skeleton className="h-4 w-80" />
       </div>
 
-      {/* 3 stat cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <Card key={i}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="h-5 w-5 rounded" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-9 w-32 mb-4" />
-              <Skeleton className="h-9 w-full" />
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {/* Balance Card */}
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-28" />
+                  <Skeleton className="h-8 w-24" />
+                </div>
+                <Skeleton className="h-10 w-10 rounded-full" />
+              </div>
+              <Skeleton className="h-9 w-24 mt-4" />
             </CardContent>
           </Card>
-        ))}
-      </div>
 
-      {/* Withdraw & Payment Methods */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
-          <CardHeader className="border-b">
-            <Skeleton className="h-6 w-36" />
-          </CardHeader>
-          <CardContent className="pt-6 space-y-4">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-32" />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="border-b">
-            <Skeleton className="h-6 w-40" />
-          </CardHeader>
-          <CardContent className="pt-6 space-y-4">
-            {Array.from({ length: 2 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-lg" />
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Withdrawal history table */}
-      <Card>
-        <CardHeader className="border-b">
-          <Skeleton className="h-6 w-44" />
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="p-4 space-y-3">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex gap-6">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-20" />
-              </div>
+          {/* Pending + Lifetime */}
+          <div className="grid grid-cols-2 gap-4">
+            {[0, 1].map((i) => (
+              <Card key={i}>
+                <CardContent className="pt-5 pb-5">
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-7 w-20 mt-2" />
+                  <Skeleton className="h-8 w-8 rounded-full mt-3" />
+                </CardContent>
+              </Card>
             ))}
           </div>
-        </CardContent>
-      </Card>
+
+          {/* Payment Methods */}
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-8 w-24 rounded-md" />
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Skeleton className="h-[58px] w-full rounded-lg" />
+              <Skeleton className="h-[58px] w-full rounded-lg" />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column */}
+        <div className="lg:col-span-2">
+          {/* Tabs */}
+          <Skeleton className="h-10 w-60 rounded-md mb-4" />
+
+          {/* Table */}
+          <Card>
+            <CardContent className="p-0">
+              <div className="p-4 space-y-4">
+                {/* Table Header */}
+                <div className="flex gap-8">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+                {/* Table Rows */}
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <div key={i} className="flex gap-8 items-center">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

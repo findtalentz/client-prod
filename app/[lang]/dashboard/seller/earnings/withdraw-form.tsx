@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import useSession from "@/hooks/useSession";
 import usePaymentMethods from "@/hooks/usePaymentMethods";
 import useBankAccountStatus from "@/hooks/useBankAccountStatus";
@@ -20,9 +21,8 @@ import apiClient from "@/services/api-client";
 import { useRouter } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import toast from "react-hot-toast";
-import { FaWallet, FaInfoCircle } from "react-icons/fa";
 import { BeatLoader } from "react-spinners";
-import { Banknote } from "lucide-react";
+import { ArrowDownToLine, Banknote, Info, Wallet } from "lucide-react";
 import { SiPaypal } from "react-icons/si";
 
 interface Props {
@@ -37,11 +37,9 @@ function WithdrawForm({ onSuccess }: Props) {
   const { data: accountStatus } = useBankAccountStatus();
 
   const [withdrawAmount, setWithdrawAmount] = useState<string>("");
-  const [focused, setFocused] = useState(false);
   const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<string>("");
   const [selectedPaymentGateway, setSelectedPaymentGateway] = useState<"stripe" | "paypal" | "">("");
 
-  // Filter available payment methods
   const availablePaymentMethods = useMemo(() => {
     if (!paymentMethods?.data) return [];
 
@@ -55,14 +53,13 @@ function WithdrawForm({ onSuccess }: Props) {
 
     paymentMethods.data.forEach((method) => {
       if (isBankPaymentMethod(method)) {
-        // Only show Stripe bank accounts if Stripe is connected
         if (accountStatus?.data?.payoutsEnabled) {
           methods.push({
             id: method._id,
             gateway: "stripe",
             method,
-            displayName: "Bank Account (Stripe)",
-            displayInfo: `${method.bankName} ••••${method.accountNumber?.slice(-4)}`,
+            displayName: "Bank Account",
+            displayInfo: `${method.bankName} ••••${method.last4}`,
           });
         }
       } else if (isPayPalPaymentMethod(method)) {
@@ -79,7 +76,6 @@ function WithdrawForm({ onSuccess }: Props) {
     return methods;
   }, [paymentMethods, accountStatus]);
 
-  // Auto-select first payment method if available
   useEffect(() => {
     if (availablePaymentMethods.length > 0 && !selectedPaymentMethodId) {
       const firstMethod = availablePaymentMethods[0];
@@ -133,10 +129,7 @@ function WithdrawForm({ onSuccess }: Props) {
       queryClient.invalidateQueries({ queryKey: ["total_earning"] });
       queryClient.invalidateQueries({ queryKey: ["balances"] });
 
-      if (onSuccess) {
-        onSuccess();
-      }
-
+      if (onSuccess) onSuccess();
       router.refresh();
     } catch (error) {
       handleApiError(error, "An unexpected error occurred");
@@ -164,49 +157,41 @@ function WithdrawForm({ onSuccess }: Props) {
   const amount = parseFloat(withdrawAmount);
   const isValidAmount = !isNaN(amount) && amount > 0;
   const exceedsBalance = isValidAmount && amount > balance;
+  const belowMin = isValidAmount && amount < 30;
+  const canSubmit =
+    isValidAmount &&
+    !exceedsBalance &&
+    !belowMin &&
+    !!selectedPaymentMethodId &&
+    availablePaymentMethods.length > 0;
 
-  // Quick amount options (25%, 50%, 75%, 100% of balance)
   const quickAmounts = [
     { label: "25%", value: balance * 0.25 },
     { label: "50%", value: balance * 0.5 },
     { label: "75%", value: balance * 0.75 },
-    { label: "100%", value: balance },
+    { label: "Max", value: balance },
   ];
 
   return (
-    <div className="space-y-6 p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <div className="flex items-center justify-center w-12 h-12 bg-blue-50 rounded-full mx-auto">
-          <FaWallet className="h-6 w-6 text-blue-600" />
-        </div>
-        <h2 className="text-xl font-semibold text-gray-900">Withdraw Funds</h2>
-        <p className="text-sm text-gray-600">
-          Transfer money from your wallet to your bank account
-        </p>
-      </div>
-
+    <div className="flex flex-col gap-5 overflow-hidden">
       {/* Balance Display */}
-      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700">
-            Available Balance
-          </span>
-          <span className="text-lg font-bold text-green-600">
-            ${balance.toFixed(2)}
-          </span>
+      <div className="flex items-center justify-between rounded-lg border bg-muted/30 px-4 py-3">
+        <div className="flex items-center gap-2">
+          <Wallet className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">Available Balance</span>
         </div>
+        <span className="text-lg font-bold text-emerald-600">${balance.toFixed(2)}</span>
       </div>
 
-      {/* Payment Method Selection */}
-      <div className="space-y-3">
-        <label className="text-sm font-medium text-gray-700">
-          Payment Method *
-        </label>
+      <Separator />
+
+      {/* Payment Method */}
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium">Withdraw to</label>
         {availablePaymentMethods.length === 0 ? (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <p className="text-sm text-yellow-800">
-              No payment methods available. Please add a payment method first.
+          <div className="rounded-lg border border-dashed p-4 text-center">
+            <p className="text-sm text-muted-foreground">
+              No payment methods available. Add one first.
             </p>
           </div>
         ) : (
@@ -215,136 +200,114 @@ function WithdrawForm({ onSuccess }: Props) {
             onValueChange={handlePaymentMethodChange}
             disabled={loading}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-10 [&>span]:truncate">
               <SelectValue placeholder="Select payment method" />
             </SelectTrigger>
-            <SelectContent>
-              {availablePaymentMethods.map((method) => (
-                <SelectItem key={method.id} value={method.id}>
-                  <div className="flex items-center gap-2">
-                    {method.gateway === "stripe" ? (
-                      <Banknote className="h-4 w-4 text-primary" />
-                    ) : (
-                      <SiPaypal className="h-4 w-4 text-blue-500" />
-                    )}
-                    <div className="flex flex-col">
+            <SelectContent className="w-[var(--radix-select-trigger-width)]">
+              {availablePaymentMethods.map((method) => {
+                const info = method.displayInfo;
+                const shortInfo =
+                  method.gateway === "paypal" && info.length > 20
+                    ? info.slice(0, 18) + "..."
+                    : info;
+
+                return (
+                  <SelectItem key={method.id} value={method.id}>
+                    <div className="flex items-center gap-2">
+                      {method.gateway === "stripe" ? (
+                        <Banknote className="h-4 w-4 text-muted-foreground shrink-0" />
+                      ) : (
+                        <SiPaypal className="h-4 w-4 text-blue-500 shrink-0" />
+                      )}
                       <span className="font-medium">{method.displayName}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {method.displayInfo}
+                      <span className="text-muted-foreground text-xs">
+                        {shortInfo}
                       </span>
                     </div>
-                  </div>
-                </SelectItem>
-              ))}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         )}
       </div>
 
-      {/* Quick Amount Buttons */}
-      <div className="space-y-3">
-        <label className="text-sm font-medium text-gray-700">
-          Quick Select
-        </label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {quickAmounts.map((quick) => (
-            <button
-              key={quick.label}
-              type="button"
-              onClick={() => setWithdrawAmount(quick.value.toFixed(2))}
-              className="px-3 py-2 text-sm border border-gray-300 rounded-lg hover:border-blue-500 hover:text-blue-600 transition-colors duration-200"
-            >
-              {quick.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Amount Input */}
-      <div className="space-y-3">
-        <label
-          htmlFor="withdraw-amount"
-          className="text-sm font-medium text-gray-700"
-        >
-          Withdrawal Amount
-        </label>
-        <div
-          className={`relative rounded-lg transition-all duration-200 ${
-            focused ? "ring-2 ring-blue-500 ring-opacity-50" : ""
-          }`}
-        >
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span className="text-gray-500 sm:text-sm">$</span>
-          </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Amount</label>
+        <div className="relative">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground text-sm pointer-events-none">
+            $
+          </span>
           <Input
-            id="withdraw-amount"
             value={withdrawAmount}
             onChange={handleAmountChange}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
             placeholder="0.00"
             type="text"
             inputMode="decimal"
-            className="pl-7 pr-4 py-3 text-lg font-medium"
+            className="pl-7 h-11 text-lg font-semibold"
             disabled={loading}
           />
         </div>
 
-        {/* Validation Messages */}
-        {exceedsBalance && (
-          <div className="flex items-center gap-2 text-red-600 text-sm">
-            <FaInfoCircle className="h-4 w-4" />
-            <span>Amount exceeds available balance</span>
-          </div>
-        )}
-
-        {isValidAmount && !exceedsBalance && (
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">You will receive:</span>
-            <span className="font-semibold text-green-600">
-              ${amount.toFixed(2)}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <FaInfoCircle className="h-5 w-5 text-blue-600 mt-0.5 shrink-0" />
-          <div className="text-sm text-blue-800">
-            <p className="font-medium">Withdrawal Processing</p>
-            <p className="mt-1">
-              Withdrawals are typically processed within 2-3 business days. You
-              will receive a confirmation email once completed.
-            </p>
-          </div>
+        {/* Quick Amounts */}
+        <div className="grid grid-cols-4 gap-2">
+          {quickAmounts.map((q) => (
+            <button
+              key={q.label}
+              type="button"
+              onClick={() => setWithdrawAmount(q.value.toFixed(2))}
+              disabled={loading}
+              className="rounded-md border px-2 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors disabled:opacity-50"
+            >
+              {q.label}
+            </button>
+          ))}
         </div>
+
+        {/* Validation */}
+        {exceedsBalance && (
+          <p className="text-xs text-destructive flex items-center gap-1.5">
+            <Info className="h-3.5 w-3.5 shrink-0" />
+            Amount exceeds your available balance
+          </p>
+        )}
+        {belowMin && (
+          <p className="text-xs text-destructive flex items-center gap-1.5">
+            <Info className="h-3.5 w-3.5 shrink-0" />
+            Minimum withdrawal amount is $30
+          </p>
+        )}
+        {canSubmit && (
+          <div className="flex items-center justify-between text-sm pt-1">
+            <span className="text-muted-foreground">You will receive</span>
+            <span className="font-semibold">${amount.toFixed(2)}</span>
+          </div>
+        )}
       </div>
 
-      {/* Submit Button */}
+      {/* Info Note */}
+      <div className="flex items-start gap-2 rounded-lg bg-muted/50 px-3 py-2.5">
+        <Info className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Withdrawals are typically processed within 2–3 business days. You&apos;ll receive a confirmation email once completed.
+        </p>
+      </div>
+
+      {/* Submit */}
       <Button
         onClick={handleWithdraw}
-        disabled={
-          loading ||
-          !isValidAmount ||
-          exceedsBalance ||
-          !selectedPaymentMethodId ||
-          availablePaymentMethods.length === 0
-        }
-        className="w-full py-3 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+        disabled={loading || !canSubmit}
+        className="w-full h-11"
         size="lg"
       >
         {loading ? (
-          <div className="flex items-center gap-2">
-            <BeatLoader color="#fff" size={8} />
-            <span>Processing...</span>
-          </div>
+          <BeatLoader color="#fff" size={8} />
         ) : (
-          <div className="flex items-center gap-2">
-            <FaWallet className="h-5 w-5" />
-            <span>Request Withdrawal</span>
-          </div>
+          <span className="flex items-center gap-2">
+            <ArrowDownToLine className="h-4 w-4" />
+            Request Withdrawal
+          </span>
         )}
       </Button>
     </div>

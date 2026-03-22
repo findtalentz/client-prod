@@ -1,11 +1,10 @@
 "use client";
 import { queryClient } from "@/app/[lang]/query-client-provider";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { BankPaymentMethod } from "@/schemas/PaymentMethod";
 import apiClient from "@/services/api-client";
 import { AxiosError } from "axios";
-import { Banknote, Trash } from "lucide-react";
+import { Banknote, Trash2 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -21,12 +20,12 @@ const BankCard = ({ method }: Props) => {
     try {
       await apiClient.delete(`/payment-methods/bank/${method._id}`);
       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
-      toast.success("Bank account removed successfully.");
+      toast.success("Bank account removed.");
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
-        toast.error("Failed to delete bank account. Please try again.");
+        toast.error("Failed to remove bank account.");
       }
     } finally {
       setIsLoading(false);
@@ -34,38 +33,28 @@ const BankCard = ({ method }: Props) => {
   };
 
   return (
-    <Card key={method._id} className="border relative">
+    <div className="flex items-center justify-between rounded-lg border p-4">
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+          <Banknote className="h-5 w-5 text-primary" />
+        </div>
+        <div>
+          <p className="text-sm font-medium">Bank Account</p>
+          <p className="text-xs text-muted-foreground">
+            {method.bankName || "Stripe"} ••••{method.last4}
+          </p>
+        </div>
+      </div>
       <Button
         onClick={handleDelete}
         size="icon"
-        className="absolute top-2 right-2"
-        variant="destructive"
+        variant="ghost"
+        className="h-8 w-8 text-muted-foreground hover:text-destructive"
         disabled={isLoading}
       >
-        <Trash />
+        <Trash2 className="h-4 w-4" />
       </Button>
-      <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <Banknote className="h-5 w-5 text-primary" />
-          </div>
-
-          <span className="font-medium">Bank Account</span>
-        </div>
-      </CardHeader>
-      <CardContent className="p-4 pt-0">
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Bank</span>
-            <span>{method.bankName}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Account</span>
-            <span>••••{method.accountNumber?.slice(-4)}</span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 };
 

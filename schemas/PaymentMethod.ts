@@ -7,11 +7,8 @@ export interface BasePaymentMethod {
 
 export interface BankPaymentMethod extends BasePaymentMethod {
   methodType: "bank";
-  accountHolderName: string;
-  accountNumber: string;
   bankName: string;
-  routingNumber: string;
-  accountType: "checking" | "savings";
+  last4: string;
 }
 
 export interface PayPalPaymentMethod extends BasePaymentMethod {
