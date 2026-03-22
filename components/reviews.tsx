@@ -1,10 +1,12 @@
 "use client";
+import ReviewSummaryComponent from "@/components/review-summary";
 import Review from "@/schemas/Reviews";
 import { Avatar } from "@radix-ui/themes";
 import { Calendar, Star } from "lucide-react";
 
 interface Props {
   reviews: Review[];
+  sellerId?: string;
 }
 
 const ratingCategories = [
@@ -14,7 +16,7 @@ const ratingCategories = [
   { key: "descriptionRating" as const, label: "As Described" },
 ];
 
-const Reviews = ({ reviews }: Props) => {
+const Reviews = ({ reviews, sellerId }: Props) => {
   const overallAvg =
     reviews.length > 0
       ? parseFloat(
@@ -141,6 +143,13 @@ const Reviews = ({ reviews }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* AI Summary */}
+      {sellerId && (
+        <div className="mb-6">
+          <ReviewSummaryComponent sellerId={sellerId} />
+        </div>
+      )}
 
       {/* Reviews List */}
       <div className="space-y-4">

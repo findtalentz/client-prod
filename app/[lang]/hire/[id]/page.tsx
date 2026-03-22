@@ -222,7 +222,7 @@ export default async function PreviewPage({ params: searchParams }: Props) {
           </div>
         )}
 
-        {reviews.count > 0 && <Reviews reviews={reviews.data} />}
+        {reviews.count > 0 && <Reviews reviews={reviews.data} sellerId={id} />}
       </div>
     </Container>
   );

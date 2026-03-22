@@ -1,5 +1,6 @@
 "use client";
 
+import ReviewSummary from "@/components/review-summary";
 import {
   Card,
   CardContent,
@@ -163,6 +164,9 @@ export default function ReviewsReceivedSection() {
           )}
         </>
       )}
+
+      {/* AI Summary */}
+      {sellerId && reviews.length > 0 && <ReviewSummary sellerId={sellerId} />}
 
       {/* Reviews list */}
       <Card>
